@@ -1,0 +1,96 @@
+﻿:root {
+    --bg-dark: #050a14;
+    --panel-blue: #162a4d;
+    --border-blue: #2a4b8d;
+    --text-gold: #e0c068;
+    --text-white: #e0e0e0;
+    --btn-grad: linear-gradient(to bottom, #4a78c2 0%, #1e3a7a 100%);
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.calculator-container {
+    width: 800px;
+    background-color: #0d1a33;
+    border: 2px solid var(--border-blue);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.main-header {
+    text-align: center;
+    color: var(--text-gold);
+    margin-bottom: 20px;
+}
+
+.sub-nav a {
+    color: #6a96e6;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* Section Styling */
+.section-box {
+    background-color: var(--panel-blue);
+    border: 1px solid var(--border-blue);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+/* Glossy Button Style */
+.glossy-btn {
+    background: var(--btn-grad);
+    border: 1px solid #5a8be0;
+    border-radius: 4px;
+    color: white;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 2px 4px rgba(0,0,0,0.4);
+}
+
+    .glossy-btn:active {
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+        transform: translateY(1px);
+    }
+
+/* Table Styling */
+.stat-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .stat-table th {
+        background: rgba(0,0,0,0.3);
+        color: var(--text-gold);
+        padding: 8px;
+        border: 1px solid var(--border-blue);
+    }
+
+    .stat-table td {
+        border: 1px solid var(--border-blue);
+        padding: 5px;
+        text-align: center;
+    }
+
+input, select {
+    background: #0a1425;
+    color: white;
+    border: 1px solid var(--border-blue);
+    padding: 3px;
+}
+
+.label {
+    background: rgba(255,255,255,0.05);
+    font-weight: bold;
+}

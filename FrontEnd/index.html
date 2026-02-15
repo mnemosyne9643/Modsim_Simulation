@@ -1,10 +1,74 @@
-﻿<!DOCType HTML>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-    
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG Stat Calculator - Dark Mode</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body style="background-color: black;">
+<body>
+    <div class="calculator-container">
+        <header class="main-header">
+            <h1>.:RPG Stat Calculator:.</h1>
+            <nav class="sub-nav">
+                <a href="#">Item</a> | <a href="#">Monster</a> | <a href="#">Skills</a> | <a href="#">Quests</a>
+            </nav>
+        </header>
+
+        <div class="settings-bar">
+            <label>
+                Select Job:
+                <select><option>Novice</option><option>Swordman</option></select>
+            </label>
+            <label>Base Level: <input type="number" value="1" class="small-input"></label>
+            <button class="glossy-btn">Go</button>
+        </div>
+
+        <div class="section-box">
+            <h3 class="section-title">Buffs</h3>
+            <div class="buff-grid">
+                <div class="buff-item">Blessing: <select><option>Level 0</option></select></div>
+                <div class="buff-item">Increase AGI: <select><option>Level 0</option></select></div>
+                <div class="buff-item">Gloria? <input type="checkbox"></div>
+            </div>
+        </div>
+
+        <div class="section-box">
+            <table class="stat-table">
+                <thead>
+                    <tr>
+                        <th>Stats</th>
+                        <th>Job Bonus</th>
+                        <th>Pts Req</th>
+                        <th colspan="2">Status Information</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>STR <input type="number" value="1"></td>
+                        <td>+ 0</td>
+                        <td>2</td>
+                        <td class="label">Atk</td>
+                        <td class="val">1 + 0</td>
+                    </tr>
+                    <tr>
+                        <td>AGI <input type="number" value="1"></td>
+                        <td>+ 0</td>
+                        <td>2</td>
+                        <td class="label">Aspd</td>
+                        <td class="val">150</td>
+                    </tr>
+                    <tr>
+                        <td>VIT <input type="number" value="1"></td>
+                        <td>+ 0</td>
+                        <td>2</td>
+                        <td class="label">Def</td>
+                        <td class="val">0 + 1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 </body>
 </html>

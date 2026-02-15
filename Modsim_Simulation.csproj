@@ -9,12 +9,31 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />
-    <PackageReference Include="System.Text.Json" Version="10.0.3" />
+    <Compile Remove="FrontEnd\style.css\**" />
+    <EmbeddedResource Remove="FrontEnd\style.css\**" />
+    <None Remove="FrontEnd\style.css\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="FrontEnd\css\" />
+    <None Remove="FrontEnd\script.js" />
+    <None Remove="FrontEnd\style.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="FrontEnd\style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="FrontEnd\script.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />
+    <PackageReference Include="System.Text.Json" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>
