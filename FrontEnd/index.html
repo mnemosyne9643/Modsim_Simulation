@@ -3,72 +3,428 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPG Stat Calculator - Dark Mode</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Stat Calculator | Modern Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Applying the deep black background from your reference */
+        body {
+            background-color: #0b0b0b;
+        }
+
+        /* Subtle glow for the main container */
+        .modern-container {
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            border: 1px solid #222;
+        }
+
+        /* Removing number input arrows for a cleaner dashboard look */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Container Styling */
+        .character-vitals-container {
+            background: #1c1c1c;
+            border-radius: 24px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 24px;
+        }
+
+        .vitals-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .vital-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+        }
+
+        .vital-value {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .vital-value-large {
+            font-family: 'Monaco', monospace;
+            font-size: 18px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        /* HP/SP Cards */
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .vital-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border-left: 4px solid transparent;
+        }
+
+        .hp-border {
+            border-left-color: #ff4b4b;
+        }
+        /* Red for HP */
+        .sp-border {
+            border-left-color: #4b9fff;
+        }
+        /* Blue for SP */
+
+        .regen-text {
+            font-size: 11px;
+            font-weight: 600;
+            color: #b6ff40; /* Lime regen value */
+        }
+
+        /* Mini Inputs */
+        .modern-input-small {
+            background: #0b0b0b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b6ff40;
+            border-radius: 8px;
+            padding: 4px 8px;
+            width: 50px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .modern-select-mini {
+            background: #0b0b0b;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 4px 20px 4px 8px;
+            font-size: 12px;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .custom-select-mini {
+            position: relative;
+        }
+
+            .custom-select-mini::after {
+                content: '▾';
+                position: absolute;
+                right: 8px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #666;
+                font-size: 10px;
+                pointer-events: none;
+            }
+    </style>
 </head>
-<body>
-    <div class="calculator-container">
-        <header class="main-header">
-            <h1>.:RPG Stat Calculator:.</h1>
-            <nav class="sub-nav">
-                <a href="#">Item</a> | <a href="#">Monster</a> | <a href="#">Skills</a> | <a href="#">Quests</a>
-            </nav>
-        </header>
+<body class="text-stone-400 p-4 md:p-8 min-h-screen flex items-center justify-center flex-col">
 
-        <div class="settings-bar">
-            <label>
-                Select Job:
-                <select><option>Novice</option><option>Swordman</option></select>
-            </label>
-            <label>Base Level: <input type="number" value="1" class="small-input"></label>
-            <button class="glossy-btn">Go</button>
-        </div>
+    <div class="bg-[#1c1c1c] border border-white/5 rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-6 shadow-2xl">
 
-        <div class="section-box">
-            <h3 class="section-title">Buffs</h3>
-            <div class="buff-grid">
-                <div class="buff-item">Blessing: <select><option>Level 0</option></select></div>
-                <div class="buff-item">Increase AGI: <select><option>Level 0</option></select></div>
-                <div class="buff-item">Gloria? <input type="checkbox"></div>
+        <div class="flex flex-col gap-1.5 flex-grow min-w-[250px]">
+            <label class="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Class Configuration</label>
+            <div class="relative group">
+                <select id="jid" name="jid" onchange="check_option(this)" class="w-full bg-black/40 border border-white/10 text-white text-sm font-bold rounded-xl py-2.5 pl-4 pr-10 appearance-none focus:border-[#b6ff40] focus:ring-1 focus:ring-[#b6ff40]/20 outline-none transition-all cursor-pointer">
+                    <option value="#">-- Select Class --</option>
+                    <option value="0" selected="selected">Novice</option>
+                    <option value="1">Swordman</option>
+                    <option value="2">Magician</option>
+                    <option value="3">Archer</option>
+                    <option value="4">Acolyte</option>
+                    <option value="5">Merchant</option>
+                    <option value="6">Thief</option>
+                    <option value="7">Knight</option>
+                    <option value="8">Priest</option>
+                    <option value="9">Wizard</option>
+                    <option value="10">Blacksmith</option>
+                    <option value="11">Hunter</option>
+                    <option value="12">Assassin</option>
+                    <option value="14">Crusader</option>
+                    <option value="15">Monk</option>
+                    <option value="16">Sage</option>
+                    <option value="17">Rogue</option>
+                    <option value="18">Alchemist</option>
+                    <option value="19">Bard</option>
+                    <option value="20">Dancer</option>
+                    <option value="23">Super Novice</option>
+                    <option value="24">Gunslinger</option>
+                    <option value="25">Ninja</option>
+                    <option value="4008">Lord Knight</option>
+                    <option value="4009">High Priest</option>
+                    <option value="4010">High Wizard</option>
+                    <option value="4011">Whitesmith</option>
+                    <option value="4012">Sniper</option>
+                    <option value="4013">Assassin Cross</option>
+                    <option value="4015">Paladin</option>
+                    <option value="4016">Champion</option>
+                    <option value="4017">Professor</option>
+                    <option value="4018">Stalker</option>
+                    <option value="4019">Creator</option>
+                    <option value="4020">Clown</option>
+                    <option value="4021">Gypsy</option>
+                    <option value="4046">Taekwon</option>
+                    <option value="4047">Star Gladiator</option>
+                    <option value="4049">Soul Linker</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-[#b6ff40]">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
+                </div>
             </div>
         </div>
 
-        <div class="section-box">
-            <table class="stat-table">
-                <thead>
-                    <tr>
-                        <th>Stats</th>
-                        <th>Job Bonus</th>
-                        <th>Pts Req</th>
-                        <th colspan="2">Status Information</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>STR <input type="number" value="1"></td>
-                        <td>+ 0</td>
-                        <td>2</td>
-                        <td class="label">Atk</td>
-                        <td class="val">1 + 0</td>
-                    </tr>
-                    <tr>
-                        <td>AGI <input type="number" value="1"></td>
-                        <td>+ 0</td>
-                        <td>2</td>
-                        <td class="label">Aspd</td>
-                        <td class="val">150</td>
-                    </tr>
-                    <tr>
-                        <td>VIT <input type="number" value="1"></td>
-                        <td>+ 0</td>
-                        <td>2</td>
-                        <td class="label">Def</td>
-                        <td class="val">0 + 1</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="flex items-center gap-6">
+            <label class="flex items-center gap-3 cursor-pointer group">
+                <span class="text-[10px] font-black uppercase tracking-widest text-stone-500 group-hover:text-stone-300 transition-colors">Baby?</span>
+                <input type="checkbox" id="isBaby" name="isBaby" value="1" class="w-5 h-5 rounded-md bg-black border-white/10 text-[#b6ff40] focus:ring-0 focus:ring-offset-0">
+            </label>
+            <label class="flex items-center gap-3 cursor-not-allowed opacity-40">
+                <span class="text-[10px] font-black uppercase tracking-widest text-stone-500">Ranker?</span>
+                <input type="checkbox" id="isRanker" name="isRanker" value="1" disabled class="w-5 h-5 rounded-md bg-black border-white/10">
+            </label>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Max Aspd</label>
+                <select id="max_aspd" name="max_aspd" class="bg-black/40 border border-white/10 text-[#b6ff40] text-xs font-mono font-bold rounded-lg py-2 px-3 focus:border-[#b6ff40] outline-none">
+                    <option value="190" selected>190</option>
+                    <option value="191">191</option>
+                    <option value="192">192</option>
+                    <option value="193">193</option>
+                    <option value="199">199</option>
+                </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Max HP Cap</label>
+                <select id="maxhp_cap" name="maxhp_cap" class="bg-black/40 border border-white/10 text-white text-xs font-bold rounded-lg py-2 px-3 focus:border-[#b6ff40] outline-none">
+                    <option value="0" selected>None</option>
+                    <option value="1000000">1M</option>
+                    <option value="5000000">5M</option>
+                    <option value="10000000">10M</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex items-end self-stretch pb-0.5">
+            <button type="submit" name="go" class="bg-[#b6ff40] hover:bg-[#a3e635] text-black font-black uppercase text-xs tracking-[0.2em] px-8 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(182,255,64,0.3)] active:scale-95">
+                Update
+            </button>
         </div>
     </div>
 
+    <div class="character-vitals-container">
+        <div class="vitals-row main-header">
+            <div class="vital-item">
+                <span class="vital-label">Job</span>
+                <span class="vital-value text-white">Novice</span>
+            </div>
+            <div class="vital-item">
+                <label class="vital-label">Base Level</label>
+                <input id="lvl_sel" type="number" value="1" maxlength="3" onkeyup="calc_base_lvl_chg(this);" class="modern-input-small">
+            </div>
+            <div class="vital-item">
+                <label class="vital-label">Job Level</label>
+                <div class="custom-select-mini">
+                    <select id="jlvl_sel" onchange="calc_job_lvl_chg(this)" class="modern-select-mini">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="vital-item text-right">
+                <span class="vital-label">Weight Capacity</span>
+                <span id="disp_weight" class="vital-value text-[#fca311]">8390</span>
+            </div>
+        </div>
+
+        <div class="vitals-grid">
+            <div class="vital-card hp-border">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="vital-label">Max HP</span>
+                    <span id="disp_max_hp" class="vital-value-large">262</span>
+                </div>
+                <div class="regen-text" id="disp_hp_regen">
+                    86 <span class="text-stone-600">per 6s standing / 3s sitting</span>
+                </div>
+            </div>
+
+            <div class="vital-card sp-border">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="vital-label">Max SP</span>
+                    <span id="disp_max_sp" class="vital-value-large">13</span>
+                </div>
+                <div class="regen-text" id="disp_sp_regen">
+                    1 <span class="text-stone-600">per 8s standing / 4s sitting</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full max-w-5xl bg-[#141414] border border-white/5 rounded-[2rem] shadow-2xl overflow-hidden modern-container">
+        <div class="bg-[#1c1c1c] px-8 py-6 border-b border-white/5 flex items-center gap-4">
+            <div class="w-1.5 h-6 bg-[#b6ff40] rounded-full"></div>
+            <h2 class="text-xl font-black text-white">Character Stat Calculator</h2>
+        </div>
+
+        <div class="p-8">
+            <div class="overflow-x-auto">
+                <table class="w-full border-separate border-spacing-y-2">
+                    <thead>
+                        <tr class="text-[10px] uppercase tracking-[0.3em] text-stone-500 font-bold">
+                            <th class="p-3 text-left">Stats</th>
+                            <th class="p-3 text-center" colspan="2">Job Bonus</th>
+                            <th class="p-3 text-center">Pts Req</th>
+                            <th class="p-3 text-left pl-8" colspan="8">Status Information</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="group">
+                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
+                                <div class="flex justify-between items-center uppercase tracking-widest">
+                                    Str
+                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
+                                </div>
+                            </td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Atk</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-stone-500">0</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Def</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">0</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
+                            <td class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-[#b6ff40]">1</td>
+                        </tr>
+
+                        <tr class="group">
+                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
+                                <div class="flex justify-between items-center uppercase tracking-widest">
+                                    Agi
+                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none transition-all">
+                                </div>
+                            </td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Matk</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">~</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Mdef</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">0</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
+                            <td class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-[#b6ff40]">1</td>
+                        </tr>
+
+                        <tr class="group">
+                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
+                                <div class="flex justify-between items-center uppercase tracking-widest">
+                                    Vit
+                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                </div>
+                            </td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Hit</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-6 font-mono font-bold text-white uppercase" colspan="3">2</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Flee</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
+                            <td class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-[#b6ff40]">1</td>
+                        </tr>
+
+                        <tr class="group">
+                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
+                                <div class="flex justify-between items-center uppercase tracking-widest">
+                                    Int
+                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                </div>
+                            </td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Critical</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-6 font-mono font-bold text-white" colspan="3">1</td>
+                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Aspd</td>
+                            <td class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-white" colspan="3">150</td>
+                        </tr>
+
+                        <tr class="group">
+                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
+                                <div class="flex justify-between items-center uppercase tracking-widest">
+                                    Dex
+                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                </div>
+                            </td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
+                            <td class="p-3 bg-[#ff9f40] border-y border-[#ff9f40] text-black font-black italic px-4 uppercase text-xs tracking-tight">Status Point</td>
+                            <td class="p-3 bg-[#ff9f40] rounded-r-2xl border-y border-[#ff9f40] text-right pr-8 font-mono font-black text-black text-xl" colspan="7">48</td>
+                        </tr>
+
+                        <tr class="group">
+                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
+                                <div class="flex justify-between items-center uppercase tracking-widest">
+                                    Dex
+                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                </div>
+                            </td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
+                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
+                            <td class="p-3 bg-black/40 border-y border-white/5 text-stone-600 font-bold pl-8 uppercase text-[10px]">Guild</td>
+                            <td class="p-3 bg-black/40 rounded-r-2xl border-y border-r border-white/5 text-right pr-8 font-mono text-stone-400 font-bold italic" colspan="7">
+                                <a href="#" class="hover:text-[#b6ff40] transition-colors underline decoration-stone-800 underline-offset-4">Rate My Server</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-12 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-black/40 p-8 rounded-[2rem] border border-white/5 shadow-inner">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-[#1c1c1c] flex items-center justify-center border border-white/10 shadow-lg">
+                        <svg class="w-6 h-6 text-[#b6ff40]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    </div>
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest text-stone-600 font-bold">Equipment Slot</p>
+                        <label class="text-white font-black uppercase text-xs tracking-widest">Weapon Type Right:</label>
+                    </div>
+                </div>
+
+                <div class="relative group">
+                    <select class="appearance-none bg-[#1c1c1c] border border-white/10 text-white rounded-2xl px-6 py-4 pr-16 focus:border-[#b6ff40] focus:ring-4 focus:ring-[#b6ff40]/10 outline-none cursor-pointer transition-all font-bold text-sm tracking-wide w-full md:w-64">
+                        <option>Hand</option>
+                        <option>Sword</option>
+                        <option>Bow</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-6 text-stone-500 group-hover:text-[#b6ff40] transition-colors">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
