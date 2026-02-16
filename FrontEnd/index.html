@@ -297,18 +297,18 @@
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     Str
-                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
+                                    <input id="in-str" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Atk</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
+                            <td id="res-atk" class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-stone-500">0</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Def</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">0</td>
+                            <td id="res-def" class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">0</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
                             <td class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-[#b6ff40]">1</td>
                         </tr>
@@ -317,18 +317,18 @@
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     Agi
-                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none transition-all">
+                                    <input id="in-agi" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none transition-all">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Matk</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
+                            <td id="res-matk" class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">~</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Mdef</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">0</td>
+                            <td id="res-mdef" class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">0</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
                             <td class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-[#b6ff40]">1</td>
                         </tr>
@@ -337,16 +337,16 @@
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     Vit
-                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                    <input id="in-vit" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Hit</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-6 font-mono font-bold text-white uppercase" colspan="3">2</td>
+                            <td id="res-hit" class="p-3 bg-black/20 border-y border-white/5 text-right pr-6 font-mono font-bold text-white uppercase" colspan="3">2</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Flee</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
+                            <td id="res-flee" class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
                             <td class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-[#b6ff40]">1</td>
                         </tr>
@@ -355,37 +355,37 @@
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     Int
-                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                    <input id="in-int" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Critical</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-6 font-mono font-bold text-white" colspan="3">1</td>
+                            <td id="res-crit" class="p-3 bg-black/20 border-y border-white/5 text-right pr-6 font-mono font-bold text-white" colspan="3">1</td>
                             <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Aspd</td>
-                            <td class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-white" colspan="3">150</td>
+                            <td id="res-aspd" class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-white" colspan="3">150</td>
                         </tr>
 
                         <tr class="group">
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     Dex
-                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                    <input id="in-dex" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
                             <td class="p-3 bg-[#ff9f40] border-y border-[#ff9f40] text-black font-black italic px-4 uppercase text-xs tracking-tight">Status Point</td>
-                            <td class="p-3 bg-[#ff9f40] rounded-r-2xl border-y border-[#ff9f40] text-right pr-8 font-mono font-black text-black text-xl" colspan="7">48</td>
+                            <td id="res-points" class="p-3 bg-[#ff9f40] rounded-r-2xl border-y border-[#ff9f40] text-right pr-8 font-mono font-black text-black text-xl" colspan="7">48</td>
                         </tr>
 
                         <tr class="group">
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     LUK
-                                    <input type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                    <input id="in-luk" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>

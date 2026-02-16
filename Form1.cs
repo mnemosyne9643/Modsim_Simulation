@@ -2,6 +2,7 @@
 using Microsoft.Web.WebView2;
 using Microsoft.Web.WebView2.Core;
 using System.Text.Json;
+
 namespace Modsim_Simulation
 {
     public partial class Form1 : Form
@@ -19,9 +20,11 @@ namespace Modsim_Simulation
 
         async void InitializeWebView()
         {
-            await webViewForms.EnsureCoreWebView2Async();
+            await webViewForms.EnsureCoreWebView2Async(null);
 
             string rootFolder = Path.Combine(Application.StartupPath, "FrontEnd");
+
+            webViewForms.CoreWebView2.AddHostObjectToScript("bridge", new StatCalculatorBridge());
 
             webViewForms.CoreWebView2.SetVirtualHostNameToFolderMapping(
                 "app.local",
