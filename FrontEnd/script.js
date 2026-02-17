@@ -12,7 +12,7 @@ async function updateStats(element) {
     }
 
     // 1. Get values from your HTML table inputs
-    const baseLv = 1; // You can add an input for this too
+    const baseLv = parseInt(document.getElementById('in-level').value);
     const s = parseInt(document.getElementById('in-str').value);
     const a = parseInt(document.getElementById('in-agi').value);
     const v = parseInt(document.getElementById('in-vit').value);
@@ -35,7 +35,10 @@ async function updateStats(element) {
     document.getElementById('res-aspd').innerText = res.aspd;
     document.getElementById('res-def').innerText = res.def;
     document.getElementById('res-mdef').innerText = res.mdef;
-    document.getElementById('res-points').innerText = 48 - res.pointsUsed; // 48 is starting points
+
+
+    document.getElementById('res-points').innerText = res.pointsUsed; // 48 is starting points
+    document.getElementById('res-points').style.color = res.pointsUsed < 0 ? "red" : "black";
 }
 
 // // Attach listeners to all inputs

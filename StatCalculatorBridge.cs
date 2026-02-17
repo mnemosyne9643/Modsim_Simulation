@@ -39,6 +39,13 @@ public class StatCalculatorBridge
         // 150 DEX = Instant Cast. Formula: % Reduction = (DEX / 150)
         double castReduction = (dex / 150.0) * 100;
 
+        int pointsLeft = 48;
+        // Loop through every level up to the target level
+        for (int i = 1; i < baseLv; i++)
+        {
+            pointsLeft += (int)Math.Floor(i / 5.0) + 3;
+        }
+
         return JsonSerializer.Serialize(new
         {
             atk = meleeAtk,
@@ -52,7 +59,7 @@ public class StatCalculatorBridge
             mdef = softMdef,
             aspd = Math.Round(aspd, 1),
             cast = Math.Round(Math.Min(castReduction, 100.0), 1) + "%",
-            pointsUsed = GetTotalPointCost(str, agi, vit, intel, dex, luk)
+            pointsUsed = pointsLeft - GetTotalPointCost(str, agi, vit, intel, dex, luk)
         });
     }
 
