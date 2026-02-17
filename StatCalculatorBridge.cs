@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using Modsim_Simulation.Jobs;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 
 namespace Modsim_Simulation;
@@ -46,6 +47,9 @@ public class StatCalculatorBridge
             pointsLeft += (int)Math.Floor(i / 5.0) + 3;
         }
 
+        int maxHP = Novice.CalculateMaxHP(baseLv, vit);
+        int maxSP = Novice.CalculateMaxSP(baseLv, intel);
+
         return JsonSerializer.Serialize(new
         {
             atk = meleeAtk,
@@ -59,7 +63,11 @@ public class StatCalculatorBridge
             mdef = softMdef,
             aspd = Math.Round(aspd, 1),
             cast = Math.Round(Math.Min(castReduction, 100.0), 1) + "%",
-            pointsUsed = pointsLeft - GetTotalPointCost(str, agi, vit, intel, dex, luk)
+            pointsUsed = pointsLeft - GetTotalPointCost(str, agi, vit, intel, dex, luk),
+            maxHP = maxHP,
+            maxSP = maxSP,
+            hpRegen = Novice.CalculateHPRegen(maxHP, vit),
+            spRegen = Novice.CalculateSPRegen(maxSP, intel),
         });
     }
 

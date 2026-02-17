@@ -24,6 +24,12 @@ async function updateStats(element) {
     const raw = await window.chrome.webview.hostObjects.bridge.CalculateStats(s, a, v, i, d, l, baseLv);
     const res = JSON.parse(raw);
 
+    // HP & SP Status
+    document.getElementById('res-maxHP').innerText = res.maxHP;
+    document.getElementById('res-maxSP').innerText = res.maxSP;
+    document.getElementById('res-hpRegen').innerText = res.hpRegen;
+    document.getElementById('res-spRegen').innerText = res.spRegen;
+
     // 3. Update the table cells
     document.getElementById('res-atk').innerText = res.atk;
     document.getElementById('res-matk').innerText = res.matk;
@@ -35,7 +41,6 @@ async function updateStats(element) {
     document.getElementById('res-aspd').innerText = res.aspd;
     document.getElementById('res-def').innerText = res.def;
     document.getElementById('res-mdef').innerText = res.mdef;
-
 
     document.getElementById('res-points').innerText = res.pointsUsed; // 48 is starting points
     document.getElementById('res-points').style.color = res.pointsUsed < 0 ? "red" : "black";
