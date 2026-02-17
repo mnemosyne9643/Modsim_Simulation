@@ -9,9 +9,6 @@ async function updateStats(element) {
         const costForNext = await window.chrome.webview.hostObjects.bridge.GetStatUpgradeCost(currentVal);
         // Add cost postfix for selecting the cost stat
         document.getElementById(element.id + 'Cost').innerText = costForNext;
-
-        // document.getElementById(element.id + '-cost').innerText = costForNext;
-        //document.getElementById(element.id).innerText = costForNext;
     }
 
     // 1. Get values from your HTML table inputs

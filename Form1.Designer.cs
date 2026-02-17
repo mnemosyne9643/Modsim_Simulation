@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             webViewForms = new Microsoft.Web.WebView2.WinForms.WebView2();
             ((System.ComponentModel.ISupportInitialize)webViewForms).BeginInit();
             SuspendLayout();
@@ -50,8 +51,11 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1053, 649);
             Controls.Add(webViewForms);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Ragnarok Simulator";
+            WindowState = FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)webViewForms).EndInit();
             ResumeLayout(false);
         }
