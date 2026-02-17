@@ -234,7 +234,11 @@
             </div>
             <div class="vital-item">
                 <label class="vital-label">Base Level</label>
-                <input oninput="updateStats()" id="in-level" type="number" value="1" maxlength="3" class="modern-input-small">
+                <input 
+                    oninput="validateInput(this); updateStats()"
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
+                    id="in-level" type="number" value="1" maxlength="3" class="modern-input-small"
+                    >
             </div>
             <div class="vital-item">
                 <label class="vital-label">Job Level</label>
@@ -248,7 +252,7 @@
             </div>
             <div class="vital-item text-right">
                 <span class="vital-label">Weight Capacity</span>
-                <span id="disp_weight" class="vital-value text-[#fca311]">8390</span>
+                <span id="disp_weight" class="vital-value text-[#fca311]">2030</span>
             </div>
         </div>
 
@@ -299,7 +303,10 @@
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     Str
-                                    <input oninput="updateStats(this)" id="in-str" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
+                                    <input 
+                                    oninput="validateInput(this); updateStats(this)"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
+                                    id="in-str" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
@@ -319,7 +326,10 @@
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     Agi
-                                    <input oninput="updateStats(this)" id="in-agi" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none transition-all">
+                                    <input 
+                                    oninput="validateInput(this); updateStats(this)"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
+                                    id="in-agi" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
@@ -339,7 +349,10 @@
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     Vit
-                                    <input oninput="updateStats(this)" id="in-vit" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                    <input 
+                                    oninput="validateInput(this); updateStats(this)"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
+                                    id="in-vit" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
@@ -357,7 +370,10 @@
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     Int
-                                    <input oninput="updateStats(this)" id="in-int" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                    <input 
+                                    oninput="validateInput(this); updateStats(this)"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
+                                    id="in-int" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
@@ -373,7 +389,10 @@
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     Dex
-                                    <input oninput="updateStats(this)" id="in-dex" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                    <input 
+                                    oninput="validateInput(this); updateStats(this)"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
+                                    id="in-dex" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
@@ -387,7 +406,10 @@
                             <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
                                 <div class="flex justify-between items-center uppercase tracking-widest">
                                     LUK
-                                    <input oninput="updateStats(this)" id="in-luk" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] outline-none">
+                                    <input 
+                                    oninput="validateInput(this); updateStats(this)"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
+                                    id="in-luk" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
                                 </div>
                             </td>
                             <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>

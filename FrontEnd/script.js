@@ -46,7 +46,12 @@ async function updateStats(element) {
     document.getElementById('res-points').style.color = res.pointsUsed < 0 ? "red" : "black";
 }
 
-// // Attach listeners to all inputs
-//document.querySelectorAll('input[type="number"]').forEach(input => {
-//    input.addEventListener('input', updateStats);
-//});
+function validateInput(e) {
+    // Check the value length must be always 3
+    if (e.value.length > 3) {
+        e.value = e.value.substring(0,3);
+    }
+
+    // Ensure the value is as dictated
+    e.value = Math.abs(parseInt(e.value));
+}
