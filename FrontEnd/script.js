@@ -1,12 +1,14 @@
 ﻿const bridge = window.chrome.webview.hostObjects.bridge;
 
-async function updateStats() {
+async function updateStats(element) {
     // 1. Get the specific element that called the function
     if (element) {
         console.log("Upgrading Stat ID:", element.id);
         const currentVal = parseInt(element.value);
 
         const costForNext = await window.chrome.webview.hostObjects.bridge.GetStatUpgradeCost(currentVal);
+        // Add cost postfix for selecting the cost stat
+        document.getElementById(element.id + 'Cost').innerText = costForNext;
 
         // document.getElementById(element.id + '-cost').innerText = costForNext;
         //document.getElementById(element.id).innerText = costForNext;
@@ -28,8 +30,10 @@ async function updateStats() {
     // 3. Update the table cells
     document.getElementById('res-atk').innerText = res.atk;
     document.getElementById('res-matk').innerText = res.matk;
+    document.getElementById('res-maxMatk').innerText = res.maxMatk;
     document.getElementById('res-hit').innerText = res.hit;
     document.getElementById('res-flee').innerText = res.flee;
+    document.getElementById('res-perfectDodge').innerText = res.perfectDodge;
     document.getElementById('res-crit').innerText = res.crit;
     document.getElementById('res-aspd').innerText = res.aspd;
     document.getElementById('res-def').innerText = res.def;
@@ -37,7 +41,7 @@ async function updateStats() {
     document.getElementById('res-points').innerText = 48 - res.pointsUsed; // 48 is starting points
 }
 
-// Attach listeners to all inputs
-document.querySelectorAll('input[type="number"]').forEach(input => {
-    input.addEventListener('input', updateStats);
-});
+// // Attach listeners to all inputs
+//document.querySelectorAll('input[type="number"]').forEach(input => {
+//    input.addEventListener('input', updateStats);
+//});

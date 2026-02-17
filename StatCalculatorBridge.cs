@@ -42,11 +42,13 @@ public class StatCalculatorBridge
         return JsonSerializer.Serialize(new
         {
             atk = meleeAtk,
-            matk = $"{minMatk} ~ {maxMatk}",
+            matk = minMatk,
+            maxMatk = maxMatk,
             hit = hit,
-            flee = $"{flee} + {perfectDodge}",
+            flee = flee,
+            perfectDodge = perfectDodge,
             crit = (int) Math.Round(critical, 1),
-            def = $"0 + {softDef} ", // Classic shows Soft + Hard DEF
+            def = softDef, // Classic shows Soft + Hard DEF
             mdef = softMdef,
             aspd = Math.Round(aspd, 1),
             cast = Math.Round(Math.Min(castReduction, 100.0), 1) + "%",
@@ -94,7 +96,6 @@ public class StatCalculatorBridge
         // If the stat is currently 1-11, next point costs 2
         // If 12-21, costs 3, etc.
         if (currentVal < 2) return 2;
-        if (currentVal >= 99) return 0; // Max stat reached
 
         return ((currentVal - 2) / 10) + 2;
     }
