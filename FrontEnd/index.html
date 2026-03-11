@@ -303,7 +303,7 @@
                     <!-- Pts Req Column -->
                     <div class="panel" style="flex:0 0 auto; min-width:70px;">
                         <div class="banner-scroll">Pts Req</div>
-                        <div id="ptsReqSection" style="display:flex; flex-direction:column; gap:5px; padding-top:2px; align-items: center;"></div>
+                        <div id="ptsReqSection" style="display:flex; flex-direction:column; gap:8px; padding-top:2px; align-items: center;"></div>
                     </div>
 
                     <!-- Status Information -->
@@ -374,16 +374,16 @@
 
             // Job Bonus row
             const jbRow = document.createElement('div');
-            jbRow.style.cssText = 'display:flex; align-items:center; gap:4px; height:26px;';
+            jbRow.style.cssText = 'display:flex; align-items:center; gap:4px;';
             jbRow.innerHTML = `
                   <button class="stat-plus-btn">+</button>
-                  <div style="background:#fff8e0; border:2px solid #b07a3a; border-radius:3px; width:34px; text-align:center; font-family:'VT323',monospace; font-size:16px; color:#2a1000; padding:1px 3px;" id="jb_${stat.id}">0</div>
+                  <div style="background:#fff8e0; border:2px solid #b07a3a; border-radius:3px; width:50px; text-align:center; font-family:'VT323',monospace; font-size:16px; color:#2a1000; padding:1px 3px;" id="jb_${stat.id}">0</div>
                 `;
             jobBonusSection.appendChild(jbRow);
 
             // Pts Req row — id is "${stat.id}Cost" so script.js can write upgrade cost here
             const prRow = document.createElement('div');
-            prRow.style.cssText = 'display:flex; align-items:center; height:26px;';
+            prRow.style.cssText = 'display:flex; align-items:center; width: 50px; height:26px; padding:1px 3px;';
             prRow.innerHTML = `<div class="pts-req-badge" id="${stat.id}Cost">2</div>`;
             ptsReqSection.appendChild(prRow);
         });

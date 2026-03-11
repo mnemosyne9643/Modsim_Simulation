@@ -55,13 +55,13 @@
     <None Update="FrontEnd\Images\ClassChar\Magician.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="FrontEnd\Images\ClassChar\Novice.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="FrontEnd\Images\MainBoard.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="FrontEnd\Images\ClassChar\Merchant.gif">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="FrontEnd\Images\ClassChar\Novice.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="FrontEnd\Images\Ragnarok Simulator Logo.png">

@@ -1,6 +1,6 @@
 ﻿namespace Modsim_Simulation
 {
-    partial class Form1
+    partial class MainView
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
             webViewForms = new Microsoft.Web.WebView2.WinForms.WebView2();
             ((System.ComponentModel.ISupportInitialize)webViewForms).BeginInit();
             SuspendLayout();
@@ -40,19 +40,21 @@
             webViewForms.DefaultBackgroundColor = Color.White;
             webViewForms.Dock = DockStyle.Fill;
             webViewForms.Location = new Point(0, 0);
+            webViewForms.Margin = new Padding(3, 2, 3, 2);
             webViewForms.Name = "webViewForms";
-            webViewForms.Size = new Size(1053, 649);
+            webViewForms.Size = new Size(921, 487);
             webViewForms.TabIndex = 0;
             webViewForms.ZoomFactor = 1D;
             // 
-            // Form1
+            // MainView
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1053, 649);
+            ClientSize = new Size(921, 487);
             Controls.Add(webViewForms);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "Form1";
+            Margin = new Padding(3, 2, 3, 2);
+            Name = "MainView";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Ragnarok Simulator";
             WindowState = FormWindowState.Maximized;
