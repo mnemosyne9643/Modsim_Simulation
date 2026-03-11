@@ -190,7 +190,7 @@
         }
 
         .status-point-val {
-            color: #e03000;
+            color: black;
             font-weight: bold;
         }
 
@@ -252,8 +252,9 @@
                         <span><b>Job:</b> <span id="jobName">Novice</span></span>
                         <span style="margin-left:30px;">
                             <b>Base Level:</b> <input type="number" id="in-level" min="1" max="99"
-                                                      value="1" class="stat-input" style="width:56px;"
-                                                      oninput="validateInput(this); updateStats(null);">
+                                                      value="1" class="stat-input" data-prev="1"
+                                                      style="width:56px;" onfocus="this.dataset.prev=this.value"
+                                                      oninput="validateInput(this); updateStats(this);">
                         </span>
                         <span>
                             <b>Job Level:</b>
@@ -327,15 +328,15 @@
                 <!-- Weapon Type -->
                 <div class="panel" style="display:inline-flex; align-items:center; gap:10px; padding:7px 14px;">
                     <span style="font-size:18px; color:#2a1000; font-family:'VT323',monospace;"><b>Weapon Type</b> Right:</span>
-                    <select style="font-size:17px; min-width:90px;">
-                        <option>Hand</option>
-                        <option>Dagger</option>
-                        <option>Sword</option>
-                        <option>Rod</option>
-                        <option>Bow</option>
-                        <option>Mace</option>
-                        <option>Spear</option>
-                        <option>Axe</option>
+                    <select id="aspd_sel" name="aspd_sel" style="font-size:17px; min-width:90px;" onchange="updateStats(null);">
+                        <option value="0">Hand</option>
+                        <option value="1">Dagger</option>
+                        <option value="2">One-handed Sword</option>
+                        <option value="6">One-handed Axe</option>
+                        <option value="8">One-handed Mace</option>
+                        <option value="9">Two-handed Mace</option>
+                        <option value="10">Rod & Staff</option>
+                        <option value="23">Two-handed Staff</option>
                     </select>
                 </div>
 
@@ -344,6 +345,7 @@
     </div>
 
     <script>
+
         // Stat definitions — input IDs match what script.js reads (in-str, in-agi, etc.)
         // Cost badge IDs are input id + "Cost" (e.g. "in-strCost") — what script.js writes to
         const STATS = [
@@ -365,20 +367,20 @@
             const row = document.createElement('div');
             row.style.cssText = 'display:flex; align-items:center; gap:4px;';
             row.innerHTML = `
-                  <button class="stat-plus-btn" onclick="resetStat('${stat.id}')" title="Reset ${stat.label}" style="font-size:13px;">↺</button>
-                  <span style="font-family:'VT323',monospace; font-size:17px; color:#2a1000; width:32px;">${stat.label}</span>
-                  <input type="number" id="${stat.id}" min="1" max="99" value="1" class="stat-input"
-                    style="width:50px;" oninput="validateInput(this); updateStats(this);">
-                `;
+                                          <button class="stat-plus-btn" onclick="resetStat('${stat.id}')" title="Reset ${stat.label}" style="font-size:13px;">↺</button>
+                                          <span style="font-family:'VT323',monospace; font-size:17px; color:#2a1000; width:32px;">${stat.label}</span>
+                                          <input type="number" id="${stat.id}" min="1" max="99" value="1" class="stat-input data-prev="1" onfocus="this.dataset.prev=this.value"
+                                            style="width:50px;" oninput="validateInput(this); updateStats(this);">
+                                        `;
             statsSection.appendChild(row);
 
             // Job Bonus row
             const jbRow = document.createElement('div');
             jbRow.style.cssText = 'display:flex; align-items:center; gap:4px;';
             jbRow.innerHTML = `
-                  <button class="stat-plus-btn">+</button>
-                  <div style="background:#fff8e0; border:2px solid #b07a3a; border-radius:3px; width:50px; text-align:center; font-family:'VT323',monospace; font-size:16px; color:#2a1000; padding:1px 3px;" id="jb_${stat.id}">0</div>
-                `;
+                                          <button class="stat-plus-btn">+</button>
+                                          <div style="background:#fff8e0; border:2px solid #b07a3a; border-radius:3px; width:50px; text-align:center; font-family:'VT323',monospace; font-size:16px; color:#2a1000; padding:1px 3px;" id="jb_${stat.id}">0</div>
+                                        `;
             jobBonusSection.appendChild(jbRow);
 
             // Pts Req row — id is "${stat.id}Cost" so script.js can write upgrade cost here
@@ -392,10 +394,8 @@
         const STATUS_ITEMS = [
             { label: 'Atk', id: 'res-atk', default: '1-1' },
             { label: 'Def', id: 'res-def', default: '0+1' },
-            { label: 'Matk', id: 'res-matk', default: '1-1' },
+            { label: 'Matk', id: 'res-matk', default: '1-1', max: '1' },
             { label: 'Mdef', id: 'res-mdef', default: '0+1' },
-            { label: 'Max Matk', id: 'res-maxMatk', default: '1' },
-            { label: 'Perfect Dodge', id: 'res-perfectDodge', default: '0' },
             { label: 'Hit', id: 'res-hit', default: '2' },
             { label: 'Flee', id: 'res-flee', default: '2+1' },
             { label: 'Critical', id: 'res-crit', default: '1' },
@@ -414,65 +414,183 @@
             updateStats(null);
         }
 
-        // ── script.js — integrated as-is ────────────────────────────────────────
         const bridge = window.chrome.webview.hostObjects.bridge;
-
         async function updateStats(element) {
-            if (element) {
-                console.log("Upgrading Stat ID:", element.id);
-                const currentVal = parseInt(element.value);
+            // ---------- READ INPUTS ----------
+            let baseLv = parseInt(document.getElementById('in-level').value) || 1;
 
-                const costForNext = await window.chrome.webview.hostObjects.bridge.GetStatUpgradeCost(currentVal);
-                document.getElementById(element.id + 'Cost').innerText = costForNext;
+            let s = parseInt(document.getElementById('in-str').value) || 0;
+            let a = parseInt(document.getElementById('in-agi').value) || 0;
+            let v = parseInt(document.getElementById('in-vit').value) || 0;
+            let i = parseInt(document.getElementById('in-int').value) || 0;
+            let d = parseInt(document.getElementById('in-dex').value) || 0;
+            let l = parseInt(document.getElementById('in-luk').value) || 0;
+            const job = document.getElementById('jobSelect').value;
+
+            // ---------- CLAMP VALUES ----------
+            function clampStat(id, val) {
+
+
+                if (val > 99) val = 99;
+                if (val < 0) val = 0;
+
+                document.getElementById(id).value = val;
+                return val;
             }
 
-            const baseLv = parseInt(document.getElementById('in-level').value);
-            const s = parseInt(document.getElementById('in-str').value);
-            const a = parseInt(document.getElementById('in-agi').value);
-            const v = parseInt(document.getElementById('in-vit').value);
-            const i = parseInt(document.getElementById('in-int').value);
-            const d = parseInt(document.getElementById('in-dex').value);
-            const l = parseInt(document.getElementById('in-luk').value);
+            s = clampStat('in-str', s);
+            a = clampStat('in-agi', a);
+            v = clampStat('in-vit', v);
+            i = clampStat('in-int', i);
+            d = clampStat('in-dex', d);
+            l = clampStat('in-luk', l);
+            let weaponType = parseInt(document.getElementById('aspd_sel').value);
 
-            const raw = await window.chrome.webview.hostObjects.bridge.CalculateStats(s, a, v, i, d, l, baseLv);
+            if (baseLv < 1) {
+                baseLv = 1;
+                document.getElementById('in-level').value = 1;
+            }
+
+            // ---------- CALCULATE STATS ----------
+            const raw = await bridge.CalculateStats(s, a, v, i, d, l, baseLv, weaponType, job);
             const res = JSON.parse(raw);
 
+            console.log(res.aspd);
+
+            // ---------- INVALID STATE ----------
+            if (res.pointsUsed < 0) {
+                alert("Not enough status points!");
+
+                if (element) {
+                    element.value = element.dataset.prev;
+                    console.log(element);
+                }
+
+                return;
+            }
+
+            // ---------- UPDATE STAT COST ----------
+            if (element && element.id !== "in-level") {
+
+                const currentVal = parseInt(element.value) || 1;
+
+                const costForUpgrade = await bridge.GetStatUpgradeCost(currentVal - 1);
+
+                const costEl = document.getElementById(element.id + 'Cost');
+                if (costEl) {
+                    costEl.innerText = costForUpgrade;
+                }
+            }
+
+            // ---------- RENDER RESULTS ----------
             document.getElementById('res-maxHP').innerText = res.maxHP;
             document.getElementById('res-maxSP').innerText = res.maxSP;
             document.getElementById('res-hpRegen').innerText = res.hpRegen;
             document.getElementById('res-spRegen').innerText = res.spRegen;
 
             document.getElementById('res-atk').innerText = res.atk;
-            document.getElementById('res-matk').innerText = res.matk;
-            document.getElementById('res-maxMatk').innerText = res.maxMatk;
+            document.getElementById('res-matk').innerText = `${res.matk} ~ ${res.maxMatk}`;
             document.getElementById('res-hit').innerText = res.hit;
-            document.getElementById('res-flee').innerText = res.flee;
-            document.getElementById('res-perfectDodge').innerText = res.perfectDodge;
+            document.getElementById('res-flee').innerText = `${res.flee} ~ ${res.perfectDodge}`;
             document.getElementById('res-crit').innerText = res.crit;
             document.getElementById('res-aspd').innerText = res.aspd;
             document.getElementById('res-def').innerText = res.def;
             document.getElementById('res-mdef').innerText = res.mdef;
 
             document.getElementById('res-points').innerText = res.pointsUsed;
-            document.getElementById('res-points').style.color = res.pointsUsed < 0 ? "red" : "black";
+            document.getElementById('res-points').style.color = "black";
 
-            // Update job name and character image
-            const job = document.getElementById('jobSelect').value;
+            // ---------- UPDATE JOB ----------
             document.getElementById('jobName').textContent = job;
             document.getElementById('character').src = `Images/ClassChar/${job}.gif`;
         }
 
-        function validateInput(e) {
-            if (e.value.length > 3) {
-                e.value = e.value.substring(0, 3);
+        const jobConfig = {
+            "Novice": { maxJobLv: 10, weapons: [0, 1, 2, 6, 8, 9, 10, 23] },
+            "Swordman": { maxJobLv: 50, weapons: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
+            "Mage": { maxJobLv: 50, weapons: [0, 1, 10, 23] },
+            "Archer": { maxJobLv: 50, weapons: [0, 1, 11] },
+            "Acolyte": { maxJobLv: 50, weapons: [0, 8, 9, 10, 23] },
+            "Merchant": { maxJobLv: 50, weapons: [0, 1, 2, 6, 7, 8, 9] },
+            "Thief": { maxJobLv: 50, weapons: [0, 1, 2, 6, 11] },
+        };
+
+        const weaponNames = {
+            0: "Fist",
+            1: "Dagger",
+            2: "1H Sword",
+            3: "2H Sword",
+            4: "1H Spear",
+            5: "2H Spear",
+            6: "1H Axe",
+            7: "2H Axe",
+            8: "Mace",
+            9: "2H Mace",
+            10: "Staff",
+            11: "Bow",
+            12: "Knuckle",
+            13: "Musical Instrument",
+            14: "Whip",
+            15: "Book",
+            16: "Katar",
+            23: "2H Staff",
+        };
+
+        function syncJobSelects() {
+            const job = document.getElementById("jobSelect").value;
+            const config = jobConfig[job];
+            if (!config) return;
+
+            // --- Update weapon select ---
+            const weaponSel = document.getElementById("aspd_sel"); // adjust ID to match yours
+            const prevWeapon = parseInt(weaponSel.value);
+            weaponSel.innerHTML = "";
+            config.weapons.forEach(id => {
+                const opt = document.createElement("option");
+                opt.value = id;
+                opt.textContent = weaponNames[id];
+                weaponSel.appendChild(opt);
+            });
+            // Keep previous selection if still valid, else default to first
+            weaponSel.value = config.weapons.includes(prevWeapon) ? prevWeapon : config.weapons[0];
+
+            // --- Update job level select ---
+            const jobLvSel = document.getElementById("jobLevel");
+            const prevJLv = parseInt(jobLvSel.value);
+            jobLvSel.innerHTML = "";
+            for (let i = 1; i <= config.maxJobLv; i++) {
+                const opt = document.createElement("option");
+                opt.value = i;
+                opt.textContent = i;
+                jobLvSel.appendChild(opt);
             }
-            e.value = Math.abs(parseInt(e.value));
+            // Clamp previous value to new max
+            jobLvSel.value = Math.min(prevJLv, config.maxJobLv);
+
+            updateStats(null); // trigger your existing recalc
         }
-        // ────────────────────────────────────────────────────────────────────────
+
+        // Hook into the job select
+        document.getElementById("jobSelect").addEventListener("change", syncJobSelects);
+
+        // Run once on page load to set initial state
+        syncJobSelects();
+
+        function validateInput(e) {
+            let val = parseInt(e.value);
+
+            if (isNaN(val)) val = 0;
+
+            if (val < 0) val = 0;
+            if (val > 99) val = 99;
+
+            e.value = val;
+        }
 
         document.getElementById('jobSelect').addEventListener('change', () => updateStats(null));
-
         updateStats(null);
+
+
     </script>
 </body>
 </html>

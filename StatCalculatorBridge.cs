@@ -7,7 +7,7 @@ namespace Modsim_Simulation;
 [ComVisible(true)]
 public class StatCalculatorBridge
 {
-    public string CalculateStats(int str, int agi, int vit, int intel, int dex, int luk, int baseLv)
+    public string CalculateStats(int str, int agi, int vit, int intel, int dex, int luk, int baseLv, int weaponType, string job)
     {
         // --- PHYSICAL ATK (Melee) ---
         // Formula: STR + (STR/10)^2 + (DEX/5) + (LUK/5)
@@ -34,7 +34,7 @@ public class StatCalculatorBridge
 
         // --- ASPD (Novice Base) ---
         // Base ASPD for Novice is usually 150 (Unarmed)
-        double aspd = CalculateAccurateASPD(agi, dex);
+        int aspd = CalculateAspd(agi, dex, weaponType, job);
 
         // --- CAST TIME REDUCTION ---
         // 150 DEX = Instant Cast. Formula: % Reduction = (DEX / 150)
@@ -58,10 +58,10 @@ public class StatCalculatorBridge
             hit = hit,
             flee = flee,
             perfectDodge = perfectDodge,
-            crit = (int) Math.Round(critical, 1),
+            crit = (int)Math.Round(critical, 1),
             def = softDef, // Classic shows Soft + Hard DEF
             mdef = softMdef,
-            aspd = Math.Round(aspd, 1),
+            aspd = aspd,
             cast = Math.Round(Math.Min(castReduction, 100.0), 1) + "%",
             pointsUsed = pointsLeft - GetTotalPointCost(str, agi, vit, intel, dex, luk),
             maxHP = maxHP,
@@ -83,29 +83,43 @@ public class StatCalculatorBridge
         }
         return total;
     }
-
-    // ASPD Correction and the Penalty Multiplier used by the Aegis engine.
-    public double CalculateAccurateASPD(int agi, int dex, int jobBaseAspd = 156)
+    public int CalculateAspd(int agi, int dex, int weaponType, string job)
     {
-        // 1. In Classic, every class has a 'Correction' based on AGI
-        // This is why a level 1 Novice doesn't start at exactly 150.
-        double aspdCorrection = Math.Ceiling((Math.Sqrt(205) - Math.Sqrt(agi)) / 7.15);
+        // amotion base table [job][weaponType]
+        // Columns: 0=Unarmed,1=Dagger,2=1HSword,3=2HSword,4=1HSpear,5=2HSpear,
+        //          6=1HAxe,  7=2HAxe, 8=1HMace, 9=Rod,    10=Bow,   11=Knuckle
+        // Values from eAthena job_db1.txt
+        var aspdBase = new Dictionary<string, int[]>
+    {
+        // Novice
+        { "Novice",   new[] { 500, 650, 700, 2000, 2000, 2000, 800, 2000, 700, 650, 2000, 2000 } },
+        // Swordman
+        { "Swordman", new[] { 400, 500, 550,  600,  650,  700, 700,  750, 650, 2000, 2000, 2000 } },
+        // Magician
+        { "Magician", new[] { 500, 600, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 700, 2000, 2000 } },
+        // Archer
+        { "Archer",   new[] { 400, 600, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 700, 2000 } },
+        // Acolyte
+        { "Acolyte",  new[] { 400, 600, 2000, 2000, 2000, 2000, 2000, 2000, 600, 550, 2000, 2000 } },
+        // Merchant
+        { "Merchant", new[] { 400, 600, 700, 2000, 2000, 2000, 600, 700, 600, 2000, 2000, 2000 } },
+        // Thief
+        { "Thief",    new[] { 400, 450, 500, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000 } },
+    };
 
-        // 2. The Penalty Multiplier (Classic uses this to slow down the gain)
-        // Most classes use 0.96 or a formula based on the Job Base.
-        double aspdPenalty = 1.0 - (jobBaseAspd - 144) / 50.0;
+        int amotion = aspdBase[job][weaponType];
 
-        // 3. The Actual Calculation
-        // Formula: 200 - (200 - (Base + Stats)) * Penalty
-        // Note: AGI has 1.0x weight, DEX has ~0.19x weight in classic
-        double statGain = Math.Sqrt(agi * 9.9987 + dex * 0.1922) * aspdPenalty;
+        // Stat reduction: floor(amotion * (4*AGI + DEX) / 1000)
+        amotion -= (int)Math.Floor(amotion * (4.0 * agi + dex) / 1000.0);
 
-        double finalAspd = 200 - (200 - (jobBaseAspd - aspdCorrection + statGain));
+        // Convert amotion to ASPD
+        double aspd = (2000 - amotion) / 10.0;
 
-        // The game client TRUNCATES (rounds down) the display value.
-        return Math.Floor(finalAspd * 10) / 10.0;
+        if (aspd > 190)
+            aspd = 190;
+
+        return (int)Math.Floor(aspd);
     }
-
     public int GetStatUpgradeCost(int currentVal)
     {
         // If the stat is currently 1-11, next point costs 2
