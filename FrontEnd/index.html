@@ -1,454 +1,478 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stat Calculator | Modern Edition</title>
+    <title>Ragnarok Simulator</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
-        /* Applying the deep black background from your reference */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #0b0b0b;
-        }
-
-        /* Subtle glow for the main container */
-        .modern-container {
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            border: 1px solid #222;
-        }
-
-        /* Removing number input arrows for a cleaner dashboard look */
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
             margin: 0;
-        }
-
-        /* Container Styling */
-        .character-vitals-container {
-            background: #1c1c1c;
-            border-radius: 24px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 24px;
-        }
-
-        .vitals-row {
+            padding: 0;
+            font-family: 'VT323', monospace;
+            background: #000;
+            min-height: 100vh;
+            overflow-x: hidden;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding-bottom: 15px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .vital-label {
+        .bg-scene {
+            position: fixed;
+            inset: 0;
+            background-image: url('Images/Background.png');
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }
+
+        .main-board {
+            position: relative;
+            z-index: 10;
+            width: 960px;
+            margin: 20px auto;
+            background-image: url('Images/MainBoard.png');
+            background-size: 100% 100%;
+            padding: 20px 30px 30px 30px;
+            min-height: 600px;
+            zoom: 125%;
+        }
+
+        /* Logo */
+        .logo-img {
             display: block;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #666;
+            margin: 0 auto 10px;
+            height: 80px;
+            image-rendering: pixelated;
         }
 
-        .vital-value {
-            font-weight: 700;
-            font-size: 14px;
+        /* Panels */
+        .panel {
+            background: rgba(210, 170, 100, 0.55);
+            border: 2px solid #b07a3a;
+            border-radius: 6px;
+            padding: 10px 14px;
         }
 
-        .vital-value-large {
-            font-family: 'Monaco', monospace;
+        .panel-header {
+            background: rgba(210, 170, 100, 0.7);
+            border: 2px solid #b07a3a;
+            border-radius: 4px;
+            text-align: center;
             font-size: 18px;
-            font-weight: 900;
+            color: #3a1a00;
+            padding: 3px 10px;
+            margin-bottom: 6px;
+            font-family: 'VT323', monospace;
+        }
+
+        /* Inputs & Selects */
+        select,
+        input[type="text"],
+        input[type="number"] {
+            background: #fff8e0;
+            border: 2px solid #b07a3a;
+            border-radius: 3px;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            color: #2a1000;
+            padding: 1px 5px;
+            outline: none;
+        }
+
+            select:focus,
+            input:focus {
+                border-color: #e09020;
+                box-shadow: 0 0 4px #e09020;
+            }
+
+        /* Stat buttons */
+        .stat-plus-btn {
+            background: #c8a060;
+            border: 2px solid #8a5020;
+            border-radius: 3px;
+            color: #3a1a00;
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.1s;
+        }
+
+            .stat-plus-btn:hover {
+                background: #e0b060;
+            }
+
+        .pts-req-badge {
+            background: #e08020;
+            border: 2px solid #8a5020;
+            border-radius: 4px;
             color: #fff;
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            width: 34px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* HP/SP Cards */
-        .vitals-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .vital-card {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 12px 16px;
-            border-radius: 16px;
-            border-left: 4px solid transparent;
-        }
-
-        .hp-border {
-            border-left-color: #ff4b4b;
-        }
-        /* Red for HP */
-        .sp-border {
-            border-left-color: #4b9fff;
-        }
-        /* Blue for SP */
-
-        .regen-text {
-            font-size: 11px;
-            font-weight: 600;
-            color: #b6ff40; /* Lime regen value */
-        }
-
-        /* Mini Inputs */
-        .modern-input-small {
-            background: #0b0b0b;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #b6ff40;
-            border-radius: 8px;
-            padding: 4px 8px;
+        .stat-input {
             width: 50px;
             text-align: center;
+        }
+
+        /* Status info dashed lines */
+        .stat-row {
+            display: flex;
+            align-items: center;
+            padding: 3px 0;
+            border-bottom: 1px dashed #b07a3a;
+            font-size: 17px;
+            color: #2a1000;
+            gap: 4px;
+        }
+
+            .stat-row:last-child {
+                border-bottom: none;
+            }
+
+        .stat-label {
             font-weight: bold;
         }
 
-        .modern-select-mini {
-            background: #0b0b0b;
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 4px 20px 4px 8px;
-            font-size: 12px;
-            appearance: none;
-            cursor: pointer;
+        .stat-val {
+            flex: 1;
+            text-align: right;
         }
 
-        .custom-select-mini {
-            position: relative;
+        /* Description box */
+        .desc-box {
+            background: rgba(210, 170, 100, 0.5);
+            border: 2px solid #b07a3a;
+            border-radius: 5px;
+            font-size: 13px;
+            color: #2a1000;
+            line-height: 1.5;
+            padding: 10px;
+            font-family: 'VT323', monospace;
         }
 
-            .custom-select-mini::after {
-                content: '▾';
-                position: absolute;
-                right: 8px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #666;
-                font-size: 10px;
-                pointer-events: none;
-            }
+        /* Character mirror window */
+        .char-window {
+            width: 160px;
+            height: 170px;
+            background-image: url('Images/CharacterWindow.png');
+            background-size: cover;
+            image-rendering: pixelated;
+            flex-shrink: 0;
+        }
+
+        /* Banner scroll for section headers */
+        .banner-scroll {
+            background-image: url('Images/Scroll.png');
+            background-size: 100% 100%;
+            padding: 4px 18px;
+            text-align: center;
+            font-family: 'VT323', monospace;
+            font-size: 19px;
+            color: #3a1a00;
+        }
+
+        .status-point-val {
+            color: #e03000;
+            font-weight: bold;
+        }
+
+        /* Job info section */
+        .job-info-row {
+            font-size: 17px;
+            color: #2a1000;
+            font-family: 'VT323', monospace;
+        }
     </style>
 </head>
-<body class="text-stone-400 p-4 md:p-8 min-h-screen flex items-center justify-center flex-col">
+<body>
 
-    <div class="bg-[#1c1c1c] border border-white/5 rounded-2xl p-4 mb-6 flex flex-wrap items-center gap-6 shadow-2xl">
+    <div class="bg-scene"></div>
 
-        <div class="flex flex-col gap-1.5 flex-grow min-w-[250px]">
-            <label class="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Class Configuration</label>
-            <div class="relative group">
-                <select id="jid" name="jid" onchange="check_option(this)" class="w-full bg-black/40 border border-white/10 text-white text-sm font-bold rounded-xl py-2.5 pl-4 pr-10 appearance-none focus:border-[#b6ff40] focus:ring-1 focus:ring-[#b6ff40]/20 outline-none transition-all cursor-pointer">
-                    <option value="#">-- Select Class --</option>
-                    <option value="0" selected="selected">Novice</option>
-                    <option value="1">Swordman</option>
-                    <option value="2">Magician</option>
-                    <option value="3">Archer</option>
-                    <option value="4">Acolyte</option>
-                    <option value="5">Merchant</option>
-                    <option value="6">Thief</option>
-                    <option value="7">Knight</option>
-                    <option value="8">Priest</option>
-                    <option value="9">Wizard</option>
-                    <option value="10">Blacksmith</option>
-                    <option value="11">Hunter</option>
-                    <option value="12">Assassin</option>
-                    <option value="14">Crusader</option>
-                    <option value="15">Monk</option>
-                    <option value="16">Sage</option>
-                    <option value="17">Rogue</option>
-                    <option value="18">Alchemist</option>
-                    <option value="19">Bard</option>
-                    <option value="20">Dancer</option>
-                    <option value="23">Super Novice</option>
-                    <option value="24">Gunslinger</option>
-                    <option value="25">Ninja</option>
-                    <option value="4008">Lord Knight</option>
-                    <option value="4009">High Priest</option>
-                    <option value="4010">High Wizard</option>
-                    <option value="4011">Whitesmith</option>
-                    <option value="4012">Sniper</option>
-                    <option value="4013">Assassin Cross</option>
-                    <option value="4015">Paladin</option>
-                    <option value="4016">Champion</option>
-                    <option value="4017">Professor</option>
-                    <option value="4018">Stalker</option>
-                    <option value="4019">Creator</option>
-                    <option value="4020">Clown</option>
-                    <option value="4021">Gypsy</option>
-                    <option value="4046">Taekwon</option>
-                    <option value="4047">Star Gladiator</option>
-                    <option value="4049">Soul Linker</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-[#b6ff40]">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
+    <div class="main-board">
+
+        <!-- Logo -->
+        <img src="Images/Ragnarok Simulator Logo.png" alt="Ragnarok Simulator" class="logo-img">
+
+        <div style="display:flex; gap:16px; margin-top:8px;">
+
+            <!-- LEFT COLUMN: Mirror + Description -->
+            <div style="display:flex; flex-direction:column; gap:10px; width:140px; flex-shrink:0;">
+                <div class="char-window" style="display: flex; justify-content: center; align-items: center;">
+                    <img id="character" src="Images/thief.gif" alt="Character"
+                         style="position: absolute; width: 300px; height: auto; max-width: none;">
                 </div>
-            </div>
-        </div>
-
-        <div class="flex items-center gap-6">
-            <label class="flex items-center gap-3 cursor-pointer group">
-                <span class="text-[10px] font-black uppercase tracking-widest text-stone-500 group-hover:text-stone-300 transition-colors">Baby?</span>
-                <input type="checkbox" id="isBaby" name="isBaby" value="1" class="w-5 h-5 rounded-md bg-black border-white/10 text-[#b6ff40] focus:ring-0 focus:ring-offset-0">
-            </label>
-            <label class="flex items-center gap-3 cursor-not-allowed opacity-40">
-                <span class="text-[10px] font-black uppercase tracking-widest text-stone-500">Ranker?</span>
-                <input type="checkbox" id="isRanker" name="isRanker" value="1" disabled class="w-5 h-5 rounded-md bg-black border-white/10">
-            </label>
-        </div>
-
-        <div class="flex items-center gap-4">
-            <div class="flex flex-col gap-1.5">
-                <label class="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Max Aspd</label>
-                <select id="max_aspd" name="max_aspd" class="bg-black/40 border border-white/10 text-[#b6ff40] text-xs font-mono font-bold rounded-lg py-2 px-3 focus:border-[#b6ff40] outline-none">
-                    <option value="190" selected>190</option>
-                    <option value="191">191</option>
-                    <option value="192">192</option>
-                    <option value="193">193</option>
-                    <option value="199">199</option>
-                </select>
-            </div>
-            <div class="flex flex-col gap-1.5">
-                <label class="text-[10px] font-black uppercase tracking-widest text-stone-500 ml-1">Max HP Cap</label>
-                <select id="maxhp_cap" name="maxhp_cap" class="bg-black/40 border border-white/10 text-white text-xs font-bold rounded-lg py-2 px-3 focus:border-[#b6ff40] outline-none">
-                    <option value="0" selected>None</option>
-                    <option value="1000000">1M</option>
-                    <option value="5000000">5M</option>
-                    <option value="10000000">10M</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="flex items-end self-stretch pb-0.5">
-            <button type="submit" name="go" class="bg-[#b6ff40] hover:bg-[#a3e635] text-black font-black uppercase text-xs tracking-[0.2em] px-8 py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(182,255,64,0.3)] active:scale-95">
-                Update
-            </button>
-        </div>
-    </div>
-
-    <div class="character-vitals-container">
-        <div class="vitals-row main-header">
-            <div class="vital-item">
-                <span class="vital-label">Job</span>
-                <span class="vital-value text-white">Novice</span>
-            </div>
-            <div class="vital-item">
-                <label class="vital-label">Base Level</label>
-                <input 
-                    oninput="validateInput(this); updateStats()"
-                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
-                    id="in-level" type="number" value="1" maxlength="3" class="modern-input-small"
-                    >
-            </div>
-            <div class="vital-item">
-                <label class="vital-label">Job Level</label>
-                <div class="custom-select-mini">
-                    <select id="jlvl_sel" onchange="calc_job_lvl_chg(this)" class="modern-select-mini">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </div>
-            </div>
-            <div class="vital-item text-right">
-                <span class="vital-label">Weight Capacity</span>
-                <span id="disp_weight" class="vital-value text-[#fca311]">2030</span>
-            </div>
-        </div>
-
-        <div class="vitals-grid">
-            <div class="vital-card hp-border">
-                <div class="flex justify-between items-center mb-1">
-                    <span class="vital-label">Max HP</span>
-                    <span id="res-maxHP" class="vital-value-large">262</span>
-                </div>
-                <div class="regen-text">
-                    <p id="res-hpRegen">86</p>
-                    <span class="text-stone-600">per 6s standing / 3s sitting</span>
+                <div class="desc-box">
+                    This is a Ragnarok Online Stat and Status Simulator used by players to plan and optimize character builds
+                    before committing points in-game. It allows users to allocate attributes like STR, AGI, and DEX to see how
+                    they impact combat metrics such as Attack, Flee, and Hit.
                 </div>
             </div>
 
-            <div class="vital-card sp-border">
-                <div class="flex justify-between items-center mb-1">
-                    <span class="vital-label">Max SP</span>
-                    <span id="res-maxSP" class="vital-value-large">13</span>
-                </div>
-                <div class="regen-text">
-                    <p id="res-spRegen">1</p>
-                    <span class="text-stone-600">per 8s standing / 4s sitting</span>
-                </div>
-            </div>
-        </div>
-    </div>
+            <!-- RIGHT COLUMN: Main content -->
+            <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
 
-    <div class="w-full max-w-5xl bg-[#141414] border border-white/5 rounded-[2rem] shadow-2xl overflow-hidden modern-container">
-        <div class="bg-[#1c1c1c] px-8 py-6 border-b border-white/5 flex items-center gap-4">
-            <div class="w-1.5 h-6 bg-[#b6ff40] rounded-full"></div>
-            <h2 class="text-xl font-black text-white">Character Stat Calculator</h2>
-        </div>
-
-        <div class="p-8">
-            <div class="overflow-x-auto">
-                <table class="w-full border-separate border-spacing-y-2">
-                    <thead>
-                        <tr class="text-[10px] uppercase tracking-[0.3em] text-stone-500 font-bold">
-                            <th class="p-3 text-left">Stats</th>
-                            <th class="p-3 text-center" colspan="2">Job Bonus</th>
-                            <th class="p-3 text-center">Pts Req</th>
-                            <th class="p-3 text-left pl-8" colspan="8">Status Information</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-sm">
-                        <tr class="group">
-                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
-                                <div class="flex justify-between items-center uppercase tracking-widest">
-                                    Str
-                                    <input 
-                                    oninput="validateInput(this); updateStats(this)"
-                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
-                                    id="in-str" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
-                                </div>
-                            </td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
-                            <td id="in-strCost" class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Atk</td>
-                            <td id="res-atk" class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-stone-500">0</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Def</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">0</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
-                            <td id="res-def" class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-[#b6ff40]">1</td>
-                        </tr>
-
-                        <tr class="group">
-                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
-                                <div class="flex justify-between items-center uppercase tracking-widest">
-                                    Agi
-                                    <input 
-                                    oninput="validateInput(this); updateStats(this)"
-                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
-                                    id="in-agi" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
-                                </div>
-                            </td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
-                            <td id="in-agiCost" class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Matk</td>
-                            <td id="res-matk" class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">~</td>
-                            <td id="res-maxMatk" class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Mdef</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">0</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
-                            <td id="res-mdef" class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-[#b6ff40]">1</td>
-                        </tr>
-
-                        <tr class="group">
-                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
-                                <div class="flex justify-between items-center uppercase tracking-widest">
-                                    Vit
-                                    <input 
-                                    oninput="validateInput(this); updateStats(this)"
-                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
-                                    id="in-vit" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
-                                </div>
-                            </td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
-                            <td id="in-vitCost" class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Hit</td>
-                            <td id="res-hit" class="p-3 bg-black/20 border-y border-white/5 text-right pr-6 font-mono font-bold text-white uppercase" colspan="3">2</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Flee</td>
-                            <td id="res-flee" class="p-3 bg-black/20 border-y border-white/5 text-right pr-4 font-mono font-bold text-white">1</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-center text-stone-700">+</td>
-                            <td id="res-perfectDodge" class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-[#b6ff40]">1</td>
-                        </tr>
-
-                        <tr class="group">
-                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
-                                <div class="flex justify-between items-center uppercase tracking-widest">
-                                    Int
-                                    <input 
-                                    oninput="validateInput(this); updateStats(this)"
-                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
-                                    id="in-int" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
-                                </div>
-                            </td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
-                            <td id="in-intCost" class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold pl-8 uppercase text-[10px]">Critical</td>
-                            <td id="res-crit" class="p-3 bg-black/20 border-y border-white/5 text-right pr-6 font-mono font-bold text-white" colspan="3">1</td>
-                            <td class="p-3 bg-black/20 border-y border-white/5 text-stone-500 font-bold uppercase text-[10px]">Aspd</td>
-                            <td id="res-aspd" class="p-3 bg-black/20 rounded-r-2xl border-y border-r border-white/5 text-right pr-6 font-mono font-bold text-white" colspan="3">150</td>
-                        </tr>
-
-                        <tr class="group">
-                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
-                                <div class="flex justify-between items-center uppercase tracking-widest">
-                                    Dex
-                                    <input 
-                                    oninput="validateInput(this); updateStats(this)"
-                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
-                                    id="in-dex" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
-                                </div>
-                            </td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
-                            <td id="in-dexCost" class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
-                            <td class="p-3 bg-[#ff9f40] border-y border-[#ff9f40] text-black font-black italic px-4 uppercase text-xs tracking-tight">Status Point</td>
-                            <td id="res-points" class="p-3 bg-[#ff9f40] rounded-r-2xl border-y border-[#ff9f40] text-right pr-8 font-mono font-black text-black text-xl" colspan="7">48</td>
-                        </tr>
-
-                        <tr class="group">
-                            <td class="p-3 bg-[#1c1c1c] rounded-l-2xl border-y border-l border-white/5 font-bold text-white transition-all group-hover:border-[#b6ff40]/30">
-                                <div class="flex justify-between items-center uppercase tracking-widest">
-                                    LUK
-                                    <input 
-                                    oninput="validateInput(this); updateStats(this)"
-                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
-                                    id="in-luk" type="number" value="1" class="w-14 bg-black/40 border border-white/10 rounded-lg px-2 py-1.5 text-center text-[#b6ff40] focus:border-[#b6ff40] focus:ring-0 focus:outline-none transition-all font-mono">
-                                </div>
-                            </td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center text-stone-600 font-mono text-lg">+</td>
-                            <td class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono font-bold text-white">0</td>
-                            <td id="in-lukCost" class="p-3 bg-[#1c1c1c] border-y border-white/5 text-center font-mono text-stone-500">2</td>
-                            <td class="p-3 bg-black/40 border-y border-white/5 text-stone-600 font-bold pl-8 uppercase text-[10px]">Guild</td>
-                            <td class="p-3 bg-black/40 rounded-r-2xl border-y border-r border-white/5 text-right pr-8 font-mono text-stone-400 font-bold italic" colspan="7">
-                                <a href="#" class="hover:text-[#b6ff40] transition-colors underline decoration-stone-800 underline-offset-4">Rate My Server</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="mt-12 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-black/40 p-8 rounded-[2rem] border border-white/5 shadow-inner">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-[#1c1c1c] flex items-center justify-center border border-white/10 shadow-lg">
-                        <svg class="w-6 h-6 text-[#b6ff40]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                    </div>
-                    <div>
-                        <p class="text-[10px] uppercase tracking-widest text-stone-600 font-bold">Equipment Slot</p>
-                        <label class="text-white font-black uppercase text-xs tracking-widest">Weapon Type Right:</label>
+                <!-- Select Job -->
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div class="banner-scroll" style="display:inline-flex; align-items:center; gap:8px; padding:6px 20px;">
+                        <!-- <img src="Scroll.png" style="position: absolute; display: block; z-index: -1; height: 50px; width: 250px;"> -->
+                        <span style="font-size:18px; color:#2a1000; font-family:'VT323',monospace;">Select Job:</span>
+                        <select id="jobSelect" style="font-size:20px; min-width:110px; text-align: center; padding-bottom: 4px;">
+                            <option>Novice</option>
+                            <option>Swordman</option>
+                            <option>Magician</option>
+                            <option>Archer</option>
+                            <option>Acolyte</option>
+                            <option>Merchant</option>
+                            <option>Thief</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="relative group">
-                    <select class="appearance-none bg-[#1c1c1c] border border-white/10 text-white rounded-2xl px-6 py-4 pr-16 focus:border-[#b6ff40] focus:ring-4 focus:ring-[#b6ff40]/10 outline-none cursor-pointer transition-all font-bold text-sm tracking-wide w-full md:w-64">
+                <!-- Job Info Panel -->
+                <div class="panel">
+                    <div style="display:flex; flex-wrap:wrap; gap:8px 20px;" class="job-info-row">
+                        <span><b>Job:</b> <span id="jobName">Novice</span></span>
+                        <span style="margin-left:30px;">
+                            <b>Base Level:</b> <input type="number" id="in-level" min="1" max="99"
+                                                      value="1" class="stat-input" style="width:56px;"
+                                                      oninput="validateInput(this); updateStats(null);">
+                        </span>
+                        <span>
+                            <b>Job Level:</b>
+                            <select id="jobLevel" style="font-size:16px;" onchange="updateStats(null);">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>10</option>
+                                <option>20</option>
+                                <option>30</option>
+                                <option>40</option>
+                                <option>50</option>
+                            </select>
+                        </span>
+                        <span style="margin-left:20px;"><b>Weight:</b> <span id="weightVal">2030</span></span>
+                    </div>
+                    <div style="display:flex; gap:40px; margin-top:6px;" class="job-info-row">
+                        <div>
+                            <div><b>HP:</b> <span id="res-maxHP">40</span></div>
+                            <div><b>SP:</b> <span id="res-maxSP">11</span></div>
+                        </div>
+                        <div>
+                            <div><b>Natural HP Regen:</b> <span id="res-hpRegen">1 per 6s standing (per 3s sitting)</span></div>
+                            <div><b>Natural SP Regen:</b> <span id="res-spRegen">1 per 8s standing (per 4s sitting)</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats + Job Bonus + Pts Req + Status Info -->
+                <div style="display:flex; gap:8px;">
+
+                    <!-- Stats Column -->
+                    <div class="panel" style="flex:0 0 auto; min-width:170px;">
+                        <div class="banner-scroll">Stats</div>
+                        <div id="statsSection" style="display:flex; flex-direction:column; gap:5px; align-items: center;">
+                        </div>
+                    </div>
+
+                    <!-- Job Bonus Column -->
+                    <div class="panel" style="flex:0 0 auto; min-width:110px;">
+                        <div class="banner-scroll">Job Bonus</div>
+                        <div id="jobBonusSection" style="display:flex; flex-direction:column; gap:5px; padding-top:2px; align-items: center;"></div>
+                    </div>
+
+                    <!-- Pts Req Column -->
+                    <div class="panel" style="flex:0 0 auto; min-width:70px;">
+                        <div class="banner-scroll">Pts Req</div>
+                        <div id="ptsReqSection" style="display:flex; flex-direction:column; gap:5px; padding-top:2px; align-items: center;"></div>
+                    </div>
+
+                    <!-- Status Information -->
+                    <div class="panel" style="flex:1;">
+                        <div class="banner-scroll">Status Information</div>
+                        <div id="statusSection" style="display:grid; grid-template-columns:1fr 1fr; gap:0 16px;"></div>
+                        <div style="margin-top:8px; border-top:1px dashed #b07a3a; padding-top:6px;" class="job-info-row">
+                            <div class="stat-row">
+                                <span class="stat-label">Status Point</span>
+                                <span class="stat-val status-point-val" id="res-points">48</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Guild</span>
+                                <span class="stat-val">RMS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Weapon Type -->
+                <div class="panel" style="display:inline-flex; align-items:center; gap:10px; padding:7px 14px;">
+                    <span style="font-size:18px; color:#2a1000; font-family:'VT323',monospace;"><b>Weapon Type</b> Right:</span>
+                    <select style="font-size:17px; min-width:90px;">
                         <option>Hand</option>
+                        <option>Dagger</option>
                         <option>Sword</option>
+                        <option>Rod</option>
                         <option>Bow</option>
+                        <option>Mace</option>
+                        <option>Spear</option>
+                        <option>Axe</option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-6 text-stone-500 group-hover:text-[#b6ff40] transition-colors">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
-                    </div>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Stat definitions — input IDs match what script.js reads (in-str, in-agi, etc.)
+        // Cost badge IDs are input id + "Cost" (e.g. "in-strCost") — what script.js writes to
+        const STATS = [
+            { label: 'STR', id: 'in-str' },
+            { label: 'AGI', id: 'in-agi' },
+            { label: 'VIT', id: 'in-vit' },
+            { label: 'INT', id: 'in-int' },
+            { label: 'DEX', id: 'in-dex' },
+            { label: 'LUK', id: 'in-luk' },
+        ];
+
+        // Build stats rows
+        const statsSection = document.getElementById('statsSection');
+        const jobBonusSection = document.getElementById('jobBonusSection');
+        const ptsReqSection = document.getElementById('ptsReqSection');
+
+        STATS.forEach(stat => {
+            // Stat row
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex; align-items:center; gap:4px;';
+            row.innerHTML = `
+                  <button class="stat-plus-btn" onclick="resetStat('${stat.id}')" title="Reset ${stat.label}" style="font-size:13px;">↺</button>
+                  <span style="font-family:'VT323',monospace; font-size:17px; color:#2a1000; width:32px;">${stat.label}</span>
+                  <input type="number" id="${stat.id}" min="1" max="99" value="1" class="stat-input"
+                    style="width:50px;" oninput="validateInput(this); updateStats(this);">
+                `;
+            statsSection.appendChild(row);
+
+            // Job Bonus row
+            const jbRow = document.createElement('div');
+            jbRow.style.cssText = 'display:flex; align-items:center; gap:4px; height:26px;';
+            jbRow.innerHTML = `
+                  <button class="stat-plus-btn">+</button>
+                  <div style="background:#fff8e0; border:2px solid #b07a3a; border-radius:3px; width:34px; text-align:center; font-family:'VT323',monospace; font-size:16px; color:#2a1000; padding:1px 3px;" id="jb_${stat.id}">0</div>
+                `;
+            jobBonusSection.appendChild(jbRow);
+
+            // Pts Req row — id is "${stat.id}Cost" so script.js can write upgrade cost here
+            const prRow = document.createElement('div');
+            prRow.style.cssText = 'display:flex; align-items:center; height:26px;';
+            prRow.innerHTML = `<div class="pts-req-badge" id="${stat.id}Cost">2</div>`;
+            ptsReqSection.appendChild(prRow);
+        });
+
+        // Build status info — IDs match script.js res-* names exactly
+        const STATUS_ITEMS = [
+            { label: 'Atk', id: 'res-atk', default: '1-1' },
+            { label: 'Def', id: 'res-def', default: '0+1' },
+            { label: 'Matk', id: 'res-matk', default: '1-1' },
+            { label: 'Mdef', id: 'res-mdef', default: '0+1' },
+            { label: 'Max Matk', id: 'res-maxMatk', default: '1' },
+            { label: 'Perfect Dodge', id: 'res-perfectDodge', default: '0' },
+            { label: 'Hit', id: 'res-hit', default: '2' },
+            { label: 'Flee', id: 'res-flee', default: '2+1' },
+            { label: 'Critical', id: 'res-crit', default: '1' },
+            { label: 'Aspd', id: 'res-aspd', default: '150' },
+        ];
+        const statusSection = document.getElementById('statusSection');
+        STATUS_ITEMS.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'stat-row';
+            div.innerHTML = `<span class="stat-label">${item.label}</span><span class="stat-val" id="${item.id}">${item.default}</span>`;
+            statusSection.appendChild(div);
+        });
+
+        function resetStat(inputId) {
+            document.getElementById(inputId).value = 1;
+            updateStats(null);
+        }
+
+        // ── script.js — integrated as-is ────────────────────────────────────────
+        const bridge = window.chrome.webview.hostObjects.bridge;
+
+        async function updateStats(element) {
+            if (element) {
+                console.log("Upgrading Stat ID:", element.id);
+                const currentVal = parseInt(element.value);
+
+                const costForNext = await window.chrome.webview.hostObjects.bridge.GetStatUpgradeCost(currentVal);
+                document.getElementById(element.id + 'Cost').innerText = costForNext;
+            }
+
+            const baseLv = parseInt(document.getElementById('in-level').value);
+            const s = parseInt(document.getElementById('in-str').value);
+            const a = parseInt(document.getElementById('in-agi').value);
+            const v = parseInt(document.getElementById('in-vit').value);
+            const i = parseInt(document.getElementById('in-int').value);
+            const d = parseInt(document.getElementById('in-dex').value);
+            const l = parseInt(document.getElementById('in-luk').value);
+
+            const raw = await window.chrome.webview.hostObjects.bridge.CalculateStats(s, a, v, i, d, l, baseLv);
+            const res = JSON.parse(raw);
+
+            document.getElementById('res-maxHP').innerText = res.maxHP;
+            document.getElementById('res-maxSP').innerText = res.maxSP;
+            document.getElementById('res-hpRegen').innerText = res.hpRegen;
+            document.getElementById('res-spRegen').innerText = res.spRegen;
+
+            document.getElementById('res-atk').innerText = res.atk;
+            document.getElementById('res-matk').innerText = res.matk;
+            document.getElementById('res-maxMatk').innerText = res.maxMatk;
+            document.getElementById('res-hit').innerText = res.hit;
+            document.getElementById('res-flee').innerText = res.flee;
+            document.getElementById('res-perfectDodge').innerText = res.perfectDodge;
+            document.getElementById('res-crit').innerText = res.crit;
+            document.getElementById('res-aspd').innerText = res.aspd;
+            document.getElementById('res-def').innerText = res.def;
+            document.getElementById('res-mdef').innerText = res.mdef;
+
+            document.getElementById('res-points').innerText = res.pointsUsed;
+            document.getElementById('res-points').style.color = res.pointsUsed < 0 ? "red" : "black";
+
+            // Update job name and character image
+            const job = document.getElementById('jobSelect').value;
+            document.getElementById('jobName').textContent = job;
+            document.getElementById('character').src = `Images/ClassChar/${job}.gif`;
+        }
+
+        function validateInput(e) {
+            if (e.value.length > 3) {
+                e.value = e.value.substring(0, 3);
+            }
+            e.value = Math.abs(parseInt(e.value));
+        }
+        // ────────────────────────────────────────────────────────────────────────
+
+        document.getElementById('jobSelect').addEventListener('change', () => updateStats(null));
+
+        updateStats(null);
+    </script>
 </body>
 </html>
