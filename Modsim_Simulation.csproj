@@ -9,77 +9,69 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="FrontEnd\style.css\**" />
-    <EmbeddedResource Remove="FrontEnd\style.css\**" />
-    <None Remove="FrontEnd\style.css\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="FrontEnd\script.js" />
-    <None Remove="FrontEnd\style.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="FrontEnd\style.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="FrontEnd\script.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />
-    <PackageReference Include="System.Text.Json" Version="10.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="FrontEnd\Images\ClassChar\Acolyte.gif">
+    <None Update="Frontend\css\style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\ClassChar\Archer.gif">
+    <None Update="Frontend\Images\animated_background.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\Background.png">
+    <None Update="Frontend\Images\Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\Banner_scroll.svg">
+    <None Update="Frontend\Images\Banner_scroll.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\CharacterWindow.png">
+    <None Update="Frontend\Images\CharacterWindow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\ClassChar\Magician.gif">
+    <None Update="Frontend\Images\ClassChar\acolyte.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\ClassChar\Novice.gif">
+    <None Update="Frontend\Images\ClassChar\archer.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\MainBoard.png">
+    <None Update="Frontend\Images\ClassChar\magician.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\ClassChar\Merchant.gif">
+    <None Update="Frontend\Images\ClassChar\merchant.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\Ragnarok Simulator Logo.png">
+    <None Update="Frontend\Images\ClassChar\novice.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\Reference.png">
+    <None Update="Frontend\Images\ClassChar\swordman.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\Scroll.png">
+    <None Update="Frontend\Images\ClassChar\thief.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\ClassChar\Swordman.gif">
+    <None Update="Frontend\Images\MainBoard.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\Images\ClassChar\Thief.gif">
+    <None Update="Frontend\Images\Ragnarok Simulator Logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="FrontEnd\index.html">
+    <None Update="Frontend\Images\Reference.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Frontend\Images\Scroll.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Frontend\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Frontend\js\bridge.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Frontend\js\classSelect.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Frontend\js\index.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

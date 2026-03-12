@@ -45,6 +45,7 @@
             webViewForms.Size = new Size(921, 487);
             webViewForms.TabIndex = 0;
             webViewForms.ZoomFactor = 1D;
+            webViewForms.WebMessageReceived += webViewForms_WebMessageReceived;
             // 
             // MainView
             // 

@@ -1,0 +1,244 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'VT323', monospace;
+    background: #000;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.bg-scene {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+}
+
+.main-board {
+    position: relative;
+    z-index: 10;
+    width: 960px;
+    margin: 20px auto;
+    background-image: url('../Images/MainBoard.png');
+    background-size: 100% 100%;
+    padding: 20px 30px 30px 30px;
+    min-height: 600px;
+    zoom: 125%;
+}
+
+/* Logo */
+.logo-img {
+    display: block;
+    margin: 0 auto 10px;
+    height: 80px;
+    image-rendering: pixelated;
+}
+
+/* Panels */
+.panel {
+    background: rgba(210, 170, 100, 0.55);
+    border: 2px solid #b07a3a;
+    border-radius: 6px;
+    padding: 10px 14px;
+}
+
+.panel-header {
+    background: rgba(210, 170, 100, 0.7);
+    border: 2px solid #b07a3a;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 18px;
+    color: #3a1a00;
+    padding: 3px 10px;
+    margin-bottom: 6px;
+    font-family: 'VT323', monospace;
+}
+
+/* Inputs & Selects */
+select,
+input[type="text"],
+input[type="number"] {
+    background: #fff8e0;
+    border: 2px solid #b07a3a;
+    border-radius: 3px;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: #2a1000;
+    padding: 1px 5px;
+    outline: none;
+}
+
+    select:focus,
+    input:focus {
+        border-color: #e09020;
+        box-shadow: 0 0 4px #e09020;
+    }
+
+/* Stat buttons */
+.stat-plus-btn {
+    background: #c8a060;
+    border: 2px solid #8a5020;
+    border-radius: 3px;
+    color: #3a1a00;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.1s;
+}
+
+    .stat-plus-btn:hover {
+        background: #e0b060;
+    }
+
+.pts-req-badge {
+    background: #e08020;
+    border: 2px solid #8a5020;
+    border-radius: 4px;
+    color: #fff;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    width: 34px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-input {
+    width: 50px;
+    text-align: center;
+}
+
+/* Status info dashed lines */
+.stat-row {
+    display: flex;
+    align-items: center;
+    padding: 3px 0;
+    border-bottom: 1px dashed #b07a3a;
+    font-size: 17px;
+    color: #2a1000;
+    gap: 4px;
+}
+
+    .stat-row:last-child {
+        border-bottom: none;
+    }
+
+.stat-label {
+    font-weight: bold;
+}
+
+.stat-val {
+    flex: 1;
+    text-align: right;
+}
+
+/* Description box */
+.desc-box {
+    background: rgba(210, 170, 100, 0.5);
+    border: 2px solid #b07a3a;
+    border-radius: 5px;
+    font-size: 13px;
+    color: #2a1000;
+    line-height: 1.5;
+    padding: 10px;
+    font-family: 'VT323', monospace;
+}
+
+/* Character mirror window */
+.char-window {
+    width: 160px;
+    height: 170px;
+    background-image: url('../Images/CharacterWindow.png');
+    background-size: cover;
+    image-rendering: pixelated;
+    flex-shrink: 0;
+}
+
+/* Banner scroll for section headers */
+.banner-scroll {
+    background-image: url('../Images/Scroll.png');
+    background-size: 100% 100%;
+    padding: 4px 18px;
+    text-align: center;
+    font-family: 'VT323', monospace;
+    font-size: 19px;
+    color: #3a1a00;
+}
+
+.status-point-val {
+    color: black;
+    font-weight: bold;
+}
+
+/* Job info section */
+.job-info-row {
+    font-size: 17px;
+    color: #2a1000;
+    font-family: 'VT323', monospace;
+}
+
+.stat-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.stat-label {
+    font-family: 'VT323', monospace;
+    font-size: 17px;
+    color: #2a1000;
+    width: 32px;
+}
+
+.stat-input {
+    width: 50px;
+}
+
+.job-bonus-box {
+    margin-left: 0.5rem;
+    background: #fff8e0;
+    border: 2px solid #b07a3a;
+    border-radius: 5px;
+    width: 35px;
+    text-align: center;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: #2a1000;
+    padding: 1px 3px;
+}
+
+.pts-req-row {
+    display: flex;
+    align-items: center;
+    width: 50px;
+    height: 26px;
+    padding: 1px 3px;
+}
+
+.stat-plus-btn {
+    font-size: 13px;
+    font-family: 'VT323', monospace;
+    background: #fff8e0;
+    border: 2px solid #b07a3a;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 1px 4px;
+}
+
+    .stat-plus-btn:hover {
+        background: #ffe7b3;
+    }
