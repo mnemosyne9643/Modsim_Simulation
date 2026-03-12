@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Modsim_Simulation.Backend;
 using System.Diagnostics;
 using System.Web;
+using Modsim_Simulation.Backend.Models;
 
 namespace Modsim_Simulation 
 {
@@ -27,7 +28,7 @@ namespace Modsim_Simulation
                 var message = JsonConvert.DeserializeObject<StatUpdateMessage>(e.WebMessageAsJson);
                 if (message == null) return;
 
-                CalculationResult results = null;
+                ResultModel results = null;
 
                 //   Handle different message types 
                 switch (message.Type?.ToUpper())

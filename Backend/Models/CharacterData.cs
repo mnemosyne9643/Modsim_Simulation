@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modsim_Simulation.Backend
+namespace Modsim_Simulation.Backend.Models
 {
     public class CharacterData
     {

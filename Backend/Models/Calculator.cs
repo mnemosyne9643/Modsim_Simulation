@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modsim_Simulation.Backend
+namespace Modsim_Simulation.Backend.Models
 {
     public static class Calculator
     {
@@ -14,9 +14,9 @@ namespace Modsim_Simulation.Backend
         private const int BASE_FLEE = 10;    // Base flee bonus before stats
         private const int MAX_ASPD = 190;
 
-        public static CalculationResult CalculateAll(CharacterData charData)
+        public static ResultModel CalculateAll(CharacterData charData)
         {
-            var res = new CalculationResult();
+            var res = new ResultModel();
             var job = JobRegistry.Get(charData.Job);
 
             // ── Get job bonuses based on current job level ───────────────
@@ -69,7 +69,7 @@ namespace Modsim_Simulation.Backend
             // --- WEIGHT LIMIT ---
             // Formula: Base Job Weight + (Base STR * 30)
             // Note: Usually uses charData.Str (Base) rather than totalStr
-            res.MaxWeight = 2000 + job.Weight + (charData.Str * 30);
+            res.MaxWeight = 2000 + job.Weight + charData.Str * 30;
 
             // ── ASPD ─────────────────────────────────────────────────────
             res.Aspd = UpdateAspd(charData, job, res, totalAgi, totalDex, false);
@@ -86,7 +86,7 @@ namespace Modsim_Simulation.Backend
             // Soft DEF (VIT-based)
             int softDef = (int)Math.Floor(totalVit * 0.5);
             int vitLinear = (int)Math.Floor(totalVit * 0.3);
-            int vitQuadratic = (int)Math.Floor((totalVit * totalVit) / 150.0) - 1;
+            int vitQuadratic = (int)Math.Floor(totalVit * totalVit / 150.0) - 1;
             softDef += Math.Max(vitLinear, vitQuadratic);
 
             res.Def = $"{hardDef} + {totalVit}";
@@ -120,7 +120,7 @@ namespace Modsim_Simulation.Backend
             // --- SP Natural Regen ---
             // Formula:  floor(MaxSP / 100) + floor(INT / 6) + 1   every 8 seconds
             // Bonus: every 100 SP grants +1 regen (already embedded in MaxSP / 100)
-            int spRegenValue = (baseSp / 100) + (totalInt / 6) + 1;
+            int spRegenValue = baseSp / 100 + totalInt / 6 + 1;
             res.SpRegen = $"{spRegenValue} per 8s standing (per 4s sitting)";
 
             // --- RECOVERY ITEM EFFECTIVENESS ---
@@ -142,14 +142,14 @@ namespace Modsim_Simulation.Backend
 
             // --- CAST TIME ---
             // 150 DEX = instant cast; each DEX = −(1/150) of cast time
-            double castReduction = (totalDex / 150.0) * 100.0;
+            double castReduction = totalDex / 150.0 * 100.0;
             res.CastTime = totalDex >= 150 ? "Instant" : $"{Math.Floor(castReduction)}%";
 
             // --- LUK ---
-            res.Crit = $"{(int)(totalLuk * 3 + 10) * 10 / 100}";
+            res.Crit = $"{(totalLuk * 3 + 10) * 10 / 100}";
 
             // Perfect Dodge = [LUK * 0.1] + 1 (Base perfect dodge is usually 1)
-            res.PerfectDodge = $"{(totalLuk * 0.1) + 1:F1}";
+            res.PerfectDodge = $"{totalLuk * 0.1 + 1:F1}";
 
             // --- POINTS LOGIC ---
             int totalPointsGained = GetTotalPointsForLevel(charData.BaseLevel);
@@ -165,12 +165,12 @@ namespace Modsim_Simulation.Backend
             res.IsOverspent = res.StatusPoints < 0;
 
             // ── NEXT STAT COSTS ───────────────────────────────────────────
-            res.NextStrCost = ((charData.Str - 1) / 10) + 2;
-            res.NextAgiCost = ((charData.Agi - 1) / 10) + 2;
-            res.NextVitCost = ((charData.Vit - 1) / 10) + 2;
-            res.NextIntCost = ((charData.Int - 1) / 10) + 2;
-            res.NextDexCost = ((charData.Dex - 1) / 10) + 2;
-            res.NextLukCost = ((charData.Luk - 1) / 10) + 2;
+            res.NextStrCost = (charData.Str - 1) / 10 + 2;
+            res.NextAgiCost = (charData.Agi - 1) / 10 + 2;
+            res.NextVitCost = (charData.Vit - 1) / 10 + 2;
+            res.NextIntCost = (charData.Int - 1) / 10 + 2;
+            res.NextDexCost = (charData.Dex - 1) / 10 + 2;
+            res.NextLukCost = (charData.Luk - 1) / 10 + 2;
 
             // ── PASS THROUGH VALUES ───────────────────────────────────────
             res.Str = charData.Str;
@@ -196,14 +196,14 @@ namespace Modsim_Simulation.Backend
         public static int GetTotalPointsForLevel(int level)
         {
             int total = 48;
-            for (int i = 1; i < level; i++) total += (i / 5) + 3;
+            for (int i = 1; i < level; i++) total += i / 5 + 3;
             return total;
         }
 
         public static int GetStatInvestmentCost(int targetValue)
         {
             int spent = 0;
-            for (int i = 1; i < targetValue; i++) spent += ((i - 1) / 10) + 2;
+            for (int i = 1; i < targetValue; i++) spent += (i - 1) / 10 + 2;
             return spent;
         }
 
@@ -211,7 +211,7 @@ namespace Modsim_Simulation.Backend
         {
             // Calculate Base HP growth
             
-            double baseHp = 35 + (baseLevel * job.HpJobB);
+            double baseHp = 35 + baseLevel * job.HpJobB;
 
             // Add the rounded growth per level
             for (int i = 2; i <= baseLevel; i++)
@@ -227,7 +227,7 @@ namespace Modsim_Simulation.Backend
             }
             // Apply VIT Multiplier
 
-            double vitMultiplier = 1.0 + (totalVit * 0.01);
+            double vitMultiplier = 1.0 + totalVit * 0.01;
             double transMod = isTrans ? 1.25 : 1.0;
 
             // Floor the product of (BaseHP * VitMod * TransMod)
@@ -255,10 +255,10 @@ namespace Modsim_Simulation.Backend
             combinedBase = Math.Max(1, combinedBase);
 
             // Apply Modifiers: floor( CombinedBase * (1 + hprMod/100) )
-            double modifierScale = 1.0 + (hprMod * 0.01);
+            double modifierScale = 1.0 + hprMod * 0.01;
 
             // Using a small epsilon to handle double precision issues
-            int finalHpr = (int)Math.Floor((combinedBase * modifierScale) + 0.00001);
+            int finalHpr = (int)Math.Floor(combinedBase * modifierScale + 0.00001);
 
             return finalHpr;
 
@@ -270,11 +270,11 @@ namespace Modsim_Simulation.Backend
         {
             // Calculate BASE_SP
             // 10 + (Level * Job_Multiplier)
-            double baseSp = 10.0 + (baseLevel * job.SpJobB);
+            double baseSp = 10.0 + baseLevel * job.SpJobB;
 
             // Apply INT Bonus
             // Formula: floor( BASE_SP * (1 + INT * 0.01) )
-            double intMod = 1.0 + (intel * 0.01);
+            double intMod = 1.0 + intel * 0.01;
             int maxSp = (int)Math.Floor(baseSp * intMod);
 
             return maxSp;
@@ -298,7 +298,7 @@ namespace Modsim_Simulation.Backend
             };
         }
 
-        public static string UpdateAspd(CharacterData charData, JobData job, CalculationResult res, int totalAgi, int totalDex, bool showDebug = false)
+        public static string UpdateAspd(CharacterData charData, JobData job, ResultModel res, int totalAgi, int totalDex, bool showDebug = false)
         {
             //int totalAgi = charData.Agi + job.GetStatBonus(job.AgiBonusTable, charData.JobLevel);
             //int totalDex = charData.Dex + job.GetStatBonus(job.DexBonusTable, charData.JobLevel);
@@ -306,14 +306,14 @@ namespace Modsim_Simulation.Backend
             double btba = job.GetBTBA(charData.EquippedWeapon);
             double wd = 50.0 * btba;
 
-            double agiReduction = Math.Floor((wd * totalAgi) / 25.0);
-            double dexReduction = Math.Floor((wd * totalDex) / 100.0);
+            double agiReduction = Math.Floor(wd * totalAgi / 25.0);
+            double dexReduction = Math.Floor(wd * totalDex / 100.0);
             double totalReduction = agiReduction + dexReduction;
 
             double delayAfterStats = (wd - totalReduction) / 10.0;
             double internalAspd = 200.0 - delayAfterStats;
 
-            double offset = 45.0 + ((btba - 1.0) * 45.0);
+            double offset = 45.0 + (btba - 1.0) * 45.0;
             double displayAspd = internalAspd - offset;
             displayAspd = Math.Min(displayAspd, 190.0);
 

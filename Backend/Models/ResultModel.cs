@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Modsim_Simulation.Backend
+namespace Modsim_Simulation.Backend.Models
 {
-    public class CalculationResult
+    public class ResultModel
     {
         // Calculation result
         // Stats Declaration
