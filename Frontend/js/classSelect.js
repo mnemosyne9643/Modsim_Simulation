@@ -70,16 +70,19 @@ function applyCharacter(className) {
     const char = CHARACTERS[className];
     if (!char) return;
 
-    // Sprite fade-swap
-    sprite.style.opacity = '0';
-    sprite.style.transform = 'translateY(12px)';
+    // 1. Start Glitch
+    sprite.classList.add('glitch-flash');
 
+    // 2. Swap content mid-glitch (around 125ms is the peak of a 250ms anim)
     setTimeout(() => {
         sprite.src = char.sprite;
         sprite.alt = char.name;
-        sprite.style.opacity = '1';
-        sprite.style.transform = '';
-    }, 200);
+
+        // Remove class so it can be re-triggered later
+        setTimeout(() => {
+            sprite.classList.remove('glitch-flash');
+        }, 150);
+    }, 125);
 
     // Name plate
     if (namePlate) namePlate.textContent = char.name;

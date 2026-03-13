@@ -36,9 +36,11 @@ body {
 
 /* Logo */
 .logo-img {
+    position: absolute;
+    top: -70px;
     display: block;
     margin: 0 auto 10px;
-    height: 80px;
+    height: 120px;
     image-rendering: pixelated;
 }
 
@@ -242,3 +244,46 @@ input[type="number"] {
     .stat-plus-btn:hover {
         background: #ffe7b3;
     }
+
+
+/* The animation class we'll toggle */
+.glitch-flash {
+    animation: glitch-anim 0.25s linear;
+}
+
+@keyframes glitch-anim {
+    0% {
+        transform: translate(0);
+        filter: hue-rotate(0deg) brightness(1);
+        clip-path: inset(0 0 0 0);
+    }
+
+    20% {
+        transform: translate(-5px, 2px);
+        filter: hue-rotate(90deg) brightness(1.5);
+        clip-path: inset(10% 0 60% 0); /* Slice middle */
+    }
+
+    40% {
+        transform: translate(5px, -2px);
+        filter: hue-rotate(180deg);
+        clip-path: inset(50% 0 10% 0); /* Slice bottom */
+    }
+
+    60% {
+        transform: translate(-8px, 5px);
+        filter: hue-rotate(270deg) contrast(2);
+        clip-path: inset(30% 0 30% 0); /* Slice center */
+    }
+
+    80% {
+        transform: translate(8px, -5px);
+        filter: hue-rotate(360deg);
+    }
+
+    100% {
+        transform: translate(0);
+        filter: hue-rotate(0deg) brightness(1);
+        clip-path: inset(0 0 0 0);
+    }
+}
