@@ -1,4 +1,25 @@
-﻿console.log("bridge.js loaded");
+﻿if (window.chrome && window.chrome.webview) {
+    window.chrome.webview.addEventListener('message', event => {
+        // C# sends a JSON string or object
+        const resultData = event.data;
+        const jsonString = typeof resultData === 'string' ? resultData : JSON.stringify(resultData);
+
+        // 1. Update all the labels, bonuses, and button states
+        CharacterUI.render(jsonString);
+
+        /// If C# says we are overspent, trigger the "Snap-back"
+        if (data.IsOverspent) {
+
+            // Find the input that was just changed (we can use a 'lastChangedStat' variable)
+            // Or simply force all inputs to sync with the "last safe values" from C#
+            CharacterUI.syncInputs(JSON.stringify(data));
+
+            // Optional: play a subtle shake animation or sound
+            console.warn("Oops a daisy 404 error...");
+        }
+    });
+}
+
 
 const CharacterUI = (() => {
     // ── Private helper to update individual text values ──────
@@ -22,9 +43,9 @@ const CharacterUI = (() => {
 
         if (bonus > 0) {
             bonusEl.textContent = `+${bonus}`;
-            bonusEl.style.color = '#5fb05f'; 
+            bonusEl.style.color = '#5fb05f';
             bonusEl.style.fontWeight = '600';
-            bonusEl.style.display = 'inline'; 
+            bonusEl.style.display = 'inline';
         } else {
             bonusEl.textContent = '0';
         }
@@ -89,15 +110,34 @@ const CharacterUI = (() => {
 
         syncInputs: (jsonString) => {
             const data = JSON.parse(jsonString);
-            const stats = ['Str', 'Agi', 'Vit', 'Int', 'Dex', 'Luk'];
+            // Include all fields that have inputs
+            const fieldMap = {
+                'STR': data.Str,
+                'AGI': data.Agi,
+                'VIT': data.Vit,
+                'INT': data.Int,
+                'DEX': data.Dex,
+                'LUK': data.Luk,
+                'BASELV': data.BaseLv,
+                'JOBLV': data.JobLv
+            };
 
-            stats.forEach(s => {
-                const input = document.querySelector(`[data-stat-input="${s.toUpperCase()}"]`);
-                if (input && input.value != (data[s] || data.BaseLv)) {
-                    input.value = data[s] || data.BaseLv;
-                    // Add visual feedback that the stat was forced to change
-                    input.classList.add('flash-reset');
-                    setTimeout(() => input.classList.remove('flash-reset'), 500);
+            Object.keys(fieldMap).forEach(key => {
+                const input = document.querySelector(`[data-stat-input="${key}"]`);
+                const backendValue = fieldMap[key];
+
+                if (input && backendValue !== undefined) {
+                    // Only update and flash if the UI is out of sync with C#
+                    if (parseInt(input.value) !== backendValue) {
+                        input.value = backendValue;
+
+                        // Visual feedback
+                        input.classList.add('flash-reset');
+                        setTimeout(() => input.classList.remove('flash-reset'), 500);
+                    }
+
+                    // Also update the 'oldValue' used by your StatBridge logic
+                    input.dataset.oldValue = backendValue;
                 }
             });
         }
