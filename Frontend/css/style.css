@@ -38,6 +38,7 @@ body {
 .logo-img {
     position: absolute;
     top: -70px;
+    left: 2px;
     display: block;
     margin: 0 auto 10px;
     height: 120px;
