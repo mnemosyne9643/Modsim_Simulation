@@ -15,6 +15,7 @@ body {
 
 .bg-scene {
     display: block;
+    width: 100%;
     position: fixed;
     inset: 0;
     background-size: cover;
@@ -287,4 +288,16 @@ input[type="number"] {
         filter: hue-rotate(0deg) brightness(1);
         clip-path: inset(0 0 0 0);
     }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield; /* Standard property for other browsers */
 }
