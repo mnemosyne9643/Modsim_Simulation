@@ -210,6 +210,7 @@ namespace Modsim_Simulation.Backend.Models
         private static int CalculateMaxHP(int baseLevel, int totalVit, JobData job, bool isTrans = false)
         {
             // Calculate Base HP growth
+            decimal HpJob = (decimal)job.HpJobA;
             
             double baseHp = 35 + baseLevel * job.HpJobB;
 
@@ -217,16 +218,11 @@ namespace Modsim_Simulation.Backend.Models
             for (int i = 2; i <= baseLevel; i++)
             {
 
-                baseHp += Math.Round(job.HpJobA * i, MidpointRounding.AwayFromZero);
+                baseHp += (int)Math.Round(HpJob * i, MidpointRounding.AwayFromZero);
             }
 
 
-            if (baseLevel > 1)
-            {
-                baseHp += job.HpBaseOffset;
-            }
             // Apply VIT Multiplier
-
             double vitMultiplier = 1.0 + totalVit * 0.01;
             double transMod = isTrans ? 1.25 : 1.0;
 
