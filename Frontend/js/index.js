@@ -16,7 +16,7 @@
     }
 
     initListeners() {
-        // 1. Select all text when focusing an input
+        // Select all text when focusing an input
         document.addEventListener('focus', (e) => {
             if (e.target.dataset.statInput !== undefined) {
                 e.target.select();
@@ -25,29 +25,38 @@
             }
         }, true); // Use capture phase to ensure it catches focus events
 
-        // 2. Block special characters IMMEDIATELY while typing
+        // Block special characters IMMEDIATELY while typing
         document.addEventListener('keydown', (e) => {
             const statName = e.target.dataset.statInput;
             if (!statName) return;
+
+            // Disable holding key
+            if (e.repeat) {
+                e.preventDefault();
+                return;
+            }
 
             if (['-', '+', 'e', '.'].includes(e.key)) {
                 e.preventDefault();
             }
         });
 
-        // 3. Only send to C# when the user LEAVES the input field
+        // Only send to C# when the user LEAVES the input field
         document.addEventListener('focusout', (e) => {
             const statName = e.target.dataset.statInput;
             if (!statName) return;
 
             let val = parseInt(e.target.value);
 
-            // If they left it empty or typed something invalid, snap to 1
+            // Snap to 1 if empty/invalid, otherwise clamp at 146
             if (isNaN(val) || val < 1) {
                 val = 1;
-                e.target.value = val;
-                this.sendToCSharp(statName, val);
+            } else if (val > 146) {
+                val = 146;
             }
+
+            e.target.value = val;
+            this.sendToCSharp(statName, val);
         });
 
 
@@ -55,10 +64,15 @@
         document.addEventListener('input', (e) => {
             const statName = e.target.dataset.statInput;
             if (!statName) return;
-
             if (e.target.value === '') return;
 
             const val = parseInt(e.target.value);
+
+            // Apply the 146 limit immediately
+            if (val > 146) {
+                val = 146;
+                e.target.value = val;
+            }
 
             // Level cap guard for BASELV
             if (statName === 'BASELV') {
@@ -71,7 +85,7 @@
             this.sendToCSharp(statName, val);
         });
 
-        // 5. Handle button clicks for +/-
+        // Handle button clicks for +/-
         document.addEventListener('click', (e) => {
             const btn = e.target.closest('button');
             if (!btn || !btn.dataset.stat) return;
