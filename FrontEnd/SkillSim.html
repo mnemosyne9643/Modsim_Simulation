@@ -1,38 +1,421 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/index.css">
-    <script src="js/index.js"></script>
-    <script src="js/bridge.js"></script>
-    <script src="js/classSelect.js" defer></script>
-    <title>Stat Calculator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ragnarok Online — Skill Simulator</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="fixed top-4 left-4 flex gap-2 z-50">
+      <a
+        href="index.html"
+        class="flex items-center justify-center w-12 h-12 bg-gray-800 border-2 border-gray-600 text-white rounded-lg shadow-lg hover:bg-blue-600 hover:border-blue-400 active:scale-95 transition-all duration-200 group"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 group-hover:-translate-x-1 transition-transform"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </a>
 
-        <a href="index.html"
-           class="flex items-center justify-center w-12 h-12 bg-gray-800 border-2 border-gray-600 text-white rounded-lg shadow-lg hover:bg-blue-600 hover:border-blue-400 active:scale-95 transition-all duration-200 group">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-        </a>
-
-        <a href="SkillSim.html"
-           class="flex items-center justify-center w-12 h-12 bg-gray-800 border-2 border-gray-600 text-white rounded-lg shadow-lg hover:bg-green-600 hover:border-green-400 active:scale-95 transition-all duration-200 group">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </a>
-
+      <a
+        href="SkillSim.html"
+        class="flex items-center justify-center w-12 h-12 bg-gray-800 border-2 border-gray-600 text-white rounded-lg shadow-lg hover:bg-green-600 hover:border-green-400 active:scale-95 transition-all duration-200 group"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 group-hover:translate-x-1 transition-transform"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </a>
     </div>
+    <div class="outer-frame">
+      <!-- TITLE BANNER -->
+      <div class="title-banner">
+        <div class="title-text">RAGNAR<em>OK</em>&nbsp;&nbsp;SIMULATOR</div>
+        <div class="title-sub">PRE-RENEWAL &gt;&gt; SKILL TREE</div>
+      </div>
 
-    <p>Testing</p>
+      <!-- MAIN 3-COLUMN -->
+      <div class="main-layout">
+        <!-- ── LEFT ── -->
+        <div class="left-col">
+          <div class="cls-label">&gt; Character</div>
 
-</body>
+          <!-- *** CHARACTER GIF FRAME ***
+           To swap character sprite per class, update the `src` in each
+           data-class entry below. Recommended: 96×96 to 160×160 px GIFs.
+           Example file locations:
+             novice  → assets/sprites/novice.gif
+             swordman→ assets/sprites/swordman.gif
+             magician→ assets/sprites/magician.gif
+             archer  → assets/sprites/archer.gif
+             acolyte → assets/sprites/acolyte.gif
+             merchant→ assets/sprites/merchant.gif
+             thief   → assets/sprites/thief.gif
+      -->
+          <div class="char-frame" id="char-frame">
+            <!-- Pixel art placeholder (12×16 grid) — replaced when GIF loads -->
+            <div class="char-placeholder" id="char-placeholder">
+              <!-- head -->
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #f0c830"></span
+              ><span style="background: #f0c830"></span
+              ><span style="background: #f0c830"></span
+              ><span style="background: #f0c830"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #f0c830"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0c830"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: transparent"></span
+              ><span style="background: #f0c830"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #1a0e00"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #1a0e00"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0c830"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: transparent"></span
+              ><span style="background: #f0c830"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0a860"></span
+              ><span style="background: #f0c830"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <!-- body/shirt -->
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: #c84020"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: #c84020"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #f0c830"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: #c84020"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: #2858b8"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <!-- legs -->
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #182060"></span
+              ><span style="background: #182060"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #182060"></span
+              ><span style="background: #182060"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #182060"></span
+              ><span style="background: #182060"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #182060"></span
+              ><span style="background: #182060"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <!-- boots -->
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #703818"></span
+              ><span style="background: #703818"></span
+              ><span style="background: #703818"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #703818"></span
+              ><span style="background: #703818"></span
+              ><span style="background: #703818"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #503010"></span
+              ><span style="background: #503010"></span
+              ><span style="background: #503010"></span
+              ><span style="background: transparent"></span
+              ><span style="background: #503010"></span
+              ><span style="background: #503010"></span
+              ><span style="background: #503010"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+              <span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span
+              ><span style="background: transparent"></span>
+            </div>
+          </div>
+
+          <div class="cls-label">&gt; Class Select</div>
+          <div class="wheel-wrap">
+            <ul class="wheel" id="wheel">
+              <li
+                class="wheel-item"
+                data-class="novice"
+                data-gif="assets/sprites/novice.gif"
+              >
+                <div class="wi-icon">⚔</div>
+                <span class="wi-name">Novice</span>
+              </li>
+              <li
+                class="wheel-item"
+                data-class="swordman"
+                data-gif="assets/sprites/swordman.gif"
+              >
+                <div class="wi-icon">🗡</div>
+                <span class="wi-name">Swordman</span>
+              </li>
+              <li
+                class="wheel-item"
+                data-class="magician"
+                data-gif="assets/sprites/magician.gif"
+              >
+                <div class="wi-icon">🔮</div>
+                <span class="wi-name">Magician</span>
+              </li>
+              <li
+                class="wheel-item"
+                data-class="archer"
+                data-gif="assets/sprites/archer.gif"
+              >
+                <div class="wi-icon">🏹</div>
+                <span class="wi-name">Archer</span>
+              </li>
+              <li
+                class="wheel-item"
+                data-class="acolyte"
+                data-gif="assets/sprites/acolyte.gif"
+              >
+                <div class="wi-icon">✝</div>
+                <span class="wi-name">Acolyte</span>
+              </li>
+              <li
+                class="wheel-item"
+                data-class="merchant"
+                data-gif="assets/sprites/merchant.gif"
+              >
+                <div class="wi-icon">💰</div>
+                <span class="wi-name">Merchant</span>
+              </li>
+              <li
+                class="wheel-item"
+                data-class="thief"
+                data-gif="assets/sprites/thief.gif"
+              >
+                <div class="wi-icon">🗝</div>
+                <span class="wi-name">Thief</span>
+              </li>
+            </ul>
+          </div>
+          <div class="hl-bar">
+            <span id="current-label" style="font-size: 0.8rem">NOVICE</span>
+          </div>
+          <div class="sp-rem">
+            SP: <span class="sp-val" id="sp-display">9</span>
+          </div>
+          <button class="rst-btn" id="reset-btn">[RESET SKILLS]</button>
+          <div class="joblv-row">
+            <span class="joblv-label">JLV</span>
+            <select class="joblv-select" id="joblv-select">
+              <!-- options built by JS -->
+            </select>
+            <span class="joblv-badge" id="joblv-badge">▲</span>
+          </div>
+        </div>
+        <!-- /left-col -->
+
+        <!-- ── CENTER ── -->
+        <div class="center-col">
+          <div class="tree-topbar">
+            <div class="zoom-ctrl">
+              <button class="z-btn" id="zoom-out">-</button>
+              <button class="z-btn" id="zoom-fit">■</button>
+              <button class="z-btn" id="zoom-in">+</button>
+            </div>
+            <div class="cls-title" id="class-title">NOVICE</div>
+            <div class="q-legend">
+              <div class="q-dmd"></div>
+              <span>QUEST</span>
+            </div>
+          </div>
+          <div class="canvas-wrap" id="canvas-wrap">
+            <canvas id="tree-canvas"></canvas>
+          </div>
+        </div>
+        <!-- /center-col -->
+
+        <!-- ── RIGHT ── -->
+        <div class="right-col">
+          <div class="sip" id="sip">
+            <div class="sip-deco">📜</div>
+            <div class="sip-txt">
+              SELECT A SKILL<br />NODE TO VIEW<br />DETAILS
+            </div>
+          </div>
+          <div class="si-box" id="skill-info">
+            <div class="si-hdr"><div class="si-cls" id="si-class">—</div></div>
+            <div class="si-body">
+              <div class="si-name" id="si-name">—</div>
+              <div class="si-types" id="si-types"></div>
+              <div class="si-div"></div>
+              <div class="si-lv-row">
+                <span class="si-lv-lbl">LVL</span>
+                <div class="lv-dots" id="level-dots"></div>
+                <span class="si-lv-num" id="si-lv-text">0/0</span>
+              </div>
+              <div class="si-div"></div>
+              <div class="si-desc" id="si-desc">—</div>
+              <div class="si-stats" id="si-stats"></div>
+              <div id="si-reqs"></div>
+              <div class="si-btns">
+                <button class="si-btn learn" id="btn-learn">+LEARN</button>
+                <button class="si-btn forget" id="btn-forget">-FORGET</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /right-col -->
+      </div>
+    </div>
+    <!-- /outer-frame -->
+
+    <div class="nd-tip" id="node-tooltip"></div>
+    <div class="toast" id="toast"></div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
