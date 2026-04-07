@@ -2329,17 +2329,25 @@ function syncPassives() {
   CLASSES[currentClass].skills.forEach(sk => {
     const lv = learned[sk.id] || 0;
     if (lv > 0 && sk.type.includes("passive")) {
-      // Get the stat value for the current level
-      let statDisplay = "Passive";
-      const stats = Object.entries(sk.stats);
-      if (stats.length > 0) {
-        const [key, values] = stats[0];
+      // Get the stat values for the current level
+      const statParts = [];
+      Object.entries(sk.stats).forEach(([key, values]) => {
+        // Skip meta information
+        if (["SP Cost", "Obtainment", "How to Get", "SP Usage", "Initial Cost"].includes(key)) return;
+
+        let val;
         if (Array.isArray(values)) {
-          statDisplay = values[Math.min(lv - 1, values.length - 1)];
+          val = values[Math.min(lv - 1, values.length - 1)];
         } else {
-          statDisplay = values;
+          val = values;
         }
-      }
+        
+        // Simplify labels for the narrow Stat Simulator UI (140px)
+        const simpleKey = key.replace(" Bonus", "").replace(" Increase", "").replace(" Recovery", " Regen");
+        statParts.push(`${simpleKey}: ${val}`);
+      });
+      
+      const statDisplay = statParts.length > 0 ? statParts.join(", ") : "Passive";
       
       passives.push({
         id: sk.id,
