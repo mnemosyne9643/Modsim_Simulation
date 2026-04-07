@@ -1263,19 +1263,19 @@ function selectClass(idx, isInitial = false) {
   document.getElementById("class-title").textContent =
     CLASSES[cls].name.toUpperCase();
   currentClass = cls;
-  
+
   if (!isInitial) {
     resetSelection();
     currentJobLv = 1; // reset job level when switching class
     localStorage.removeItem('passiveSkills');
     saveSkillSimState();
   }
-  
+
   buildJobLvOptions(cls);
   if (isInitial) {
     joblvSelect.value = currentJobLv;
   }
-  
+
   updateSPDisplay();
   renderTree();
   hideSkillInfo();
@@ -1306,7 +1306,13 @@ items.forEach((el, i) => el.addEventListener("click", () => selectClass(i)));
 
 // ─ SP ─
 function getTotalSpent(c) {
-  return Object.values(learnedSkills[c] || {}).reduce((s, v) => s + v, 0);
+  return Object.entries(learnedSkills[c] || {}).reduce((s, [id, lv]) => {
+    const skillData = (CLASSES[c].skills || []).find((s) => s.id === id);
+    if (skillData && skillData.type && skillData.type.includes("quest")) {
+      return s;
+    }
+    return s + lv;
+  }, 0);
 }
 function getRemaining(c) {
   CLASSES[c].sp = currentJobLv - 1;
@@ -2324,7 +2330,7 @@ function hideSkillInfo() {
 function syncPassives() {
   const passives = [];
   const learned = learnedSkills[currentClass] || {};
-  
+
   // Find all passive skills that have been learned (level > 0)
   CLASSES[currentClass].skills.forEach(sk => {
     const lv = learned[sk.id] || 0;
@@ -2341,14 +2347,14 @@ function syncPassives() {
         } else {
           val = values;
         }
-        
+
         // Simplify labels for the narrow Stat Simulator UI (140px)
         const simpleKey = key.replace(" Bonus", "").replace(" Increase", "").replace(" Recovery", " Regen");
         statParts.push(`${simpleKey}: ${val}`);
       });
-      
+
       const statDisplay = statParts.length > 0 ? statParts.join(", ") : "Passive";
-      
+
       passives.push({
         id: sk.id,
         name: sk.name,
@@ -2357,7 +2363,7 @@ function syncPassives() {
       });
     }
   });
-  
+
   localStorage.setItem('passiveSkills', JSON.stringify(passives));
 }
 
