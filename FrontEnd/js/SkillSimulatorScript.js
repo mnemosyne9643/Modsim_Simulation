@@ -83,7 +83,7 @@ const CLASSES = {
         sp_cost: [8, 8, 8, 8, 8, 15, 15, 15, 15, 15],
         cast: 0,
         stats: {
-          ATK: ["130%", "160%", "190%", "210%", "240%", "270%", "310%", "340%", "370%", "400%"],
+          ATK: ["130%", "160%", "190%", "210%", "240%", "270%", "310%", "330%", "360%", "400%"],
           Accuracy: ["+5%", "+10%", "+15%", "+20%", "+25%", "+30%", "+35%", "+40%", "+45%", "+50%"],
           "Fatal Stun": ["-", "-", "-", "-", "-", "5%", "10%", "15%", "20%", "25%"],
           "SP Cost": [8, 8, 8, 8, 8, 15, 15, 15, 15, 15]
@@ -96,12 +96,13 @@ const CLASSES = {
         maxLv: 10,
         type: ["active", "support"],
         desc: "Enrages a target, reducing its defense while increasing its attack power.",
-        sp_cost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+        sp_cost: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
         cast: 0,
         stats: {
-          "Enemy ATK": ["+2%", "+4%", "+6%", "+8%", "+10%", "+12%", "+14%", "+16%", "+18%", "+20%"],
-          "Enemy DEF": ["-6%", "-12%", "-18%", "-24%", "-30%", "-36%", "-42%", "-48%", "-54%", "-60%"],
-          "SP Cost": 10
+          "Enemy ATK": ["+5%", "+8%", "+11%", "+14%", "+17%", "+20%", "+23%", "+26%", "+29%", "+32%"],
+          "Enemy DEF": ["-10%", "-15%", "-20%", "-25%", "-30%", "-35%", "-40%", "-45%", "-50%", "-55%"],
+          "Chance": ["53%", "56%", "59%", "62%", "65%", "68%", "71%", "74%", "77%", "80%"],
+          "SP Cost": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
         },
         reqs: [],
       },
@@ -115,18 +116,18 @@ const CLASSES = {
         cast: 0,
         stats: {
           "Recovery": [
-            "5 HP/10s",
-            "10 HP/10s",
-            "15 HP/10s",
-            "20 HP/10s",
-            "25 HP/10s",
-            "30 HP/10s",
-            "35 HP/10s",
-            "40 HP/10s",
-            "45 HP/10s",
-            "50 HP/10s"
+            "5 + 0.2% MaxHP",
+            "10 + 0.4% MaxHP",
+            "15 + 0.6% MaxHP",
+            "20 + 0.8% MaxHP",
+            "25 + 1.0% MaxHP",
+            "30 + 1.2% MaxHP",
+            "35 + 1.4% MaxHP",
+            "40 + 1.6% MaxHP",
+            "45 + 1.8% MaxHP",
+            "50 + 2.0% MaxHP"
           ],
-          "Max HP Mod": ["0%", "0%", "0%", "0%", "0%", "0%", "0%", "0%", "0%", "+10%"]
+          "Item Efficiency": ["110%", "120%", "130%", "140%", "150%", "160%", "170%", "180%", "190%", "200%"]
         },
         reqs: [],
       },
@@ -150,7 +151,9 @@ const CLASSES = {
         sp_cost: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
         cast: 0,
         stats: {
-          ATK: ["115%", "130%", "145%", "160%", "175%", "190%", "205%", "220%", "235%", "250%"],
+          ATK: ["120%", "140%", "160%", "180%", "200%", "220%", "240%", "260%", "280%", "300%"],
+          "HP Cost": ["20", "20", "19", "19", "18", "18", "17", "17", "16", "16"],
+          "Accuracy": ["+10%", "+20%", "+30%", "+40%", "+50%", "+60%", "+70%", "+80%", "+90%", "+100%"],
           Element: "Fire",
           Radius: "5x5"
         },
@@ -165,7 +168,8 @@ const CLASSES = {
         sp_cost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
         cast: 0,
         stats: {
-          Duration: ["10s", "10s", "15s", "15s", "20s", "20s", "25s", "25s", "30s", "30s"],
+          Duration: ["10s", "13s", "16s", "19s", "22s", "25s", "28s", "31s", "34s", "37s"],
+          "SP Cost": "10",
           "MDEF Bonus": ["+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10"],
           Hits: "7"
         },
@@ -1181,8 +1185,8 @@ joblvSelect.addEventListener("change", () => {
 
 // For fallback
 const resetSelection = () => {
-    learnedSkills[currentClass] = {};
-    selectedSkill = null;
+  learnedSkills[currentClass] = {};
+  selectedSkill = null;
 }
 
 // ─ WHEEL ─
@@ -1579,10 +1583,10 @@ function drawNodeIcon(ctx, skillId, px, py, S, unlk, lv) {
       ? sk.type.includes("offensive")
         ? "offensive"
         : sk.type.includes("support")
-        ? "support"
-        : sk.type.includes("passive")
-        ? "passive"
-        : "default"
+          ? "support"
+          : sk.type.includes("passive")
+            ? "passive"
+            : "default"
       : "default";
     const col = GLYPH_COLORS[typeName];
 
@@ -1670,9 +1674,9 @@ function drawTree() {
       sk.reqs.length === 0
         ? [{ x: ox, y: oy, met: true }]
         : sk.reqs.map((r) => ({
-            ...posMap[r.id],
-            met: getSkillLv(currentClass, r.id) >= r.lv,
-          }));
+          ...posMap[r.id],
+          met: getSkillLv(currentClass, r.id) >= r.lv,
+        }));
     srcs.forEach((fr) => {
       if (!fr) return;
       const active = fr.met && lv > 0;
@@ -1681,8 +1685,8 @@ function drawTree() {
           ? "rgba(112,64,192,0.75)"
           : "rgba(80,40,140,0.3)"
         : active
-        ? "rgba(42,184,160,0.75)"
-        : "rgba(160,120,48,0.3)";
+          ? "rgba(42,184,160,0.75)"
+          : "rgba(160,120,48,0.3)";
       ctx.lineWidth = active ? 2.5 : 1.5;
       if (isQ) ctx.setLineDash([5, 5]);
       else ctx.setLineDash([]);
@@ -1746,17 +1750,17 @@ function drawTree() {
       const qf = !ul
         ? "#3a1040"
         : lv >= sk.maxLv
-        ? "#5a2090"
-        : lv > 0
-        ? "#4a1880"
-        : "#2a0830";
+          ? "#5a2090"
+          : lv > 0
+            ? "#4a1880"
+            : "#2a0830";
       const qb = !ul
         ? C.questPrp
         : lv >= sk.maxLv
-        ? C.questLt
-        : lv > 0
-        ? C.questPrp
-        : "#5030a0";
+          ? C.questLt
+          : lv > 0
+            ? C.questPrp
+            : "#5030a0";
       pxDiamond(px, py, S, qf, qb);
       if (sel) {
         ctx.strokeStyle = C.questLt;
@@ -1773,17 +1777,17 @@ function drawTree() {
       const bf = !ul
         ? C.woodMid
         : lv >= sk.maxLv
-        ? "#4a8a3c"
-        : lv > 0
-        ? "#226840"
-        : C.parch2;
+          ? "#4a8a3c"
+          : lv > 0
+            ? "#226840"
+            : C.parch2;
       const bb = !ul
         ? C.woodLt
         : lv >= sk.maxLv
-        ? "#8ac860"
-        : lv > 0
-        ? C.tealLt
-        : C.parchDark;
+          ? "#8ac860"
+          : lv > 0
+            ? C.tealLt
+            : C.parchDark;
       pxRect(px - S, py - S, S * 2, S * 2, bf, bb);
     }
 
@@ -1820,8 +1824,8 @@ function drawTree() {
           ? C.questLt
           : C.tealLt
         : isQ
-        ? "#8060d0"
-        : C.parch3 || "#e8cc90";
+          ? "#8060d0"
+          : C.parch3 || "#e8cc90";
     // strip background
     ctx.fillStyle = lvBg;
     ctx.fillRect(px - S + 2, py + S - 10, S * 2 - 4, 10);
@@ -2191,9 +2195,8 @@ function showSkillInfo(sk) {
     const d = document.createElement("div");
     d.className = "si-req";
     d.style.color = met ? "var(--green-hi)" : "var(--rust)";
-    d.textContent = `${met ? "[OK]" : "[X]"} ${rs ? rs.name : req.id} Lv.${
-      req.lv
-    }`;
+    d.textContent = `${met ? "[OK]" : "[X]"} ${rs ? rs.name : req.id} Lv.${req.lv
+      }`;
     rqEl.appendChild(d);
   });
   updateButtons(sk);
