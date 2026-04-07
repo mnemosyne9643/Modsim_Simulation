@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 console.log("classSelect.js loaded");
 
 let isInternalUpdate = false;
@@ -103,6 +103,9 @@ function applyCharacter(className) {
             class: className
         });
     }
+
+    // Save to localStorage for SkillSim sync
+    saveJob(className);
 }
 
 // ── POPULATE JOB LEVEL DROPDOWN ──────────────────────────────
@@ -145,10 +148,42 @@ function populateWeapons(weapons) {
     weaponSelect.dispatchEvent(new Event('change'));
 }
 
+// ── SYNC LOGIC ────────────────────────────────────────────────
+const CLASS_MAPPING = {
+    'Novice': 'novice',
+    'Swordsman': 'swordman',
+    'Magician': 'magician',
+    'Archer': 'archer',
+    'Acolyte': 'acolyte',
+    'Merchant': 'merchant',
+    'Thief': 'thief'
+};
+
+function saveJob(jobName) {
+    const syncName = CLASS_MAPPING[jobName] || jobName.toLowerCase();
+    localStorage.setItem('selectedJob', syncName);
+}
+
+function loadJob() {
+    const savedJob = localStorage.getItem('selectedJob');
+    if (!savedJob) return null;
+    
+    // Find the original key
+    for (const [key, val] of Object.entries(CLASS_MAPPING)) {
+        if (val === savedJob) return key;
+    }
+    return null;
+}
+
 // ── SPRITE TRANSITION STYLE ───────────────────────────────────
 sprite.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
 
 // ── INIT + LISTENERS ──────────────────────────────────────────
+const savedJob = loadJob();
+if (savedJob && CHARACTERS[savedJob]) {
+    classSelect.value = savedJob;
+}
+
 applyCharacter(classSelect.value);
 
 classSelect.addEventListener('change', (e) => {

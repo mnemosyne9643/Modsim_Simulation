@@ -1234,6 +1234,7 @@ function selectClass(idx) {
   wheelEl.style.transform = `translateY(${off}px)`;
   const el = items[idx];
   const cls = el.dataset.class;
+  localStorage.setItem('selectedJob', cls);
   document.getElementById("current-label").textContent =
     CLASSES[cls].name.toUpperCase();
   document.getElementById("class-title").textContent =
@@ -2381,5 +2382,13 @@ function showToast(m) {
 
 window.addEventListener("resize", () => renderTree());
 preloadAllIcons();
-buildJobLvOptions("novice");
-selectClass(0);
+const savedJob = localStorage.getItem('selectedJob');
+let initialIdx = 0;
+if (savedJob) {
+  items.forEach((el, i) => {
+    if (el.dataset.class === savedJob) initialIdx = i;
+  });
+}
+const initialClass = items[initialIdx].dataset.class;
+buildJobLvOptions(initialClass);
+selectClass(initialIdx);

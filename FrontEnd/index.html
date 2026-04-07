@@ -1,5 +1,6 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,21 +12,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <div class="fixed top-4 left-4 flex gap-2 z-50">
 
         <a href="index.html"
-           class="flex items-center justify-center w-12 h-12 bg-gray-800 border-2 border-gray-600 text-white rounded-lg shadow-lg hover:bg-blue-600 hover:border-blue-400 active:scale-95 transition-all duration-200 group">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            class="flex items-center justify-center w-12 h-12 bg-gray-800 border-2 border-gray-600 text-white rounded-lg shadow-lg hover:bg-blue-600 hover:border-blue-400 active:scale-95 transition-all duration-200 group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:-translate-x-1 transition-transform"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
         </a>
 
         <a href="SkillSim.html"
-           class="flex items-center justify-center w-12 h-12 bg-gray-800 border-2 border-gray-600 text-white rounded-lg shadow-lg hover:bg-green-600 hover:border-green-400 active:scale-95 transition-all duration-200 group">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            class="flex items-center justify-center w-12 h-12 bg-gray-800 border-2 border-gray-600 text-white rounded-lg shadow-lg hover:bg-green-600 hover:border-green-400 active:scale-95 transition-all duration-200 group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:translate-x-1 transition-transform"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
         </a>
@@ -46,12 +52,46 @@
             <div style="display:flex; flex-direction:column; gap:10px; width:140px; flex-shrink:0;">
                 <div class="char-window" style="display: flex; justify-content: center; align-items: center;">
                     <img id="character" src="Images/ClassChar/Novice.gif" alt="Character" class="hsr-sprite"
-                         style="position: absolute; width: 300px; height: auto; max-width: none;">
+                        style="position: absolute; width: 300px; height: auto; max-width: none;">
                 </div>
-                <div class="desc-box">
-                    This is a Ragnarok Online Stat and Status Simulator used by players to plan and optimize character builds
-                    before committing points in-game. It allows users to allocate attributes like STR, AGI, and DEX to see how
-                    they impact combat metrics such as Attack, Flee, and Hit.
+                <div class="passives-box">
+                    <div class="passives-header">
+                        <span>PASSIVE SKILLS</span>
+                        <span style="font-size: 10px; opacity: 0.6;">AUTOSYNC ON</span>
+                    </div>
+                    <div class="passives-grid" id="passivesGrid">
+                        <!-- Example Bar 1 -->
+                        <div class="passive-bar">
+                            <div class="passive-icon">
+                                <!-- <img src="Images/Icons/hp_recovery.png" alt=""> -->
+                            </div>
+                            <div class="passive-info">
+                                <div class="passive-name">HP Recovery</div>
+                                <div class="passive-stats">5 + 0.2% MaxHP</div>
+                            </div>
+                        </div>
+
+                        <!-- Example Bar 2 -->
+                        <div class="passive-bar">
+                            <div class="passive-icon"></div>
+                            <div class="passive-info">
+                                <div class="passive-name">Basic Skill</div>
+                                <div class="passive-stats">Full Access</div>
+                            </div>
+                        </div>
+
+                        <!-- Example Bar 3 -->
+                        <div class="passive-bar">
+                            <div class="passive-icon"></div>
+                            <div class="passive-info">
+                                <div class="passive-name">Sword Mastery</div>
+                                <div class="passive-stats">ATK +40</div>
+                            </div>
+                        </div>
+
+                        <!-- Empty Tip (shown when no skills) -->
+                        <!-- <div class="passive-empty-tip">LEARN PASSIVE SKILLS IN THE SKILL SIMULATOR TO SEE THEM HERE</div> -->
+                    </div>
                 </div>
             </div>
 
@@ -60,9 +100,11 @@
 
                 <!-- Select Job -->
                 <div style="display:flex; align-items:center; gap:10px;">
-                    <div class="banner-scroll" style="z-index: 1; display:inline-flex; align-items:center; gap:8px; padding:6px 20px;">
+                    <div class="banner-scroll"
+                        style="z-index: 1; display:inline-flex; align-items:center; gap:8px; padding:6px 20px;">
                         <span style="font-size:18px; color:#2a1000; font-family:'VT323',monospace;">PATH / CLASS:</span>
-                        <select class="hsr-select" style="font-size:20px; min-width:110px; text-align: center; padding-bottom: 4px;">
+                        <select class="hsr-select"
+                            style="font-size:20px; min-width:110px; text-align: center; padding-bottom: 4px;">
                             <option>Novice</option>
                             <option>Swordsman</option>
                             <option>Magician</option>
@@ -80,8 +122,8 @@
                         <span><b>Job:</b> <span id="jobName">Novice</span></span>
                         <span style="margin-left:30px;">
                             <b>Base Level:</b>
-                            <input type="number" value="1" min="1" max="99" data-stat-input="BASELV" class="hsr-lv-input stat-input" data-prev="1"
-                                   style="width:56px;">
+                            <input type="number" value="1" min="1" max="99" data-stat-input="BASELV"
+                                class="hsr-lv-input stat-input" data-prev="1" style="width:56px;">
                         </span>
                         <span class="job-level-badge">
                             <b>Job Level:</b>
@@ -107,47 +149,54 @@
                     <!-- Stats Column -->
                     <div class="panel" style="flex:0 0 auto; min-width:170px;">
                         <div class="banner-scroll">Stats</div>
-                        <div id="statsSection" style="display:flex; flex-direction:column; gap:5px; align-items:center;">
+                        <div id="statsSection"
+                            style="display:flex; flex-direction:column; gap:5px; align-items:center;">
                             <!-- STR -->
                             <div class="hsr-stat-row stat-row" style="display:flex; align-items:center; gap:4px;">
                                 <span class="name" style="width:32px;">STR</span>
                                 <button class="hsr-btn btn-minus" data-type="minus" data-stat="STR">−</button>
-                                <input type="number" inputmode="numeric" value="1" data-stat-input="STR" class="stat-input" style="width:44px; text-align:center;">
+                                <input type="number" inputmode="numeric" value="1" data-stat-input="STR"
+                                    class="stat-input" style="width:44px; text-align:center;">
                                 <button class="hsr-btn btn-plus" data-type="plus" data-stat="STR">+</button>
                             </div>
                             <!-- AGI -->
                             <div class="hsr-stat-row stat-row" style="display:flex; align-items:center; gap:4px;">
                                 <span class="name" style="width:32px;">AGI</span>
                                 <button class="hsr-btn btn-minus" data-type="minus" data-stat="AGI">−</button>
-                                <input type="number" inputmode="numeric" value="1" data-stat-input="AGI" class="stat-input" style="width:44px; text-align:center;">
+                                <input type="number" inputmode="numeric" value="1" data-stat-input="AGI"
+                                    class="stat-input" style="width:44px; text-align:center;">
                                 <button class="hsr-btn btn-plus" data-type="plus" data-stat="AGI">+</button>
                             </div>
                             <!-- VIT -->
                             <div class="hsr-stat-row stat-row" style="display:flex; align-items:center; gap:4px;">
                                 <span class="name" style="width:32px;">VIT</span>
                                 <button class="hsr-btn btn-minus" data-type="minus" data-stat="VIT">−</button>
-                                <input type="number" inputmode="numeric" value="1" data-stat-input="VIT" class="stat-input" style="width:44px; text-align:center;">
+                                <input type="number" inputmode="numeric" value="1" data-stat-input="VIT"
+                                    class="stat-input" style="width:44px; text-align:center;">
                                 <button class="hsr-btn btn-plus" data-type="plus" data-stat="VIT">+</button>
                             </div>
                             <!-- INT -->
                             <div class="hsr-stat-row stat-row" style="display:flex; align-items:center; gap:4px;">
                                 <span class="name" style="width:32px;">INT</span>
                                 <button class="hsr-btn btn-minus" data-type="minus" data-stat="INT">−</button>
-                                <input type="number" inputmode="numeric" value="1" data-stat-input="INT" class="stat-input" style="width:44px; text-align:center;">
+                                <input type="number" inputmode="numeric" value="1" data-stat-input="INT"
+                                    class="stat-input" style="width:44px; text-align:center;">
                                 <button class="hsr-btn btn-plus" data-type="plus" data-stat="INT">+</button>
                             </div>
                             <!-- DEX -->
                             <div class="hsr-stat-row stat-row" style="display:flex; align-items:center; gap:4px;">
                                 <span class="name" style="width:32px;">DEX</span>
                                 <button class="hsr-btn btn-minus" data-type="minus" data-stat="DEX">−</button>
-                                <input type="number" inputmode="numeric" value="1" data-stat-input="DEX" class="stat-input" style="width:44px; text-align:center;">
+                                <input type="number" inputmode="numeric" value="1" data-stat-input="DEX"
+                                    class="stat-input" style="width:44px; text-align:center;">
                                 <button class="hsr-btn btn-plus" data-type="plus" data-stat="DEX">+</button>
                             </div>
                             <!-- LUK -->
                             <div class="hsr-stat-row stat-row" style="display:flex; align-items:center; gap:4px;">
                                 <span class="name" style="width:32px;">LUK</span>
                                 <button class="hsr-btn btn-minus" data-type="minus" data-stat="LUK">−</button>
-                                <input type="text" inputmode="numeric" value="1" data-stat-input="LUK" class="stat-input" style="width:44px; text-align:center;">
+                                <input type="text" inputmode="numeric" value="1" data-stat-input="LUK"
+                                    class="stat-input" style="width:44px; text-align:center;">
                                 <button class="hsr-btn btn-plus" data-type="plus" data-stat="LUK">+</button>
                             </div>
                         </div>
@@ -156,20 +205,28 @@
                     <!-- Job Bonus Column -->
                     <div class="panel" style="flex:0 0 auto; min-width:110px;">
                         <div class="banner-scroll">Job Bonus</div>
-                        <div id="jobBonusSection" style="display:flex; flex-direction:column; gap:5px; padding-top:2px; align-items:center;">
-                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box" data-display="BonusStr">0</span></div>
-                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box" data-display="BonusAgi">0</span></div>
-                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box" data-display="BonusVit">0</span></div>
-                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box" data-display="BonusInt">0</span></div>
-                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box" data-display="BonusDex">0</span></div>
-                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box" data-display="BonusLuk">0</span></div>
+                        <div id="jobBonusSection"
+                            style="display:flex; flex-direction:column; gap:5px; padding-top:2px; align-items:center;">
+                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box"
+                                    data-display="BonusStr">0</span></div>
+                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box"
+                                    data-display="BonusAgi">0</span></div>
+                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box"
+                                    data-display="BonusVit">0</span></div>
+                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box"
+                                    data-display="BonusInt">0</span></div>
+                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box"
+                                    data-display="BonusDex">0</span></div>
+                            <div class="stat-row"><span class="b-label">+</span> <span class="job-bonus-box"
+                                    data-display="BonusLuk">0</span></div>
                         </div>
                     </div>
 
                     <!-- Pts Req Column -->
                     <div class="panel" style="flex:0 0 auto; min-width:70px;">
                         <div class="banner-scroll">Pts Req</div>
-                        <div id="ptsReqSection" style="display:flex; flex-direction:column; gap:8px; padding-top:2px; align-items:center;">
+                        <div id="ptsReqSection"
+                            style="display:flex; flex-direction:column; gap:8px; padding-top:2px; align-items:center;">
                             <div class="stat-row">Cost <span data-display="NextStrCost">2</span></div>
                             <div class="stat-row">Cost <span data-display="NextAgiCost">2</span></div>
                             <div class="stat-row">Cost <span data-display="NextVitCost">2</span></div>
@@ -183,16 +240,25 @@
                     <div class="panel" style="flex:1;">
                         <div class="banner-scroll">Status Information</div>
                         <div id="statusSection" style="display:grid; grid-template-columns:1fr 1fr; gap:0 16px;">
-                            <div class="stat-row"><span class="stat-label">Attack</span> <span class="stat-val" data-display="Atk">1</span></div>
-                            <div class="stat-row"><span class="stat-label">Defense</span> <span class="stat-val" data-display="Def">0 + 1</span></div>
-                            <div class="stat-row"><span class="stat-label">Magic Attack</span> <span class="stat-val" data-display="Matk">1 ~ 1</span></div>
-                            <div class="stat-row"><span class="stat-label">Magic Defense</span> <span class="stat-val" data-display="Mdef">0 + 1</span></div>
-                            <div class="stat-row"><span class="stat-label">Hit</span> <span class="stat-val" data-display="Hit">176</span></div>
-                            <div class="stat-row"><span class="stat-label">Flee</span> <span class="stat-val" data-display="Flee">11</span></div>
-                            <div class="stat-row"><span class="stat-label">CRIT</span> <span class="stat-val" data-display="Crit">1</span></div>
-                            <div class="stat-row"><span class="stat-label">ASPD</span> <span class="stat-val" data-display="Aspd">150</span></div>
+                            <div class="stat-row"><span class="stat-label">Attack</span> <span class="stat-val"
+                                    data-display="Atk">1</span></div>
+                            <div class="stat-row"><span class="stat-label">Defense</span> <span class="stat-val"
+                                    data-display="Def">0 + 1</span></div>
+                            <div class="stat-row"><span class="stat-label">Magic Attack</span> <span class="stat-val"
+                                    data-display="Matk">1 ~ 1</span></div>
+                            <div class="stat-row"><span class="stat-label">Magic Defense</span> <span class="stat-val"
+                                    data-display="Mdef">0 + 1</span></div>
+                            <div class="stat-row"><span class="stat-label">Hit</span> <span class="stat-val"
+                                    data-display="Hit">176</span></div>
+                            <div class="stat-row"><span class="stat-label">Flee</span> <span class="stat-val"
+                                    data-display="Flee">11</span></div>
+                            <div class="stat-row"><span class="stat-label">CRIT</span> <span class="stat-val"
+                                    data-display="Crit">1</span></div>
+                            <div class="stat-row"><span class="stat-label">ASPD</span> <span class="stat-val"
+                                    data-display="Aspd">150</span></div>
                         </div>
-                        <div style="margin-top:8px; border-top:1px dashed #b07a3a; padding-top:6px;" class="job-info-row">
+                        <div style="margin-top:8px; border-top:1px dashed #b07a3a; padding-top:6px;"
+                            class="job-info-row">
                             <div class="stat-row">
                                 <span class="stat-label">Status Point</span>
                                 <span class="stat-val status-point-val" data-display="StatusPoints">48</span>
@@ -208,7 +274,8 @@
 
                 <!-- Weapon Type -->
                 <div class="panel" style="display:inline-flex; align-items:center; gap:10px; padding:7px 14px;">
-                    <span style="font-size:18px; color:#2a1000; font-family:'VT323',monospace;"><b>Weapon Type</b> Right:</span>
+                    <span style="font-size:18px; color:#2a1000; font-family:'VT323',monospace;"><b>Weapon Type</b>
+                        Right:</span>
                     <select id="weaponSelect" class="hsr-select weapon-select" style="font-size:17px; min-width:90px;">
                         <option value="fist">Bare Hands</option>
                     </select>
@@ -218,4 +285,5 @@
         </div>
     </div>
 </body>
+
 </html>
