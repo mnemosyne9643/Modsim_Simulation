@@ -11,10 +11,23 @@ const CLASSES = {
         name: "Basic Skill",
         maxLv: 9,
         type: ["passive"],
-        desc: "Unlocks basic commands each level: trade, chatroom, party, emotes, sit/stand, map, etc.",
+        desc: "Unlocks basic commands: trade, chatroom, party, emotes, sit/stand, map, change job, etc.",
         sp_cost: 0,
         cast: 0,
-        stats: { "SP Cost": "Passive", Target: "Self" },
+        stats: {
+          "Unlocks": [
+            "Trade",
+            "Emotes",
+            "Sit/Stand",
+            "Chatroom",
+            "Party Select",
+            "Kafra Storage",
+            "Party Map",
+            "Job Change",
+            "Maxed"
+          ],
+          "SP Cost": "Passive"
+        },
         reqs: [],
       },
       {
@@ -28,7 +41,7 @@ const CLASSES = {
         stats: {
           "HP Restore": "5",
           "SP Cost": "3",
-          "How to Get": "Basic Skill Lv9 (Training Grounds)",
+          "How to Get": "Basic Skill Lv4 (Training Grounds)",
         },
         jobLvReq: 4,
         reqs: [],
@@ -44,7 +57,7 @@ const CLASSES = {
         stats: {
           Duration: "30s",
           "SP Cost": "5",
-          "How to Get": "Basic Skill Lv9 (Training Grounds)",
+          "How to Get": "Basic Skill Lv7 (Training Grounds)",
         },
         jobLvReq: 4,
         reqs: [],
@@ -66,10 +79,15 @@ const CLASSES = {
         name: "Bash",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "130–390% ATK single-target strike. Chance to stun at Lv5+.",
-        sp_cost: [8, 8, 8, 8, 10, 10, 10, 10, 10, 10],
+        desc: "Hits a target with crushing force. Higher levels deal more damage and increase accuracy.",
+        sp_cost: [8, 8, 8, 8, 8, 15, 15, 15, 15, 15],
         cast: 0,
-        stats: { ATK: "130–390%", SP: "8–10", Stun: "Lv5+" },
+        stats: {
+          ATK: ["130%", "160%", "190%", "210%", "240%", "270%", "310%", "340%", "370%", "400%"],
+          Accuracy: ["+5%", "+10%", "+15%", "+20%", "+25%", "+30%", "+35%", "+40%", "+45%", "+50%"],
+          "Fatal Stun": ["-", "-", "-", "-", "-", "5%", "10%", "15%", "20%", "25%"],
+          "SP Cost": [8, 8, 8, 8, 8, 15, 15, 15, 15, 15]
+        },
         reqs: [],
       },
       {
@@ -77,10 +95,14 @@ const CLASSES = {
         name: "Provoke",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Lowers enemy DEF by 5%/lv, raises ATK by 2%/lv.",
-        sp_cost: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+        desc: "Enrages a target, reducing its defense while increasing its attack power.",
+        sp_cost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
         cast: 0,
-        stats: { "DEF Red": "5%/lv", "ATK+": "2%/lv" },
+        stats: {
+          "Enemy ATK": ["+2%", "+4%", "+6%", "+8%", "+10%", "+12%", "+14%", "+16%", "+18%", "+20%"],
+          "Enemy DEF": ["-6%", "-12%", "-18%", "-24%", "-30%", "-36%", "-42%", "-48%", "-54%", "-60%"],
+          "SP Cost": 10
+        },
         reqs: [],
       },
       {
@@ -88,10 +110,24 @@ const CLASSES = {
         name: "HP Recovery",
         maxLv: 10,
         type: ["passive"],
-        desc: "Passively boosts natural HP regeneration. Doubled at Lv10.",
+        desc: "Passively boosts natural HP regeneration while standing still.",
         sp_cost: 0,
         cast: 0,
-        stats: { "HP Regen": "+10%/lv" },
+        stats: {
+          "Recovery": [
+            "5 HP/10s",
+            "10 HP/10s",
+            "15 HP/10s",
+            "20 HP/10s",
+            "25 HP/10s",
+            "30 HP/10s",
+            "35 HP/10s",
+            "40 HP/10s",
+            "45 HP/10s",
+            "50 HP/10s"
+          ],
+          "Max HP Mod": ["0%", "0%", "0%", "0%", "0%", "0%", "0%", "0%", "0%", "+10%"]
+        },
         reqs: [],
       },
       {
@@ -99,10 +135,10 @@ const CLASSES = {
         name: "Sword Mastery",
         maxLv: 10,
         type: ["passive"],
-        desc: "+4 ATK per level with 1H swords or daggers.",
+        desc: "Increases attack damage when using one-handed swords or daggers.",
         sp_cost: 0,
         cast: 0,
-        stats: { "ATK Bonus": "+4/lv", Weapon: "Sword/Dagger" },
+        stats: { "ATK Bonus": ["+4", "+8", "+12", "+16", "+20", "+24", "+28", "+32", "+36", "+40"] },
         reqs: [],
       },
       {
@@ -110,37 +146,29 @@ const CLASSES = {
         name: "Magnum Break",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "AoE fire strike near caster. 115%+ ATK + Fire element for 10s.",
+        desc: "AoE fire strike near caster. Targets are pushed back 2 cells.",
         sp_cost: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
         cast: 0,
-        stats: { ATK: "115%+", SP: "30", Element: "Fire" },
-        reqs: [{ id: "bash", lv: 5 }],
-      },
-      {
-        id: "auto_berserk",
-        name: "Auto Berserk",
-        maxLv: 1,
-        type: ["passive", "quest"],
-        desc: "[Quest Skill] Enrages the user, increasing ATK by 32% but decreasing DEF by 55% when HP drops below 25%. Obtained via quest.",
-        sp_cost: 0,
-        cast: 0,
         stats: {
-          Trigger: "HP < 25%",
-          Effect: "Provoke Lv10",
-          "How to Get": "Job Lv30 + item quest (Prontera Upgrade Shop)",
+          ATK: ["115%", "130%", "145%", "160%", "175%", "190%", "205%", "220%", "235%", "250%"],
+          Element: "Fire",
+          Radius: "5x5"
         },
-        jobLvReq: 30,
-        reqs: [],
+        reqs: [{ id: "bash", lv: 5 }],
       },
       {
         id: "endure",
         name: "Endure",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Prevents knockback and cast interruption. Each cast allows up to 10 hits of immunity.",
+        desc: "Prevents flinching when being attacked. Canceled after a certain number of hits.",
         sp_cost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
         cast: 0,
-        stats: { Duration: "10s base", Hits: "10" },
+        stats: {
+          Duration: ["10s", "10s", "15s", "15s", "20s", "20s", "25s", "25s", "30s", "30s"],
+          "MDEF Bonus": ["+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10"],
+          Hits: "7"
+        },
         reqs: [{ id: "provoke", lv: 5 }],
       },
       {
@@ -148,28 +176,37 @@ const CLASSES = {
         name: "2H Sword Mastery",
         maxLv: 10,
         type: ["passive"],
-        desc: "+4 ATK per level when wielding a two-handed sword. Max +40 ATK at Lv10.",
+        desc: "Increases attack damage when using two-handed swords.",
+        sp_cost: 0,
+        cast: 0,
+        stats: { "ATK Bonus": ["+4", "+8", "+12", "+16", "+20", "+24", "+28", "+32", "+36", "+40"] },
+        reqs: [{ id: "sword_mastery", lv: 1 }],
+      },
+      {
+        id: "auto_berserk",
+        name: "Auto Berserk",
+        maxLv: 1,
+        type: ["passive", "quest"],
+        desc: "[Quest Skill] Automatically casts Provoke Lv 10 on self when HP drops below 25%.",
         sp_cost: 0,
         cast: 0,
         stats: {
-          "ATK Bonus": "+4/lv",
-          Max: "+40 ATK",
-          Weapon: "2H Sword",
+          Trigger: "HP < 25%",
+          Effect: "Provoke Lv10",
+          "Obtainment": "Free (Quest)"
         },
-        reqs: [{ id: "sword_mastery", lv: 1 }],
+        jobLvReq: 30,
+        reqs: [],
       },
       {
         id: "q_moving_hp_recovery",
         name: "Moving HP Recovery",
         maxLv: 1,
         type: ["passive", "quest"],
-        desc: "[Quest Skill] Allows natural HP recovery even while moving. Without this skill, HP only recovers while standing still.",
+        desc: "[Quest Skill] Allows HP to recover naturally even while moving.",
         sp_cost: 0,
         cast: 0,
-        stats: {
-          Effect: "HP regen on move",
-          "How to Get": "Job Lv35 + item quest (Swordman Guild, Izlude)",
-        },
+        stats: { Effect: "HP Regen while moving", "Obtainment": "Free (Quest)" },
         jobLvReq: 35,
         reqs: [],
       },
@@ -178,14 +215,10 @@ const CLASSES = {
         name: "Fatal Blow",
         maxLv: 1,
         type: ["active", "offensive", "quest"],
-        desc: "[Quest Skill] Bash has a chance to stun enemies for 5 seconds when this skill is learned.",
+        desc: "[Quest Skill] Adds a chance to stun enemies when using Bash at level 6 or higher.",
         sp_cost: 0,
         cast: 0,
-        stats: {
-          Effect: "Stun on Bash",
-          Duration: "5s stun",
-          "How to Get": "Bash Lv5 + item quest (Prontera Chivalry)",
-        },
+        stats: { Effect: "Stun on Bash Lv6+", "Obtainment": "Free (Quest)" },
         jobLvReq: 30,
         reqs: [],
       },
@@ -211,16 +244,18 @@ const CLASSES = {
     name: "Magician",
     sp: 49,
     skills: [
-      // BASE SKILLS
       {
         id: "sp_recovery",
         name: "Increase SP Recovery",
         maxLv: 10,
         type: ["passive"],
-        desc: "Passively increases natural SP recovery. Greatly enhanced at Lv10.",
+        desc: "Passively increases natural SP recovery speed while not moving.",
         sp_cost: 0,
         cast: 0,
-        stats: { Bonus: "+5%/lv" },
+        stats: {
+          Bonus: ["+3 SP/10s", "+6 SP/10s", "+9 SP/10s", "+12 SP/10s", "+15 SP/10s", "+18 SP/10s", "+21 SP/10s", "+24 SP/10s", "+27 SP/10s", "+30 SP/10s"],
+          "Max SP Mod": ["0%", "0%", "0%", "0%", "0%", "0%", "0%", "0%", "0%", "+10%"]
+        },
         reqs: [],
       },
       {
@@ -228,10 +263,14 @@ const CLASSES = {
         name: "Napalm Beat",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Ghost-element magic hits all enemies in a 3x3 area. 70-110% MATK per hit.",
-        sp_cost: [9, 9, 9, 9, 11, 11, 11, 11, 11, 11],
-        cast: [0.7, 0.7, 0.7, 0.7, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9],
-        stats: { Element: "Ghost", Area: "3x3", MATK: "70-110%" },
+        desc: "Ghost-element magic that hits enemies in a 3x3 area around the target.",
+        sp_cost: [9, 9, 9, 11, 11, 11, 13, 13, 13, 15],
+        cast: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+        stats: {
+          MATK: ["80%", "90%", "100%", "110%", "120%", "130%", "140%", "150%", "160%", "170%"],
+          Element: "Ghost",
+          Area: "3x3"
+        },
         reqs: [],
       },
       {
@@ -239,10 +278,10 @@ const CLASSES = {
         name: "Sight",
         maxLv: 1,
         type: ["active", "support"],
-        desc: "Reveals all hidden enemies in a 5x5 area around the caster for 10 seconds.",
+        desc: "Reveals hidden enemies in a 7x7 area around the caster.",
         sp_cost: [10],
         cast: [0],
-        stats: { Area: "5x5", Duration: "10s", SP: "10" },
+        stats: { Area: "7x7", Duration: "10s", SP: "10" },
         reqs: [],
       },
       {
@@ -250,10 +289,14 @@ const CLASSES = {
         name: "Cold Bolt",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Fires 1-10 Water-element bolts at a single target. Each bolt deals 100% MATK.",
-        sp_cost: [12, 12, 12, 12, 14, 14, 14, 14, 16, 16],
-        cast: [0.7, 0.7, 0.7, 0.7, 0.9, 0.9, 0.9, 0.9, 1.1, 1.1],
-        stats: { Element: "Water", Bolts: "1-10", SP: "12-16" },
+        desc: "Fires Water-element bolts at a single target.",
+        sp_cost: [12, 12, 12, 12, 12, 14, 14, 14, 16, 16],
+        cast: [0.7, 1.4, 2.1, 2.8, 3.5, 4.2, 4.9, 5.6, 6.3, 7.0],
+        stats: {
+          Bolts: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+          MATK: ["100%", "200%", "300%", "400%", "500%", "600%", "700%", "800%", "900%", "1000%"],
+          Element: "Water"
+        },
         reqs: [],
       },
       {
@@ -261,10 +304,14 @@ const CLASSES = {
         name: "Stone Curse",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Attempts to petrify one enemy. Success chance increases per level up to 100%.",
-        sp_cost: [24, 24, 24, 24, 24, 24, 24, 24, 24, 24],
-        cast: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
-        stats: { Effect: "Petrify", Chance: "10-100%", SP: "24" },
+        desc: "Attempts to petrify an enemy, turning them into stone.",
+        sp_cost: [25, 24, 23, 22, 21, 20, 19, 18, 17, 16],
+        cast: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        stats: {
+          Success: ["24%", "28%", "32%", "36%", "40%", "44%", "48%", "52%", "56%", "60%"],
+          Effect: "Petrify",
+          Requirement: "1 Red Gemstone"
+        },
         reqs: [],
       },
       {
@@ -272,10 +319,14 @@ const CLASSES = {
         name: "Fire Bolt",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Fires 1-10 Fire-element bolts at a single target. Each bolt deals 100% MATK.",
-        sp_cost: [12, 12, 12, 12, 14, 14, 14, 14, 16, 16],
-        cast: [0.7, 0.7, 0.7, 0.7, 0.9, 0.9, 0.9, 0.9, 1.1, 1.1],
-        stats: { Element: "Fire", Bolts: "1-10", SP: "12-16" },
+        desc: "Fires Fire-element bolts at a single target.",
+        sp_cost: [12, 12, 12, 12, 12, 14, 14, 14, 16, 16],
+        cast: [0.7, 1.4, 2.1, 2.8, 3.5, 4.2, 4.9, 5.6, 6.3, 7.0],
+        stats: {
+          Bolts: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+          MATK: ["100%", "200%", "300%", "400%", "500%", "600%", "700%", "800%", "900%", "1000%"],
+          Element: "Fire"
+        },
         reqs: [],
       },
       {
@@ -283,39 +334,41 @@ const CLASSES = {
         name: "Lightning Bolt",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Fires 1-10 Wind-element bolts at a single target. Each bolt deals 100% MATK.",
-        sp_cost: [12, 12, 12, 12, 14, 14, 14, 14, 16, 16],
-        cast: [0.7, 0.7, 0.7, 0.7, 0.9, 0.9, 0.9, 0.9, 1.1, 1.1],
-        stats: { Element: "Wind", Bolts: "1-10", SP: "12-16" },
+        desc: "Fires Wind-element bolts at a single target.",
+        sp_cost: [12, 12, 12, 12, 12, 14, 14, 14, 16, 16],
+        cast: [0.7, 1.4, 2.1, 2.8, 3.5, 4.2, 4.9, 5.6, 6.3, 7.0],
+        stats: {
+          Bolts: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+          MATK: ["100%", "200%", "300%", "400%", "500%", "600%", "700%", "800%", "900%", "1000%"],
+          Element: "Wind"
+        },
         reqs: [],
       },
-      // QUEST SKILL
       {
         id: "q_energy_coat",
         name: "Energy Coat",
         maxLv: 1,
         type: ["active", "support", "quest"],
-        desc: "[Quest Skill] Creates a barrier that reduces incoming physical damage at the cost of SP per hit.",
+        desc: "[Quest Skill] Creates a barrier that reduces incoming damage at the cost of SP.",
         sp_cost: [30],
         cast: [1],
-        stats: {
-          "DMG Red": "30%",
-          "SP/Hit": "2.5%",
-          "How to Get": "Job Lv35 + item quest (Geffen)",
-        },
+        stats: { "Red. Max": "30%", Duration: "5m", "Obtainment": "Free (Quest)" },
         jobLvReq: 35,
         reqs: [],
       },
-      // UNLOCKABLE
       {
         id: "soul_strike",
         name: "Soul Strike",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Fires Ghost-element bolts at one target. Deals +50% damage to Undead monsters.",
-        sp_cost: [10, 10, 10, 10, 12, 12, 12, 12, 14, 14],
-        cast: [0.5, 0.5, 0.5, 0.5, 0.7, 0.7, 0.7, 0.7, 1, 1],
-        stats: { Element: "Ghost", Bonus: "+50% vs Undead" },
+        desc: "Fires Ghost-element bolts rapidly at a single target.",
+        sp_cost: [18, 18, 24, 24, 30, 30, 36, 36, 42, 42],
+        cast: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+        stats: {
+          Bolts: ["1", "1", "2", "2", "3", "3", "4", "4", "5", "5"],
+          MATK: ["100%", "100%", "200%", "200%", "300%", "300%", "400%", "400%", "500%", "500%"],
+          Element: "Ghost"
+        },
         reqs: [{ id: "napalm_beat", lv: 4 }],
       },
       {
@@ -323,10 +376,14 @@ const CLASSES = {
         name: "Frost Diver",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Strikes one target with Water damage and has a Freeze chance of 10-100%.",
-        sp_cost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
-        cast: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
-        stats: { Element: "Water", "Freeze%": "10-100%" },
+        desc: "Strikes a target with Water magic and has a chance to freeze them.",
+        sp_cost: [25, 24, 23, 22, 21, 20, 19, 18, 17, 16],
+        cast: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        stats: {
+          MATK: ["110%", "120%", "130%", "140%", "150%", "160%", "170%", "180%", "190%", "200%"],
+          Freeze: ["38%", "41%", "44%", "47%", "50%", "53%", "56%", "59%", "62%", "65%"],
+          Element: "Water"
+        },
         reqs: [{ id: "cold_bolt", lv: 5 }],
       },
       {
@@ -334,10 +391,14 @@ const CLASSES = {
         name: "Fire Ball",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Hurls a fireball that explodes in a 5x5 area dealing Fire damage to all caught inside.",
-        sp_cost: [20, 20, 20, 20, 25, 25, 25, 25, 30, 30],
-        cast: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        stats: { Element: "Fire", Area: "5x5", SP: "20-30" },
+        desc: "Hurls a fireball that explodes in a 5x5 area.",
+        sp_cost: [25, 25, 25, 25, 25, 30, 30, 30, 30, 30],
+        cast: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+        stats: {
+          MATK: ["115%", "130%", "145%", "160%", "175%", "190%", "205%", "220%", "235%", "250%"],
+          Area: "5x5",
+          Element: "Fire"
+        },
         reqs: [{ id: "fire_bolt", lv: 4 }],
       },
       {
@@ -345,10 +406,14 @@ const CLASSES = {
         name: "Fire Wall",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Creates a wall of fire on the ground that repeatedly hits monsters passing through it.",
+        desc: "Creates a wall of fire on the ground that hits enemies passing through.",
         sp_cost: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40],
-        cast: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        stats: { Element: "Fire", Hits: "3-10", Duration: "5-15s" },
+        cast: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+        stats: {
+          Hits: ["4", "5", "6", "7", "8", "9", "10", "11", "12", "14"],
+          Duration: ["10s", "11s", "12s", "13s", "14s", "15s", "16s", "17s", "18s", "23s"],
+          Element: "Fire"
+        },
         reqs: [
           { id: "sight", lv: 1 },
           { id: "fire_ball", lv: 5 },
@@ -359,10 +424,14 @@ const CLASSES = {
         name: "Safety Wall",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Creates a Holy barrier on one cell that blocks physical melee attacks equal to skill level +1.",
-        sp_cost: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
-        cast: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        stats: { Blocks: "lv+1 hits", Element: "Holy", SP: "30" },
+        desc: "Creates a barrier on one cell that blocks physical melee attacks.",
+        sp_cost: [30, 30, 30, 30, 30, 40, 40, 40, 40, 40],
+        cast: [4, 3.5, 3, 2.5, 2, 1.5, 1, 1, 1, 1],
+        stats: {
+          Hits: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
+          Duration: ["5s", "10s", "15s", "20s", "25s", "30s", "35s", "40s", "45s", "50s"],
+          "Cost": "1 Blue Gem"
+        },
         reqs: [
           { id: "napalm_beat", lv: 7 },
           { id: "soul_strike", lv: 5 },
@@ -373,10 +442,14 @@ const CLASSES = {
         name: "Thunder Storm",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Calls Wind-element bolts down on a 5x5 area. High AoE damage. 2.5s cast.",
-        sp_cost: [29, 29, 29, 29, 29, 29, 29, 29, 29, 29],
-        cast: [2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5],
-        stats: { Element: "Wind", Area: "5x5", Cast: "2.5s" },
+        desc: "Calls down lightning bolts in a 5x5 area.",
+        sp_cost: [29, 34, 39, 44, 49, 54, 59, 64, 69, 74],
+        cast: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        stats: {
+          MATK: ["100%", "200%", "300%", "400%", "500%", "600%", "700%", "800%", "900%", "1000%"],
+          Area: "5x5",
+          Element: "Wind"
+        },
         reqs: [{ id: "lightning_bolt", lv: 4 }],
       },
     ],
@@ -406,16 +479,15 @@ const CLASSES = {
     name: "Archer",
     sp: 49,
     skills: [
-      // BASE SKILLS
       {
         id: "owl_eye",
         name: "Owl's Eye",
         maxLv: 10,
         type: ["passive"],
-        desc: "Passively increases DEX by 1 per level. Maximum +10 DEX.",
+        desc: "Passively increases DEX by 1 per level.",
         sp_cost: 0,
         cast: 0,
-        stats: { DEX: "+1/lv", Max: "+10 DEX" },
+        stats: { DEX: ["+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10"] },
         reqs: [],
       },
       {
@@ -423,26 +495,25 @@ const CLASSES = {
         name: "Double Strafing",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Shoots two arrows rapidly at one target. Each arrow deals 190-380% ATK at max level.",
+        desc: "Shoots two arrows rapidly at a single target.",
         sp_cost: [12, 12, 12, 12, 14, 14, 14, 14, 16, 16],
         cast: 0,
-        stats: { ATK: "190-380%", Hits: "2", Weapon: "Bow" },
+        stats: {
+          ATK: ["200%", "220%", "240%", "260%", "280%", "300%", "320%", "340%", "360%", "380%"],
+          Hits: "2",
+          Element: "Arrow Base"
+        },
         reqs: [],
       },
-      // QUEST SKILLS
       {
         id: "q_making_arrow",
         name: "Making Arrow",
         maxLv: 1,
         type: ["active", "support", "quest"],
-        desc: "[Quest Skill] Converts various materials into different types of arrows.",
+        desc: "[Quest Skill] Converts materials into different types of arrows.",
         sp_cost: [10],
         cast: 0,
-        stats: {
-          SP: "10",
-          Creates: "Arrows",
-          "How to Get": "Free at job change (Archer Guild, Payon)",
-        },
+        stats: { "Obtainment": "Free (Quest)", SP: "10" },
         jobLvReq: 30,
         reqs: [],
       },
@@ -451,27 +522,25 @@ const CLASSES = {
         name: "Charge Arrow",
         maxLv: 1,
         type: ["active", "offensive", "quest"],
-        desc: "[Quest Skill] Fires one powerful arrow dealing 150% ATK that pushes the target back 6 cells.",
+        desc: "[Quest Skill] Fires a powerful arrow that knocks back the target.",
         sp_cost: [15],
-        cast: [1],
-        stats: {
-          ATK: "150%",
-          Pushback: "6 cells",
-          "How to Get": "Free at job change (Archer Guild, Payon)",
-        },
+        cast: [1.5],
+        stats: { ATK: "150%", Knockback: "6 cells", "Obtainment": "Free (Quest)" },
         jobLvReq: 35,
         reqs: [],
       },
-      // UNLOCKABLE
       {
         id: "vulture_eye",
         name: "Vulture's Eye",
         maxLv: 10,
         type: ["passive"],
-        desc: "Increases bow attack range by 1 per level and HIT rate by 1 per level.",
+        desc: "Increases attack range and Hit rate with bows.",
         sp_cost: 0,
         cast: 0,
-        stats: { Range: "+1/lv", HIT: "+1/lv" },
+        stats: {
+          Range: ["+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10"],
+          HIT: ["+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10"]
+        },
         reqs: [{ id: "owl_eye", lv: 3 }],
       },
       {
@@ -479,10 +548,13 @@ const CLASSES = {
         name: "Attention Concentrate",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Temporarily boosts AGI and DEX by 2 per level for a duration. Also reveals hidden enemies.",
-        sp_cost: [24, 24, 24, 24, 24, 24, 24, 24, 24, 24],
+        desc: "Temporarily boosts AGI and DEX. Also reveals hidden enemies nearby.",
+        sp_cost: [25, 27, 29, 31, 33, 35, 37, 39, 41, 45],
         cast: 0,
-        stats: { "AGI/DEX": "+2/lv", Duration: "170+10s/lv" },
+        stats: {
+          "AGI/DEX": ["+3%", "+4%", "+5%", "+6%", "+7%", "+8%", "+9%", "+10%", "+11%", "+12%"],
+          Duration: ["40s", "50s", "60s", "70s", "80s", "90s", "100s", "110s", "120s", "160s"]
+        },
         reqs: [{ id: "vulture_eye", lv: 1 }],
       },
       {
@@ -490,10 +562,14 @@ const CLASSES = {
         name: "Arrow Shower",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Fires a volley of arrows damaging all enemies in a 5x5 area with knockback.",
+        desc: "Fires a volley of arrows damaging all enemies in a small area.",
         sp_cost: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15],
         cast: 0,
-        stats: { Area: "5x5", Knockback: "2 cells" },
+        stats: {
+          ATK: ["80%", "85%", "90%", "95%", "100%", "105%", "110%", "115%", "120%", "125%"],
+          Area: "3x3",
+          Knockback: "2 cells"
+        },
         reqs: [{ id: "double_strafe", lv: 5 }],
       },
     ],
@@ -512,16 +588,15 @@ const CLASSES = {
     name: "Acolyte",
     sp: 49,
     skills: [
-      // BASE SKILLS
       {
         id: "divine_protection",
         name: "Divine Protection",
         maxLv: 10,
         type: ["passive"],
-        desc: "Passively increases DEF against Demon and Undead monsters by 5 per level.",
+        desc: "Increases defense against Undead and Demon monsters.",
         sp_cost: 0,
         cast: 0,
-        stats: { "DEF vs Demon/Undead": "+5/lv" },
+        stats: { "DEF Bonus": ["+3", "+6", "+9", "+12", "+15", "+18", "+21", "+24", "+27", "+30"] },
         reqs: [],
       },
       {
@@ -529,10 +604,10 @@ const CLASSES = {
         name: "Ruwach",
         maxLv: 1,
         type: ["active", "support"],
-        desc: "Reveals hidden enemies in a 5x5 area and deals 145% MATK Holy damage to them.",
+        desc: "Detects hidden enemies and deals Holy damage in a 5x5 area.",
         sp_cost: [10],
         cast: [0],
-        stats: { Area: "5x5", MATK: "145%", SP: "10" },
+        stats: { Area: "5x5", MATK: "145%", Element: "Holy", SP: "10" },
         reqs: [],
       },
       {
@@ -540,10 +615,14 @@ const CLASSES = {
         name: "Heal",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Restores HP to an ally. When used on Undead, deals Holy damage instead.",
-        sp_cost: [13, 13, 13, 13, 15, 15, 15, 15, 17, 17],
-        cast: [0.5, 0.5, 0.5, 0.5, 0.7, 0.7, 0.7, 0.7, 1, 1],
-        stats: { Element: "Holy", "vs Undead": "Damage", SP: "13-17" },
+        desc: "Restores HP to a target. Deals damage to Undead monsters.",
+        sp_cost: [13, 16, 19, 22, 25, 28, 31, 34, 37, 40],
+        cast: [0],
+        stats: {
+          HP_Restored: ["~40", "~80", "~130", "~190", "~260", "~340", "~430", "~530", "~640", "~760"],
+          "vs Undead": "Damage",
+          Range: "9 cells"
+        },
         reqs: [],
       },
       {
@@ -551,39 +630,33 @@ const CLASSES = {
         name: "Aqua Benedicta",
         maxLv: 1,
         type: ["active", "support"],
-        desc: "When standing on a water cell, blesses the water to produce 1 Holy Water.",
+        desc: "Creates Holy Water while standing in water.",
         sp_cost: [10],
-        cast: [0],
-        stats: { Creates: "Holy Water", SP: "10" },
+        cast: [1],
+        stats: { Creates: "1 Holy Water", "Cost": "1 Empty Bottle", SP: "10" },
         reqs: [],
       },
-      // QUEST SKILL
       {
         id: "q_holy_light",
         name: "Holy Light",
         maxLv: 1,
         type: ["active", "offensive", "quest"],
-        desc: "[Quest Skill] Strikes a target with Holy light dealing 125% MATK. Does not affect plants.",
+        desc: "[Quest Skill] Strikes a target with a burst of Holy light.",
         sp_cost: [15],
-        cast: [1.5],
-        stats: {
-          MATK: "125%",
-          Element: "Holy",
-          "How to Get": "Free at job change (Prontera Church)",
-        },
+        cast: [2],
+        stats: { MATK: "125%", Element: "Holy", "Obtainment": "Free (Quest)" },
         jobLvReq: 30,
         reqs: [],
       },
-      // UNLOCKABLE
       {
         id: "demon_bane",
         name: "Demon Bane",
         maxLv: 10,
         type: ["passive"],
-        desc: "Increases ATK against Demon and Undead monsters by 3 per level. Max +30 ATK.",
+        desc: "Increases attack damage against Undead and Demon monsters.",
         sp_cost: 0,
         cast: 0,
-        stats: { "ATK vs Demon/Undead": "+3/lv", Max: "+30" },
+        stats: { "ATK Bonus": ["+3", "+6", "+9", "+12", "+15", "+18", "+21", "+24", "+27", "+30"] },
         reqs: [{ id: "divine_protection", lv: 3 }],
       },
       {
@@ -591,10 +664,10 @@ const CLASSES = {
         name: "Teleportation",
         maxLv: 2,
         type: ["active", "support"],
-        desc: "Lv1: Randomly teleport anywhere on current map. Lv2: Teleport to a saved location.",
-        sp_cost: [9, 9],
+        desc: "Instantly moves the caster to a random or fixed location.",
+        sp_cost: [10, 9],
         cast: [0, 0],
-        stats: { Lv1: "Random Warp", Lv2: "Saved Warp", SP: "9" },
+        stats: { Effect: ["Random Spot", "Saved City"], SP: ["10", "9"] },
         reqs: [{ id: "ruwach", lv: 1 }],
       },
       {
@@ -602,10 +675,14 @@ const CLASSES = {
         name: "Warp Portal",
         maxLv: 4,
         type: ["active", "support"],
-        desc: "Opens a dimensional warp portal. Each level allows saving one additional destination.",
+        desc: "Creates a portal that teleports people to a remembered location.",
         sp_cost: [35, 35, 35, 35],
-        cast: [3, 3, 3, 3],
-        stats: { "Saved Pts": "1-4", Cast: "3s", SP: "35" },
+        cast: [1, 1, 1, 1],
+        stats: {
+          Memo: ["1 location", "2 locations", "3 locations", "3 locations"],
+          Capacity: "8 people",
+          "Cost": "1 Blue Gem"
+        },
         reqs: [{ id: "teleportation", lv: 2 }],
       },
       {
@@ -613,10 +690,10 @@ const CLASSES = {
         name: "Pneuma",
         maxLv: 1,
         type: ["active", "support"],
-        desc: "Creates a 3x3 Holy barrier that completely blocks all ranged physical attacks for 10 seconds.",
+        desc: "Creates a 3x3 barrier that blocks all long-range physical attacks.",
         sp_cost: [10],
         cast: [0],
-        stats: { Blocks: "All Ranged", Duration: "10s", SP: "10" },
+        stats: { Area: "3x3", Duration: "10s", Effect: "Blocks Ranged" },
         reqs: [{ id: "warp_portal", lv: 4 }],
       },
       {
@@ -624,10 +701,13 @@ const CLASSES = {
         name: "Increase Agility",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Temporarily raises the AGI of a target by 2+2 per level, boosting move and attack speed.",
-        sp_cost: [18, 18, 18, 18, 22, 22, 22, 22, 26, 26],
-        cast: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
-        stats: { AGI: "+2+2/lv", Duration: "60+10s/lv" },
+        desc: "Temporarily increases a target's AGI and movement speed.",
+        sp_cost: [18, 21, 24, 27, 30, 33, 36, 39, 42, 45],
+        cast: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        stats: {
+          AGI: ["+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10", "+11", "+12"],
+          Duration: ["40s", "60s", "80s", "100s", "120s", "140s", "160s", "180s", "200s", "220s"]
+        },
         reqs: [{ id: "heal", lv: 3 }],
       },
       {
@@ -635,10 +715,13 @@ const CLASSES = {
         name: "Decrease Agility",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Reduces the AGI of an enemy, slowing their movement and attack speed.",
-        sp_cost: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15],
-        cast: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
-        stats: { "AGI Red": "2+2/lv", SP: "15" },
+        desc: "Attempts to reduce an enemy's AGI and movement speed.",
+        sp_cost: [15, 17, 19, 21, 23, 25, 27, 29, 31, 33],
+        cast: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        stats: {
+          Success: ["42%", "44%", "46%", "48%", "50%", "52%", "54%", "56%", "58%", "60%"],
+          AGI_Red: ["-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12"]
+        },
         reqs: [{ id: "increase_agi", lv: 1 }],
       },
       {
@@ -646,10 +729,13 @@ const CLASSES = {
         name: "Signum Crusis",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Strikes all Undead and Demon monsters in range with a holy symbol, reducing their DEF.",
+        desc: "Reduces the defense of all Undead and Demon monsters on screen.",
         sp_cost: [35, 35, 35, 35, 35, 35, 35, 35, 35, 35],
-        cast: 0,
-        stats: { "DEF Red": "2%/lv", Target: "Undead/Demon" },
+        cast: [0.5],
+        stats: {
+          "DEF Red": ["-14%", "-18%", "-22%", "-26%", "-30%", "-34%", "-38%", "-42%", "-46%", "-50%"],
+          Target: "Screen Wide"
+        },
         reqs: [{ id: "demon_bane", lv: 3 }],
       },
       {
@@ -657,10 +743,13 @@ const CLASSES = {
         name: "Angelus",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Temporarily increases the soft DEF of all nearby party members by a percentage.",
-        sp_cost: [23, 23, 23, 23, 28, 28, 28, 28, 33, 33],
-        cast: 0,
-        stats: { "DEF Bonus": "+5%/lv", AoE: "Party" },
+        desc: "Temporarily increases the soft defense of all party members.",
+        sp_cost: [23, 26, 29, 32, 35, 38, 41, 44, 47, 50],
+        cast: [0.5],
+        stats: {
+          "VitDEF Bonus": ["+5%", "+10%", "+15%", "+20%", "+25%", "+30%", "+35%", "+40%", "+45%", "+50%"],
+          Duration: ["30s", "60s", "90s", "120s", "150s", "180s", "210s", "240s", "270s", "300s"]
+        },
         reqs: [{ id: "divine_protection", lv: 3 }],
       },
       {
@@ -668,10 +757,13 @@ const CLASSES = {
         name: "Blessing",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Raises the STR, INT, and DEX of an ally by 1-10 per level for a duration.",
-        sp_cost: [28, 28, 28, 28, 34, 34, 34, 34, 40, 40],
-        cast: 0,
-        stats: { "STR/INT/DEX": "+1-10", Duration: "90+30s/lv" },
+        desc: "Temporarily increases a target's STR, INT, and DEX.",
+        sp_cost: [28, 32, 36, 40, 44, 48, 52, 56, 60, 64],
+        cast: [0],
+        stats: {
+          "Stats Bonus": ["+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10"],
+          Duration: ["60s", "80s", "100s", "120s", "140s", "160s", "180s", "200s", "220s", "240s"]
+        },
         reqs: [{ id: "divine_protection", lv: 5 }],
       },
       {
@@ -679,10 +771,10 @@ const CLASSES = {
         name: "Cure",
         maxLv: 1,
         type: ["active", "support"],
-        desc: "Removes Confusion, Curse, and Blind status effects from a target.",
+        desc: "Removes Silence, Chaos, and Blind status effects.",
         sp_cost: [15],
-        cast: 0,
-        stats: { Cures: "Confuse/Curse/Blind", SP: "15" },
+        cast: [0],
+        stats: { Cures: "Silence/Chaos/Blind", SP: "15" },
         reqs: [{ id: "heal", lv: 2 }],
       },
     ],
@@ -711,27 +803,26 @@ const CLASSES = {
     name: "Merchant",
     sp: 49,
     skills: [
-      // BASE SKILLS
       {
         id: "enlarge_weight",
         name: "Enlarge Weight Limit",
         maxLv: 10,
         type: ["passive"],
-        desc: "Permanently increases maximum weight limit by 200 per level. Max +2000 at Lv10.",
+        desc: "Passively increases the maximum weight the merchant can carry.",
         sp_cost: 0,
         cast: 0,
-        stats: { Weight: "+200/lv", Max: "+2000" },
+        stats: { "Weight Bonus": ["+200", "+400", "+600", "+800", "+1000", "+1200", "+1400", "+1600", "+1800", "+2000"] },
         reqs: [],
       },
       {
         id: "identify",
-        name: "Identify",
+        name: "Item Appraisal",
         maxLv: 1,
         type: ["active", "support"],
-        desc: "Identifies one unidentified item without requiring a Magnifier.",
+        desc: "Identifies an unknown 'Appraisal' item.",
         sp_cost: [10],
         cast: [0],
-        stats: { SP: "10", Target: "Unidentified Item" },
+        stats: { Effect: "Identify Item", SP: "10" },
         reqs: [],
       },
       {
@@ -739,61 +830,50 @@ const CLASSES = {
         name: "Mammonite",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Spends Zeny to deal a massive blow. Costs 100z x level and deals 150-600% ATK.",
+        desc: "Strikes a target with great force at the cost of Zeny.",
         sp_cost: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
-        cast: 0,
-        stats: { ATK: "150-600%", Zeny: "100-1000z/use", SP: "5" },
+        cast: [0],
+        stats: {
+          ATK: ["150%", "200%", "250%", "300%", "350%", "400%", "450%", "500%", "550%", "600%"],
+          "Cost (Zeny)": ["100", "200", "300", "400", "500", "600", "700", "800", "900", "1000"]
+        },
         reqs: [],
       },
-      // QUEST SKILLS
+      {
+        id: "q_loud_exclamation",
+        name: "Loud Exclamation",
+        maxLv: 1,
+        type: ["active", "support", "quest"],
+        desc: "[Quest Skill] Shouts loudly to temporarily increase personal strength.",
+        sp_cost: [8],
+        cast: [0],
+        stats: { STR: "+4", Duration: "5m", "Obtainment": "Free (Quest)" },
+        jobLvReq: 15,
+        reqs: [],
+      },
       {
         id: "q_cart_revolution",
         name: "Cart Revolution",
         maxLv: 1,
         type: ["active", "offensive", "quest"],
-        desc: "[Quest Skill] Slams pushcart into nearby enemies dealing 150% ATK in a 3x3 AoE with knockback.",
+        desc: "[Quest Skill] Swings the cart to damage all nearby enemies and push them back.",
         sp_cost: [12],
         cast: [0],
-        stats: {
-          ATK: "150%",
-          Area: "3x3",
-          KB: "Yes",
-          "How to Get": "Free at job change (Merchant Guild, Alberta)",
-        },
+        stats: { ATK: "150% + CartWeight", Radius: "3x3", "Obtainment": "Free (Quest)" },
         jobLvReq: 35,
-        reqs: [{ id: "pushcart", lv: 5 }],
+        reqs: [{ id: "pushcart", lv: 1 }],
       },
       {
         id: "q_change_cart",
         name: "Change Cart",
         maxLv: 1,
         type: ["active", "support", "quest"],
-        desc: "[Quest Skill] Allows changing the appearance of your pushcart to different styles.",
+        desc: "[Quest Skill] Changes the appearance of the merchant's cart.",
         sp_cost: [40],
-        cast: 0,
-        stats: {
-          SP: "40",
-          Effect: "Change Cart Skin",
-          "How to Get": "Free at job change (Merchant Guild, Alberta)",
-        },
+        cast: [0],
+        stats: { Effect: "Change Visuals", "Obtainment": "Free (Quest)" },
         jobLvReq: 30,
-        reqs: [{ id: "pushcart", lv: 5 }],
-      },
-      {
-        id: "q_loud_exclamation",
-        maxLv: 1,
-
-        type: ["passive", "quest"],
-        desc: "[Quest Skill] Permanently increases STR by 4.",
-        sp_cost: 0,
-        cast: 0,
-        stats: {
-          STR: "+4",
-          Type: "Passive",
-          "How to Get": "Free at job change (Merchant Guild, Alberta)",
-        },
-        jobLvReq: 15,
-        reqs: [],
+        reqs: [{ id: "pushcart", lv: 1 }],
       },
       {
         id: "q_cart_decoration",
@@ -803,23 +883,19 @@ const CLASSES = {
         desc: "[Quest Skill] Allows cart decoration. Also permanently increases INT by 1.",
         sp_cost: 0,
         cast: 0,
-        stats: {
-          INT: "+1",
-          "How to Get": "Free at job change (Merchant Guild, Alberta)",
-        },
+        stats: { INT: "+1", "Obtainment": "Free (Quest)" },
         jobLvReq: 0,
         reqs: [{ id: "q_change_cart", lv: 1 }],
       },
-      // UNLOCKABLE
       {
         id: "discount",
         name: "Discount",
         maxLv: 10,
         type: ["passive"],
-        desc: "Reduces NPC purchase prices by 3% per level. Max 24% discount at Lv10.",
+        desc: "Reduces NPC purchase prices.",
         sp_cost: 0,
         cast: 0,
-        stats: { "Buy Discount": "3-24%" },
+        stats: { "Buy Discount": ["9%", "11%", "13%", "15%", "17%", "19%", "21%", "23%", "24%", "24%"] },
         reqs: [{ id: "enlarge_weight", lv: 3 }],
       },
       {
@@ -827,10 +903,10 @@ const CLASSES = {
         name: "Overcharge",
         maxLv: 10,
         type: ["passive"],
-        desc: "Increases NPC sell prices by 3% per level. Max 24% bonus at Lv10.",
+        desc: "Increases NPC sell prices.",
         sp_cost: 0,
         cast: 0,
-        stats: { "Sell Bonus": "3-24%" },
+        stats: { "Sell Bonus": ["7%", "9%", "11%", "13%", "15%", "17%", "19%", "21%", "23%", "24%"] },
         reqs: [{ id: "discount", lv: 3 }],
       },
       {
@@ -838,10 +914,10 @@ const CLASSES = {
         name: "Pushcart",
         maxLv: 10,
         type: ["passive"],
-        desc: "Attaches a cart adding +800 weight per level. Also required for cart-based skills.",
+        desc: "Attaches a cart for extra item storage weight.",
         sp_cost: 0,
         cast: 0,
-        stats: { "Cart Weight": "+800/lv", Max: "8000" },
+        stats: { "Move Penalty": ["-50%", "-45%", "-40%", "-35%", "-30%", "-25%", "-20%", "-15%", "-10%", "None"] },
         reqs: [{ id: "enlarge_weight", lv: 5 }],
       },
       {
@@ -849,10 +925,10 @@ const CLASSES = {
         name: "Vending",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Opens a personal vendor shop. Higher levels allow listing more items simultaneously.",
+        desc: "Opens a personal vendor shop to sell items to other players.",
         sp_cost: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
-        cast: 0,
-        stats: { "Item Slots": "2+lv", SP: "30" },
+        cast: [0],
+        stats: { "Item Slots": ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12"] },
         reqs: [{ id: "pushcart", lv: 3 }],
       },
       {
@@ -860,10 +936,11 @@ const CLASSES = {
         name: "Buying Store",
         maxLv: 1,
         type: ["active", "support", "quest"],
-        desc: "Opens a buying shop to purchase specific items from other players at a set price.",
+        desc: "Opens a buying shop to purchase specific items from other players.",
         sp_cost: [30],
-        cast: 0,
-        stats: { SP: "30" },
+        cast: [0],
+        stats: { SP: "30", "Obtainment": "Free (Quest)" },
+        jobLvReq: 0,
         reqs: [{ id: "vending", lv: 1 }],
       },
     ],
@@ -890,16 +967,18 @@ const CLASSES = {
     name: "Thief",
     sp: 49,
     skills: [
-      // BASE SKILLS
       {
         id: "double_attack",
         name: "Double Attack",
         maxLv: 10,
         type: ["passive"],
-        desc: "Passive chance to strike twice with daggers. Chance increases 5% per level up to 50% at Lv10.",
+        desc: "Passively grants a chance to deal two hits with a dagger.",
         sp_cost: 0,
         cast: 0,
-        stats: { "Proc Chance": "5-50%", Weapon: "Dagger" },
+        stats: {
+          Chance: ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%"],
+          Weapon: "Dagger"
+        },
         reqs: [],
       },
       {
@@ -907,10 +986,10 @@ const CLASSES = {
         name: "Increase Dodge",
         maxLv: 10,
         type: ["passive"],
-        desc: "Passively increases FLEE rate by 3 per level. Max +30 FLEE at Lv10.",
+        desc: "Passively increases FLEE rate.",
         sp_cost: 0,
         cast: 0,
-        stats: { FLEE: "+3/lv", Max: "+30" },
+        stats: { FLEE: ["+3", "+6", "+9", "+12", "+15", "+18", "+21", "+24", "+27", "+30"] },
         reqs: [],
       },
       {
@@ -918,10 +997,13 @@ const CLASSES = {
         name: "Steal",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Attempts to steal an item from a monster. Success chance is based on the thief's DEX.",
+        desc: "Attempts to steal an item from a target enemy.",
         sp_cost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
-        cast: 0,
-        stats: { Chance: "DEX-based", SP: "10" },
+        cast: [0],
+        stats: {
+          Success: ["DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked"],
+          SP: "10"
+        },
         reqs: [],
       },
       {
@@ -929,26 +1011,24 @@ const CLASSES = {
         name: "Envenom",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Attacks with a venom-coated weapon dealing 115-250% ATK with a chance to inflict Poison.",
+        desc: "Attacks with a poison-coated weapon. Chance to inflict Poison status.",
         sp_cost: [12, 12, 12, 12, 12, 12, 12, 12, 12, 12],
-        cast: 0,
-        stats: { ATK: "115-250%", "Poison%": "5+lv%" },
+        cast: [0],
+        stats: {
+          ATK: ["115%", "130%", "145%", "160%", "175%", "190%", "205%", "220%", "235%", "250%"],
+          Poison: ["14%", "18%", "22%", "26%", "30%", "34%", "38%", "42%", "46%", "50%"]
+        },
         reqs: [],
       },
-      // QUEST SKILLS
       {
         id: "q_sprinkle_sand",
-        name: "Sprinkle Sand",
+        name: "Sand Attack",
         maxLv: 1,
-        type: ["active", "support", "quest"],
-        desc: "[Quest Skill] Throws sand at an enemy to temporarily Blind them, reducing HIT rate.",
-        sp_cost: [10],
-        cast: 0,
-        stats: {
-          Effect: "Blind",
-          SP: "10",
-          "How to Get": "Free at job change (Thief Guild, Morroc)",
-        },
+        type: ["active", "offensive", "quest"],
+        desc: "[Quest Skill] Throws sand to damage an enemy and potentially Blind them.",
+        sp_cost: [9],
+        cast: [0],
+        stats: { ATK: "130%", Blind: "15%", Element: "Earth", "Obtainment": "Free (Quest)" },
         jobLvReq: 25,
         reqs: [],
       },
@@ -957,14 +1037,10 @@ const CLASSES = {
         name: "Back Sliding",
         maxLv: 1,
         type: ["active", "support", "quest"],
-        desc: "[Quest Skill] Instantly slide back 5 cells to quickly create distance from enemies.",
+        desc: "[Quest Skill] Slides backward rapidly to escape danger.",
         sp_cost: [7],
-        cast: 0,
-        stats: {
-          Effect: "Move Back 5 cells",
-          SP: "7",
-          "How to Get": "Free at job change (Thief Guild, Morroc)",
-        },
+        cast: [0],
+        stats: { Effect: "Reverse Move", SP: "7", "Obtainment": "Free (Quest)" },
         jobLvReq: 35,
         reqs: [],
       },
@@ -973,14 +1049,10 @@ const CLASSES = {
         name: "Pick Stone",
         maxLv: 1,
         type: ["active", "support", "quest"],
-        desc: "[Quest Skill] Picks up a stone from the ground to use as a throwing weapon.",
+        desc: "[Quest Skill] Picks up a stone from the ground.",
         sp_cost: [2],
-        cast: 0,
-        stats: {
-          SP: "2",
-          Creates: "Stone",
-          "How to Get": "Free at job change (Thief Guild, Morroc)",
-        },
+        cast: [0],
+        stats: { Creates: "1 Stone", SP: "2", "Obtainment": "Free (Quest)" },
         jobLvReq: 20,
         reqs: [],
       },
@@ -989,27 +1061,25 @@ const CLASSES = {
         name: "Throw Stone",
         maxLv: 1,
         type: ["active", "offensive", "quest"],
-        desc: "[Quest Skill] Throws a stone at an enemy for 50 fixed damage with a chance to stun.",
+        desc: "[Quest Skill] Throws a stone to deal fixed damage and potentially stun the target.",
         sp_cost: [2],
-        cast: 0,
-        stats: {
-          Damage: "50 Fixed",
-          Effect: "Stun",
-          "How to Get": "Free at job change (Thief Guild, Morroc)",
-        },
+        cast: [0],
+        stats: { Damage: "50 Fixed", Stun: "5%", "Obtainment": "Free (Quest)" },
         jobLvReq: 15,
         reqs: [],
       },
-      // UNLOCKABLE
       {
         id: "hiding",
         name: "Hiding",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Conceals the caster from most monsters and players. Duration increases per level. Drains SP over time.",
+        desc: "Conceals the user underground. Canceled if SP reaches 0.",
         sp_cost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
-        cast: 0,
-        stats: { Duration: "30+15s/lv", "SP Drain": "Yes" },
+        cast: [0],
+        stats: {
+          Duration: ["30s", "60s", "90s", "120s", "150s", "180s", "210s", "240s", "270s", "300s"],
+          "SP Drain": ["1/s", "1/s", "1/s", "1/s", "1/s", "1/s", "1/s", "1/s", "1/s", "1/s"]
+        },
         reqs: [{ id: "steal", lv: 5 }],
       },
       {
@@ -1017,10 +1087,10 @@ const CLASSES = {
         name: "Detoxify",
         maxLv: 1,
         type: ["active", "support"],
-        desc: "Removes the Poison status effect from yourself or a targeted ally.",
+        desc: "Cures the Poison status effect from itself or others.",
         sp_cost: [10],
-        cast: 0,
-        stats: { SP: "10", Cures: "Poison" },
+        cast: [0],
+        stats: { Cures: "Poison", SP: "10" },
         reqs: [{ id: "envenom", lv: 3 }],
       },
     ],
@@ -1211,6 +1281,32 @@ function unlocked(c, skill) {
   if (isQuestJobLocked(skill)) return false;
   for (const r of skill.reqs) if (getSkillLv(c, r.id) < r.lv) return false;
   return true;
+}
+
+function getAutofillData(c, skill, planned = {}) {
+  for (const r of skill.reqs) {
+    const rs = CLASSES[c].skills.find((s) => s.id === r.id);
+    if (!rs) continue;
+    const cur = getSkillLv(c, r.id);
+    const pld = planned[r.id] || cur;
+    if (pld < r.lv) {
+      planned[r.id] = r.lv;
+      getAutofillData(c, rs, planned);
+    }
+  }
+  return planned;
+}
+
+function calculateAutofillCost(c, planned) {
+  let cost = 0;
+  for (const [id, target] of Object.entries(planned)) {
+    const cur = getSkillLv(c, id);
+    if (target > cur) {
+      const sk = CLASSES[c].skills.find((s) => s.id === id);
+      if (sk && !sk.type.includes("quest")) cost += target - cur;
+    }
+  }
+  return cost;
 }
 
 // Colours matching the parchment/wood theme
@@ -1422,7 +1518,7 @@ function loadSkillIcon(skillId) {
   img.onerror = () => {
     iconCache[skillId] = "error";
   };
-  img.src = `icons/${skillId}.png`;
+  img.src = `Images/icons/${skillId}.png`;
 }
 
 // Pre-load icons for all skills in all classes
@@ -2073,7 +2169,17 @@ function showSkillInfo(sk) {
     .forEach(([k, v]) => {
       const c = document.createElement("div");
       c.className = "si-stat";
-      c.innerHTML = `<div class="si-stat-lbl">${k}</div><div class="si-stat-val">${v}</div>`;
+      let displayedValue = v;
+      if (Array.isArray(v)) {
+        if (lv > 0) {
+          displayedValue = v[Math.min(lv - 1, v.length - 1)];
+        } else {
+          const first = v[0];
+          const last = v[v.length - 1];
+          displayedValue = first === last ? first : `${first}-${last}`;
+        }
+      }
+      c.innerHTML = `<div class="si-stat-lbl">${k}</div><div class="si-stat-val">${displayedValue}</div>`;
       stEl.appendChild(c);
     });
 
@@ -2113,9 +2219,25 @@ function updateButtons(sk) {
   const jobLocked = isQuestJobLocked(sk);
   const lb = document.getElementById("btn-learn"),
     fb = document.getElementById("btn-forget");
-  lb.disabled = !ul || lv >= sk.maxLv || (!isQ && sp <= 0) || jobLocked;
+
+  // Autofill check
+  let canAuto = false;
+  let autoCost = 0;
+  if (!ul && !jobLocked) {
+    const planned = getAutofillData(currentClass, sk, {});
+    autoCost = calculateAutofillCost(currentClass, planned);
+    if (sp >= autoCost + (isQ ? 0 : 1)) {
+      canAuto = true;
+    }
+  }
+
+  lb.disabled =
+    (!ul && !canAuto) || lv >= sk.maxLv || (!isQ && sp <= 0 && !canAuto) || jobLocked;
+
   if (jobLocked) {
     lb.textContent = `JLV ${sk.jobLvReq || 0}`;
+  } else if (!ul && canAuto) {
+    lb.textContent = `+UNLOCK (${autoCost + (isQ ? 0 : 1)} SP)`;
   } else {
     lb.textContent = isQ ? "[Q]OBTAIN" : "+LEARN";
   }
@@ -2132,24 +2254,45 @@ document.getElementById("btn-learn").addEventListener("click", () => {
   const sk = selectedSkill,
     lv = getSkillLv(currentClass, sk.id),
     isQ = sk.type.includes("quest");
+
   if (isQuestJobLocked(sk)) {
     showToast(`NEED JOB LV ${sk.jobLvReq || 0} TO OBTAIN!`);
     return;
   }
-  if (!unlocked(currentClass, sk) || lv >= sk.maxLv) return;
-  if (!isQ && getRemaining(currentClass) <= 0) {
-    showToast("NO SP REMAINING!");
-    return;
+
+  const ul = unlocked(currentClass, sk);
+  if (lv >= sk.maxLv) return;
+
+  if (!ul) {
+    const planned = getAutofillData(currentClass, sk, {});
+    const cost = calculateAutofillCost(currentClass, planned);
+    const totalCost = cost + (isQ ? 0 : 1);
+
+    if (getRemaining(currentClass) < totalCost) {
+      showToast(`NOT ENOUGH SP TO UNLOCK! (NEEDS ${totalCost})`);
+      return;
+    }
+
+    // Apply autofill
+    Object.entries(planned).forEach(([id, target]) => {
+      learnedSkills[currentClass][id] = target;
+    });
+    learnedSkills[currentClass][sk.id] = lv + 1;
+    showToast(`UNLOCKED: ${sk.name} AND PREREQUISITES!`);
+  } else {
+    if (!isQ && getRemaining(currentClass) <= 0) {
+      showToast("NO SP REMAINING!");
+      return;
+    }
+    learnedSkills[currentClass][sk.id] = lv + 1;
+    showToast(isQ ? `QUEST: ${sk.name} OBTAINED!` : `LEARNED: ${sk.name} LV.${lv + 1}`);
   }
-  learnedSkills[currentClass][sk.id] = lv + 1;
-  if (!isQ) updateSPDisplay();
-  updateLevelDots(sk, lv + 1);
+
+  updateSPDisplay();
+  updateLevelDots(sk, getSkillLv(currentClass, sk.id));
   updateButtons(sk);
   showSkillInfo(sk);
   renderTree();
-  showToast(
-    isQ ? `QUEST: ${sk.name} OBTAINED!` : `LEARNED: ${sk.name} LV.${lv + 1}`
-  );
 });
 document.getElementById("btn-forget").addEventListener("click", () => {
   if (!selectedSkill) return;
