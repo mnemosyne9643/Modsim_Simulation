@@ -127,7 +127,7 @@ class StatBridge {
             dex: parseInt(document.querySelector('[data-stat-input="DEX"]')?.value) || 1,
             luk: parseInt(document.querySelector('[data-stat-input="LUK"]')?.value) || 1,
             job: document.querySelector('.hsr-job-name')?.innerText?.trim() || 'Novice',
-            weapon: document.querySelector('#weapon-select')?.value || 'Hand'
+            weapon: document.querySelector('#weaponSelect')?.value || 'Hand'
         };
         localStorage.setItem('statSimState', JSON.stringify(state));
     }
@@ -153,7 +153,7 @@ class StatBridge {
             setVal('[data-stat-input="INT"]', state.int);
             setVal('[data-stat-input="DEX"]', state.dex);
             setVal('[data-stat-input="LUK"]', state.luk);
-            setVal('#weapon-select', state.weapon);
+            setVal('#weaponSelect', state.weapon);
 
             // Trigger sync with C#
             if (window.chrome?.webview) {
@@ -164,6 +164,29 @@ class StatBridge {
             }
         } catch (e) {
             console.error("Failed to load state", e);
+        }
+    }
+
+    getPassiveStatBonus(statName) {
+        const passivesData = localStorage.getItem('passiveSkills');
+        if (!passivesData) return 0;
+
+        try {
+            const passives = JSON.parse(passivesData);
+            let totalBonus = 0;
+
+            passives.forEach(sk => {
+                // Simplified mapping for common stat passives
+                if (sk.id === 'owl_eye' && statName === 'DEX') {
+                    totalBonus += sk.level;
+                }
+                // Add more stat passives here if needed
+                // if (sk.id === 'divine_protection' && statName === 'VIT') totalBonus += Math.floor(sk.level / 2);
+            });
+
+            return totalBonus;
+        } catch (e) {
+            return 0;
         }
     }
 

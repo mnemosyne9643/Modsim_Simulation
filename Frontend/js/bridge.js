@@ -1,21 +1,15 @@
-﻿if (window.chrome && window.chrome.webview) {
+if (window.chrome && window.chrome.webview) {
     window.chrome.webview.addEventListener('message', event => {
-        // C# sends a JSON string or object
-        const resultData = event.data;
-        const jsonString = typeof resultData === 'string' ? resultData : JSON.stringify(resultData);
+        // Parse the incoming data from C#
+        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
 
         // 1. Update all the labels, bonuses, and button states
-        CharacterUI.render(jsonString);
+        CharacterUI.render(JSON.stringify(data));
 
         /// If C# says we are overspent, trigger the "Snap-back"
         if (data.IsOverspent) {
-
-            // Find the input that was just changed (we can use a 'lastChangedStat' variable)
-            // Or simply force all inputs to sync with the "last safe values" from C#
             CharacterUI.syncInputs(JSON.stringify(data));
-
-            // Optional: play a subtle shake animation or sound
-            console.warn("Oops a daisy 404 error...");
+            console.warn("Points overspent! Snapping back to safe values.");
         }
     });
 }
@@ -59,7 +53,10 @@ const CharacterUI = (() => {
 
 
                 // Update all text/combat displays
-                Object.keys(data).forEach(key => updateElement(key, data[key]));
+                const modifiedData = { ...data };
+                CharacterUI.applyCombatPassives(modifiedData);
+
+                Object.keys(modifiedData).forEach(key => updateElement(key, modifiedData[key]));
 
                 // ── Display job bonuses ───────────────────────────
                 updateStatBonus('STR', data.BonusStr || 0);
@@ -140,6 +137,85 @@ const CharacterUI = (() => {
                     input.dataset.oldValue = backendValue;
                 }
             });
+        },
+
+        applyCombatPassives: (data) => {
+            const passivesData = localStorage.getItem('passiveSkills');
+            const weapon = document.querySelector('#weaponSelect')?.value || 'hand';
+            
+            // Re-initialize stat bonus tracking for this render cycle
+            const statBonuses = { STR: 0, AGI: 0, VIT: 0, INT: 0, DEX: 0, LUK: 0 };
+            
+            if (!passivesData) {
+                // Clear any existing bonus labels
+                Object.keys(statBonuses).forEach(stat => updateStatBonus(stat, 0));
+                return;
+            }
+
+            try {
+                const passives = JSON.parse(passivesData);
+                
+                passives.forEach(sk => {
+                    const level = parseInt(sk.level) || 0;
+
+                    // --- PRIMARY STAT PASSIVES ---
+                    if (sk.id === 'owl_eye') {
+                        statBonuses.DEX += level;
+                        // DEX boosts Hit and Ranged Atk
+                        data.Hit = (parseInt(data.Hit) || 0) + level;
+                        if (weapon.includes('bow')) {
+                            data.Atk = (parseInt(data.Atk) || 0) + level;
+                        }
+                    }
+                    if (sk.id === 'divine_protection') {
+                        statBonuses.VIT += level; 
+                        data.Def = (parseInt(data.Def) || 0) + (level * 3);
+                    }
+
+                    // --- ATK PASSIVES (MASTERIES) ---
+                    // 1H Sword / Dagger Mastery
+                    if (sk.id === 'sword_mastery' && (weapon === 'one-handed_sword' || weapon === 'dagger')) {
+                        data.Atk = (parseInt(data.Atk) || 0) + (level * 4);
+                    }
+                    // 2H Sword Mastery
+                    if (sk.id === '2h_sword_mastery' && weapon === 'two-handed_sword') {
+                        data.Atk = (parseInt(data.Atk) || 0) + (level * 4);
+                    }
+                    // Axe Mastery
+                    if (sk.id === 'axe_mastery' && weapon.includes('axe')) {
+                        data.Atk = (parseInt(data.Atk) || 0) + (level * 3);
+                    }
+                    // Mace Mastery
+                    if (sk.id === 'mace_mastery' && weapon.includes('mace')) {
+                        data.Atk = (parseInt(data.Atk) || 0) + (level * 3);
+                    }
+
+                    // --- MERCHANT PASSIVES ---
+                    if (sk.id === 'enlarge_weight') {
+                        data.MaxWeight = (parseInt(data.MaxWeight) || 0) + (level * 200);
+                    }
+
+                    // --- HIT/FLEE PASSIVES ---
+                    if (sk.id === 'vulture_eye') {
+                        data.Hit = (parseInt(data.Hit) || 0) + level;
+                    }
+                    if (sk.id === 'increase_dodge') {
+                        data.Flee = (parseInt(data.Flee) || 0) + (level * 3);
+                    }
+                });
+
+                // Update the green bonus labels next to stats (STR, AGI, etc)
+                // We combine Job Bonus with Passive Bonus for the label
+                updateStatBonus('STR', (data.BonusStr || 0) + statBonuses.STR);
+                updateStatBonus('AGI', (data.BonusAgi || 0) + statBonuses.AGI);
+                updateStatBonus('VIT', (data.BonusVit || 0) + statBonuses.VIT);
+                updateStatBonus('INT', (data.BonusInt || 0) + statBonuses.INT);
+                updateStatBonus('DEX', (data.BonusDex || 0) + statBonuses.DEX);
+                updateStatBonus('LUK', (data.BonusLuk || 0) + statBonuses.LUK);
+
+            } catch (e) {
+                console.error("Failed to apply passives in UI", e);
+            }
         }
     };
 })();
