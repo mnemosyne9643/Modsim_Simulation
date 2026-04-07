@@ -187,6 +187,7 @@ if (savedJob && CHARACTERS[savedJob]) {
 applyCharacter(classSelect.value);
 
 classSelect.addEventListener('change', (e) => {
+    localStorage.removeItem('passiveSkills');
     applyCharacter(e.target.value);
 });
 

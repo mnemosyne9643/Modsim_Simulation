@@ -1157,9 +1157,31 @@ let currentClass = "novice",
   learnedSkills = {},
   selectedSkill = null;
 let currentJobLv = 1; // tracked job level
-Object.keys(CLASSES).forEach((c) => {
-  learnedSkills[c] = {};
-});
+
+function saveSkillSimState() {
+  const state = {
+    learnedSkills,
+    currentJobLv,
+    currentClass
+  };
+  localStorage.setItem('skillSimState', JSON.stringify(state));
+}
+
+function loadSkillSimState() {
+  const saved = localStorage.getItem('skillSimState');
+  if (saved) {
+    const state = JSON.parse(saved);
+    learnedSkills = state.learnedSkills || {};
+    currentJobLv = state.currentJobLv || 1;
+    // We don't overwrite currentClass here because it's handled by selectedJob sync
+  } else {
+    Object.keys(CLASSES).forEach((c) => {
+      learnedSkills[c] = {};
+    });
+  }
+}
+
+loadSkillSimState();
 
 // Job level max per class (pre-renewal first class = 50)
 const JOB_LV_MAX = {
@@ -1215,6 +1237,7 @@ joblvSelect.addEventListener("change", () => {
   renderTree();
   // refresh info panel if a skill is selected
   if (selectedSkill) showSkillInfo(selectedSkill);
+  saveSkillSimState();
 });
 
 // For fallback
@@ -1267,6 +1290,10 @@ function selectClass(idx) {
     };
     frame.appendChild(img);
   }
+  
+  // Clear any existing synced passives when changing class in SkillSim
+  localStorage.removeItem('passiveSkills');
+  saveSkillSimState();
 }
 items.forEach((el, i) => el.addEventListener("click", () => selectClass(i)));
 
@@ -2287,6 +2314,38 @@ function hideSkillInfo() {
   document.getElementById("skill-info").classList.remove("visible");
 }
 
+function syncPassives() {
+  const passives = [];
+  const learned = learnedSkills[currentClass] || {};
+  
+  // Find all passive skills that have been learned (level > 0)
+  CLASSES[currentClass].skills.forEach(sk => {
+    const lv = learned[sk.id] || 0;
+    if (lv > 0 && sk.type.includes("passive")) {
+      // Get the stat value for the current level
+      let statDisplay = "Passive";
+      const stats = Object.entries(sk.stats);
+      if (stats.length > 0) {
+        const [key, values] = stats[0];
+        if (Array.isArray(values)) {
+          statDisplay = values[Math.min(lv - 1, values.length - 1)];
+        } else {
+          statDisplay = values;
+        }
+      }
+      
+      passives.push({
+        id: sk.id,
+        name: sk.name,
+        level: lv,
+        stat: statDisplay
+      });
+    }
+  });
+  
+  localStorage.setItem('passiveSkills', JSON.stringify(passives));
+}
+
 document.getElementById("btn-learn").addEventListener("click", () => {
   if (!selectedSkill) return;
   const sk = selectedSkill,
@@ -2331,6 +2390,8 @@ document.getElementById("btn-learn").addEventListener("click", () => {
   updateButtons(sk);
   showSkillInfo(sk);
   renderTree();
+  syncPassives();
+  saveSkillSimState();
 });
 document.getElementById("btn-forget").addEventListener("click", () => {
   if (!selectedSkill) return;
@@ -2348,6 +2409,8 @@ document.getElementById("btn-forget").addEventListener("click", () => {
   updateButtons(sk);
   showSkillInfo(sk);
   renderTree();
+  syncPassives();
+  saveSkillSimState();
   showToast(`FORGOT ${sk.name} LV.${lv}→${lv - 1}`);
 });
 function checkDeps(id, nv) {
@@ -2368,6 +2431,8 @@ document.getElementById("reset-btn").addEventListener("click", () => {
   hideSkillInfo();
   updateJobLvBadge();
   renderTree();
+  syncPassives();
+  saveSkillSimState();
   showToast("SKILLS RESET!");
 });
 

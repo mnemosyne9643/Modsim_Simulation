@@ -1,4 +1,4 @@
-﻿class StatBridge {
+class StatBridge {
     static LEVEL_MIN = 1;
     static LEVEL_MAX = 99;
 
@@ -13,6 +13,7 @@
         }, 50);
 
         this.initListeners();
+        this.updatePassivesUI();
     }
 
     initListeners() {
@@ -123,10 +124,45 @@
             }, timeout);
         };
     }
+
+    updatePassivesUI() {
+        const grid = document.getElementById('passivesGrid');
+        if (!grid) return;
+
+        const passivesData = localStorage.getItem('passiveSkills');
+        const passives = passivesData ? JSON.parse(passivesData) : [];
+
+        grid.innerHTML = '';
+
+        if (passives.length === 0) {
+            grid.innerHTML = '<div class="passive-empty-tip">LEARN PASSIVE SKILLS IN THE SKILL SIMULATOR TO SEE THEM HERE</div>';
+            return;
+        }
+
+        passives.forEach(sk => {
+            const bar = document.createElement('div');
+            bar.className = 'passive-bar';
+            bar.title = sk.name;
+
+            bar.innerHTML = `
+                <div class="passive-icon">
+                    <!-- Icon would go here if available -->
+                </div>
+                <div class="passive-info">
+                    <div class="passive-name">${sk.name} Lv.${sk.level}</div>
+                    <div class="passive-stats">${sk.stat}</div>
+                </div>
+            `;
+            grid.appendChild(bar);
+        });
+    }
 }
 
 // Initialize
-const bridge = new StatBridge();
+let bridge;
+window.addEventListener('DOMContentLoaded', () => {
+    bridge = new StatBridge();
+});
 
 // Inside your input event listener
 document.querySelectorAll('[data-stat-input]').forEach(input => {
@@ -184,4 +220,16 @@ document.querySelectorAll('[data-stat-input]').forEach(input => {
         // Update the "safe" value for the next interaction
         e.target.dataset.oldValue = e.target.value;
     });
+});
+
+// Listen for storage changes from Skill Simulator
+window.addEventListener('storage', (e) => {
+    if (e.key === 'passiveSkills') {
+        bridge.updatePassivesUI();
+    }
+    // Also handle job change sync if needed
+    if (e.key === 'selectedJob') {
+        // If job changes elsewhere, we might want to reload or update index.js state
+        // For now, index.js mostly relies on reload on navigation
+    }
 });
