@@ -1251,7 +1251,7 @@ const wheelEl = document.getElementById("wheel");
 const items = wheelEl.querySelectorAll(".wheel-item");
 const ITEM_H = 36;
 
-function selectClass(idx) {
+function selectClass(idx, isInitial = false) {
   items.forEach((el, i) => el.classList.toggle("active", i === idx));
   const off = -(idx * ITEM_H) + (7 * ITEM_H) / 2 - ITEM_H / 2;
   wheelEl.style.transform = `translateY(${off}px)`;
@@ -1263,12 +1263,23 @@ function selectClass(idx) {
   document.getElementById("class-title").textContent =
     CLASSES[cls].name.toUpperCase();
   currentClass = cls;
-  resetSelection();
-  currentJobLv = 1; // reset job level when switching class
+  
+  if (!isInitial) {
+    resetSelection();
+    currentJobLv = 1; // reset job level when switching class
+    localStorage.removeItem('passiveSkills');
+    saveSkillSimState();
+  }
+  
   buildJobLvOptions(cls);
+  if (isInitial) {
+    joblvSelect.value = currentJobLv;
+  }
+  
   updateSPDisplay();
   renderTree();
   hideSkillInfo();
+  syncPassives();
   // load character gif
   const gifSrc = el.dataset.gif;
   const frame = document.getElementById("char-frame");
@@ -1290,10 +1301,6 @@ function selectClass(idx) {
     };
     frame.appendChild(img);
   }
-  
-  // Clear any existing synced passives when changing class in SkillSim
-  localStorage.removeItem('passiveSkills');
-  saveSkillSimState();
 }
 items.forEach((el, i) => el.addEventListener("click", () => selectClass(i)));
 
@@ -2455,5 +2462,4 @@ if (savedJob) {
   });
 }
 const initialClass = items[initialIdx].dataset.class;
-buildJobLvOptions(initialClass);
-selectClass(initialIdx);
+selectClass(initialIdx, true);

@@ -188,7 +188,13 @@ applyCharacter(classSelect.value);
 
 classSelect.addEventListener('change', (e) => {
     localStorage.removeItem('passiveSkills');
+    localStorage.removeItem('skillSimState');
     applyCharacter(e.target.value);
+    
+    // Immediately clear the passive skills display in the Stat Simulator UI
+    if (window.bridge) {
+        window.bridge.updatePassivesUI();
+    }
 });
 
 // Job level change

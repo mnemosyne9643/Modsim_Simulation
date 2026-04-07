@@ -161,7 +161,7 @@ class StatBridge {
 // Initialize
 let bridge;
 window.addEventListener('DOMContentLoaded', () => {
-    bridge = new StatBridge();
+    window.bridge = new StatBridge();
 });
 
 // Inside your input event listener
