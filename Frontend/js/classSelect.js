@@ -106,6 +106,9 @@ function applyCharacter(className) {
 
     // Save to localStorage for SkillSim sync
     saveJob(className);
+
+    // Persist full state
+    if (window.bridge) window.bridge.saveState();
 }
 
 // ── POPULATE JOB LEVEL DROPDOWN ──────────────────────────────
@@ -209,6 +212,7 @@ if (jobLvSelect) {
                 value: parseInt(e.target.value) || 1
             });
         }
+        if (window.bridge) window.bridge.saveState();
     });
 }
 
@@ -221,5 +225,6 @@ if (weaponSelect) {
                 weapon: e.target.value
             });
         }
+        if (window.bridge) window.bridge.saveState();
     });
 }

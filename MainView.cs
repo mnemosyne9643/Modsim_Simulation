@@ -1,4 +1,4 @@
-
+Ôªø
 using Newtonsoft.Json;
 using Modsim_Simulation.Backend;
 using System.Diagnostics;
@@ -31,8 +31,26 @@ namespace Modsim_Simulation
                 ResultModel results = null;
 
                 //   Handle different message types 
-                switch (message.Type?.ToUpper())
-                {
+                switch (message.Type?.ToUpper()) {
+                    case "SYNC_STATE":
+                        var syncMessage = JsonConvert.DeserializeObject<SyncStateMessage>(e.WebMessageAsJson);
+                        if (syncMessage != null)
+                        {
+                            charData.BaseLevel = syncMessage.BaseLv;
+                            charData.JobLevel = syncMessage.JobLv;
+                            charData.Str = syncMessage.Str;
+                            charData.Agi = syncMessage.Agi;
+                            charData.Vit = syncMessage.Vit;
+                            charData.Int = syncMessage.Int;
+                            charData.Dex = syncMessage.Dex;
+                            charData.Luk = syncMessage.Luk;
+                            charData.Job = syncMessage.Job;
+                            charData.EquippedWeapon = ParseWeaponType(syncMessage.Weapon);
+
+                            results = Calculator.CalculateAll(charData);
+                            UpdateUIStats();
+                        }
+                        break;
                     case "CLASS_CHANGE":
                         // Use ClassName field for class changes
                         string jobName = message.ClassName ?? "Novice";
@@ -109,7 +127,7 @@ namespace Modsim_Simulation
                         break;
                 }
 
-                // ÑüÑü Send results back to UI ÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑüÑü
+                // ‚Äû≈∏‚Äû≈∏ Send results back to UI ‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏‚Äû≈∏
                 if (results != null)
                 {
                     string json = JsonConvert.SerializeObject(results);
@@ -155,7 +173,7 @@ namespace Modsim_Simulation
                     if (el) el.value = val;
                 }}
 
-                // ÑüÑüÑü NEW: Reset Bonus Labels ÑüÑüÑü
+                // ‚Äû≈∏‚Äû≈∏‚Äû≈∏ NEW: Reset Bonus Labels ‚Äû≈∏‚Äû≈∏‚Äû≈∏
                 // This assumes your labels have IDs like 'str-bonus', etc.
                 const stats = ['str', 'agi', 'vit', 'int', 'dex', 'luk'];
                 stats.forEach(s => {{
@@ -191,7 +209,7 @@ namespace Modsim_Simulation
                     if (weaponEl) weaponEl.value = 'hand';
 
                 }} finally {{
-                    // ÑüÑü UNLOCK: Allow user interaction again
+                    // ‚Äû≈∏‚Äû≈∏ UNLOCK: Allow user interaction again
                     // Delay slightly to ensure events finish bubbling
                     setTimeout(() => {{ isInternalUpdate = false; }}, 50);
                 }}
@@ -225,7 +243,7 @@ namespace Modsim_Simulation
                 .ToLower()
                 .Replace(" ", "_")
                 .Replace("-", "_")
-                .Replace("&", "and");  // "Rod & Staff" Å® "rod_and_staff"
+                .Replace("&", "and");  // "Rod & Staff" ¬Å¬® "rod_and_staff"
 
             return normalized switch
             {
@@ -247,3 +265,4 @@ namespace Modsim_Simulation
         }
     }
 }
+

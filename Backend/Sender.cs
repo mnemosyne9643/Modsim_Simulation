@@ -1,4 +1,4 @@
-﻿using Modsim_Simulation.Backend.Models;
+using Modsim_Simulation.Backend.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -666,5 +666,23 @@ namespace Modsim_Simulation.Backend
             ClassName = null;
             Weapon = null;
         }
+    }
+
+    /// <summary>
+    /// Message sent from JS to sync the entire character state on load/init
+    /// </summary>
+    public class SyncStateMessage
+    {
+        public string Type { get; set; } = "SYNC_STATE";
+        public int BaseLv { get; set; } = 1;
+        public int JobLv { get; set; } = 1;
+        public int Str { get; set; } = 1;
+        public int Agi { get; set; } = 1;
+        public int Vit { get; set; } = 1;
+        public int Int { get; set; } = 1;
+        public int Dex { get; set; } = 1;
+        public int Luk { get; set; } = 1;
+        public string Job { get; set; } = "Novice";
+        public string Weapon { get; set; } = "Hand";
     }
 }
