@@ -210,7 +210,9 @@ class StatBridge {
             bar.title = sk.name;
 
             bar.innerHTML = `
-                <div class="passive-icon"></div>
+                <div class="passive-icon">
+                    <img src="Images/icons/${sk.id}.png" alt="${sk.name}">
+                </div>
                 <div class="passive-info">
                     <div class="passive-name">${sk.name} Lv.${sk.level}</div>
                     <div class="passive-stats">${sk.stat}</div>
