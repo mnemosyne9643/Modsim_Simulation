@@ -11,20 +11,20 @@ const CLASSES = {
         name: "Basic Skill",
         maxLv: 9,
         type: ["passive"],
-        desc: "Unlocks basic commands: trade, chatroom, party, emotes, sit/stand, map, change job, etc.",
+        desc: "Increases the character's basic skills, unlocking various game features.",
         sp_cost: 0,
         cast: 0,
         stats: {
           "Unlocks": [
-            "Trade",
-            "Emotes",
-            "Sit/Stand",
-            "Chatroom",
-            "Party Select",
-            "Kafra Storage",
-            "Party Map",
-            "Job Change",
-            "Maxed"
+            "Enables Trading",
+            "Enables Emotions",
+            "Enables Sitting",
+            "Enables Chat Room Creation",
+            "Enables you to join a Party",
+            "Enables use of Kafra Storage",
+            "Enables you to organize a Party",
+            "Does nothing",
+            "Full First Job Change Access"
           ],
           "SP Cost": "Passive"
         },
@@ -257,8 +257,9 @@ const CLASSES = {
         sp_cost: 0,
         cast: 0,
         stats: {
-          Bonus: ["+3 SP/10s", "+6 SP/10s", "+9 SP/10s", "+12 SP/10s", "+15 SP/10s", "+18 SP/10s", "+21 SP/10s", "+24 SP/10s", "+27 SP/10s", "+30 SP/10s"],
-          "Max SP Mod": ["0%", "0%", "0%", "0%", "0%", "0%", "0%", "0%", "0%", "+10%"]
+          "Base SP Gain": ["+3", "+6", "+9", "+12", "+15", "+18", "+21", "+24", "+27", "+30"],
+          "Bonus Recovery": ["+0.2% MaxSP", "+0.4% MaxSP", "+0.6% MaxSP", "+0.8% MaxSP", "+1.0% MaxSP", "+1.2% MaxSP", "+1.4% MaxSP", "+1.6% MaxSP", "+1.8% MaxSP", "+2.0% MaxSP"],
+          "SP Item Potency": ["+10%", "+20%", "+30%", "+40%", "+50%", "+60%", "+70%", "+80%", "+90%", "+100%"]
         },
         reqs: [],
       },
@@ -268,10 +269,12 @@ const CLASSES = {
         maxLv: 10,
         type: ["active", "offensive"],
         desc: "Ghost-element magic that hits enemies in a 3x3 area around the target.",
-        sp_cost: [9, 9, 9, 11, 11, 11, 13, 13, 13, 15],
-        cast: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+        sp_cost: [9, 9, 9, 12, 12, 12, 15, 15, 15, 18],
+        cast: [1, 1, 1, 0.9, 0.9, 0.8, 0.8, 0.7, 0.6, 0.5],
         stats: {
           MATK: ["80%", "90%", "100%", "110%", "120%", "130%", "140%", "150%", "160%", "170%"],
+          "SP Cost": [9, 9, 9, 12, 12, 12, 15, 15, 15, 18],
+          "Cast Time": ["1s", "1s", "1s", "0.9s", "0.9s", "0.8s", "0.8s", "0.7s", "0.6s", "0.5s"],
           Element: "Ghost",
           Area: "3x3"
         },
@@ -294,10 +297,12 @@ const CLASSES = {
         maxLv: 10,
         type: ["active", "offensive"],
         desc: "Fires Water-element bolts at a single target.",
-        sp_cost: [12, 12, 12, 12, 12, 14, 14, 14, 16, 16],
+        sp_cost: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30],
         cast: [0.7, 1.4, 2.1, 2.8, 3.5, 4.2, 4.9, 5.6, 6.3, 7.0],
         stats: {
           Bolts: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+          "Cast Time": ["0.7s", "1.4s", "2.1s", "2.8s", "3.5s", "4.2s", "4.9s", "5.6s", "6.3s", "7s"],
+          "Cast Delay": ["1s", "1.2s", "1.4s", "1.6s", "1.8s", "2s", "2.2s", "2.4s", "2.6s", "2.8s"],
           MATK: ["100%", "200%", "300%", "400%", "500%", "600%", "700%", "800%", "900%", "1000%"],
           Element: "Water"
         },
@@ -323,11 +328,13 @@ const CLASSES = {
         name: "Fire Bolt",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Fires Fire-element bolts at a single target.",
-        sp_cost: [12, 12, 12, 12, 12, 14, 14, 14, 16, 16],
+        desc: "A basic single target Fire elemental attack. The number of hits is dependant on the skill level used. Damage is based off the user's MATK. Although the animation shows numerous bolts hitting the target one after another, they \"all\" connect at the same time in one bundle of damage. ",
+        sp_cost: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30],
         cast: [0.7, 1.4, 2.1, 2.8, 3.5, 4.2, 4.9, 5.6, 6.3, 7.0],
         stats: {
           Bolts: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+          "Cast Time": ["0.7s", "1.4s", "2.1s", "2.8s", "3.5s", "4.2s", "4.9s", "5.6s", "6.3s", "7s"],
+          "Cast Delay": ["1s", "1.2s", "1.4s", "1.6s", "1.8s", "2s", "2.2s", "2.4s", "2.6s", "2.8s"],
           MATK: ["100%", "200%", "300%", "400%", "500%", "600%", "700%", "800%", "900%", "1000%"],
           Element: "Fire"
         },
@@ -338,11 +345,13 @@ const CLASSES = {
         name: "Lightning Bolt",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Fires Wind-element bolts at a single target.",
-        sp_cost: [12, 12, 12, 12, 12, 14, 14, 14, 16, 16],
+        desc: "A basic single target Wind elemental attack. The number of hits is dependant on the skill level used. Damage is based off the user's MATK. Although the animation shows numerous bolts hitting the target one after another, they \"all\" connect at the same time in one bundle of damage. ",
+        sp_cost: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30],
         cast: [0.7, 1.4, 2.1, 2.8, 3.5, 4.2, 4.9, 5.6, 6.3, 7.0],
         stats: {
           Bolts: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+          "Cast Time": ["0.7s", "1.4s", "2.1s", "2.8s", "3.5s", "4.2s", "4.9s", "5.6s", "6.3s", "7s"],
+          "Cast Delay": ["1s", "1.2s", "1.4s", "1.6s", "1.8s", "2s", "2.2s", "2.4s", "2.6s", "2.8s"],
           MATK: ["100%", "200%", "300%", "400%", "500%", "600%", "700%", "800%", "900%", "1000%"],
           Element: "Wind"
         },
@@ -366,10 +375,13 @@ const CLASSES = {
         maxLv: 10,
         type: ["active", "offensive"],
         desc: "Fires Ghost-element bolts rapidly at a single target.",
-        sp_cost: [18, 18, 24, 24, 30, 30, 36, 36, 42, 42],
+        sp_cost: [18, 14, 24, 20, 30, 26, 36, 32, 42, 38],
         cast: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
         stats: {
           Bolts: ["1", "1", "2", "2", "3", "3", "4", "4", "5", "5"],
+          "SP Cost": [18, 14, 24, 20, 30, 26, 36, 32, 42, 38],
+          "Cast Delay": ["1.2s", "1.4s", "1.6s", "1.8s", "2s", "2.2s", "2.4s", "2.6s", "2.8s", "2.7s"],
+          "Undead Bonus": ["+5%", "+10%", "+15%", "+20%", "+25%", "+30%", "+35%", "+40%", "+45%", "+50%"],
           MATK: ["100%", "100%", "200%", "200%", "300%", "300%", "400%", "400%", "500%", "500%"],
           Element: "Ghost"
         },
@@ -385,6 +397,8 @@ const CLASSES = {
         cast: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         stats: {
           MATK: ["110%", "120%", "130%", "140%", "150%", "160%", "170%", "180%", "190%", "200%"],
+          "SP Cost": [25, 24, 23, 22, 21, 20, 19, 18, 17, 16],
+          "Time Frozen": ["3s", "6s", "9s", "12s", "15s", "18s", "21s", "24s", "27s", "30s"],
           Freeze: ["38%", "41%", "44%", "47%", "50%", "53%", "56%", "59%", "62%", "65%"],
           Element: "Water"
         },
@@ -397,9 +411,11 @@ const CLASSES = {
         type: ["active", "offensive"],
         desc: "Hurls a fireball that explodes in a 5x5 area.",
         sp_cost: [25, 25, 25, 25, 25, 30, 30, 30, 30, 30],
-        cast: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+        cast: [1.5, 1.5, 1.5, 1.5, 1.5, 1.0, 1.0, 1.0, 1.0, 1.0],
         stats: {
-          MATK: ["115%", "130%", "145%", "160%", "175%", "190%", "205%", "220%", "235%", "250%"],
+          MATK: ["80%", "90%", "100%", "110%", "120%", "130%", "140%", "150%", "160%", "170%"],
+          "Cast Time": ["1.5s", "1.5s", "1.5s", "1.5s", "1.5s", "1s", "1s", "1s", "1s", "1s"],
+          "Cast Delay": ["1.5s", "1.5s", "1.5s", "1.5s", "1.5s", "1s", "1s", "1s", "1s", "1s"],
           Area: "5x5",
           Element: "Fire"
         },
@@ -410,12 +426,12 @@ const CLASSES = {
         name: "Fire Wall",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Creates a wall of fire on the ground that hits enemies passing through.",
+        desc: "Create a Fire Wall on the ground that will block monsters from approaching the caster. All monsters except Undead take 50% damage of the Magic attack strength of the caster and are knocked back when they attempt to walk across the Fire Wall. Skill level affects its strength.",
         sp_cost: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40],
         cast: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
         stats: {
-          Hits: ["4", "5", "6", "7", "8", "9", "10", "11", "12", "14"],
-          Duration: ["10s", "11s", "12s", "13s", "14s", "15s", "16s", "17s", "18s", "23s"],
+          Hits: ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+          Duration: ["5s", "6s", "7s", "8s", "9s", "10s", "11s", "12s", "13s", "14s"],
           Element: "Fire"
         },
         reqs: [
@@ -429,12 +445,14 @@ const CLASSES = {
         maxLv: 10,
         type: ["active", "support"],
         desc: "Creates a barrier on one cell that blocks physical melee attacks.",
-        sp_cost: [30, 30, 30, 30, 30, 40, 40, 40, 40, 40],
+        sp_cost: [30, 30, 30, 35, 35, 35, 40, 40, 40, 40],
         cast: [4, 3.5, 3, 2.5, 2, 1.5, 1, 1, 1, 1],
         stats: {
-          Hits: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
+          "Hits Blocked": ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
           Duration: ["5s", "10s", "15s", "20s", "25s", "30s", "35s", "40s", "45s", "50s"],
-          "Cost": "1 Blue Gem"
+          "SP Cost": [30, 30, 30, 35, 35, 35, 40, 40, 40, 40],
+          "Cast Time": ["4s", "3.5s", "3s", "2.5s", "2s", "1.5s", "1s", "1s", "1s", "1s"],
+          Requirement: "1 Blue Gemstone"
         },
         reqs: [
           { id: "napalm_beat", lv: 7 },
@@ -446,11 +464,14 @@ const CLASSES = {
         name: "Thunder Storm",
         maxLv: 10,
         type: ["active", "offensive"],
-        desc: "Calls down lightning bolts in a 5x5 area.",
+        desc: "Summon a Thunderstorm to inflict splash damage in an area around the targeted spot. Each strike of the Thunderstorm inflicts an amount of damage equal to 80% of the caster's MATK. This skill's level affects the number of strikes inflicted by the Thunderstorm.",
         sp_cost: [29, 34, 39, 44, 49, 54, 59, 64, 69, 74],
         cast: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         stats: {
-          MATK: ["100%", "200%", "300%", "400%", "500%", "600%", "700%", "800%", "900%", "1000%"],
+          MATK: "80%",
+          Strikes: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+          "SP Cost": [29, 34, 39, 44, 49, 54, 59, 64, 69, 74],
+          "Cast Time": ["1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "10s"],
           Area: "5x5",
           Element: "Wind"
         },
@@ -552,12 +573,13 @@ const CLASSES = {
         name: "Attention Concentrate",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Temporarily boosts AGI and DEX. Also reveals hidden enemies nearby.",
-        sp_cost: [25, 27, 29, 31, 33, 35, 37, 39, 41, 45],
+        desc: "Increases the DEX and AGI of the caster. Does not affect DEX from cards and buffs (Job bonuses, armor, and Owl's Eye are included). Also detects hidden enemies in a 3x3 tile range.",
+        sp_cost: [25, 30, 35, 40, 45, 50, 55, 60, 65, 70],
         cast: 0,
         stats: {
           "AGI/DEX": ["+3%", "+4%", "+5%", "+6%", "+7%", "+8%", "+9%", "+10%", "+11%", "+12%"],
-          Duration: ["40s", "50s", "60s", "70s", "80s", "90s", "100s", "110s", "120s", "160s"]
+          "SP Cost": [25, 30, 35, 40, 45, 50, 55, 60, 65, 70],
+          Duration: ["60s", "80s", "100s", "120s", "140s", "160s", "180s", "200s", "220s", "240s"]
         },
         reqs: [{ id: "vulture_eye", lv: 1 }],
       },
@@ -623,7 +645,8 @@ const CLASSES = {
         sp_cost: [13, 16, 19, 22, 25, 28, 31, 34, 37, 40],
         cast: [0],
         stats: {
-          HP_Restored: ["~40", "~80", "~130", "~190", "~260", "~340", "~430", "~530", "~640", "~760"],
+          "Base Heal": ["12", "20", "28", "36", "44", "52", "60", "68", "76", "84"],
+          "SP Cost": [13, 16, 19, 22, 25, 28, 31, 34, 37, 40],
           "vs Undead": "Damage",
           Range: "9 cells"
         },
@@ -705,12 +728,13 @@ const CLASSES = {
         name: "Increase Agility",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Temporarily increases a target's AGI and movement speed.",
+        desc: "Increases movement speed and AGI of a character. Fails if user has less than 16 HP.",
         sp_cost: [18, 21, 24, 27, 30, 33, 36, 39, 42, 45],
         cast: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         stats: {
-          AGI: ["+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10", "+11", "+12"],
-          Duration: ["40s", "60s", "80s", "100s", "120s", "140s", "160s", "180s", "200s", "220s"]
+          "AGI Increase": ["+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10", "+11", "+12"],
+          "SP Cost": [18, 21, 24, 27, 30, 33, 36, 39, 42, 45],
+          Duration: ["60s", "80s", "100s", "120s", "140s", "160s", "180s", "200s", "220s", "240s"]
         },
         reqs: [{ id: "heal", lv: 3 }],
       },
@@ -719,12 +743,15 @@ const CLASSES = {
         name: "Decrease Agility",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Attempts to reduce an enemy's AGI and movement speed.",
+        desc: "Attempts to reduce an enemy's movement speed and AGI. Success affected by INT and MDEF.",
         sp_cost: [15, 17, 19, 21, 23, 25, 27, 29, 31, 33],
         cast: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         stats: {
-          Success: ["42%", "44%", "46%", "48%", "50%", "52%", "54%", "56%", "58%", "60%"],
-          AGI_Red: ["-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12"]
+          "AGI Reduction": ["-3", "-4", "-5", "-6", "-7", "-8", "-9", "-10", "-11", "-12"],
+          "Success Rate": ["42%", "44%", "46%", "48%", "50%", "52%", "54%", "56%", "58%", "60%"],
+          "SP Cost": [15, 17, 19, 21, 23, 25, 27, 29, 31, 33],
+          "Duration (Vs Monster)": ["30s", "40s", "50s", "60s", "70s", "80s", "90s", "100s", "110s", "120s"],
+          "Duration (Vs Player)": ["20s", "25s", "30s", "35s", "40s", "45s", "50s", "55s", "60s", "65s"]
         },
         reqs: [{ id: "increase_agi", lv: 1 }],
       },
@@ -737,7 +764,8 @@ const CLASSES = {
         sp_cost: [35, 35, 35, 35, 35, 35, 35, 35, 35, 35],
         cast: [0.5],
         stats: {
-          "DEF Red": ["-14%", "-18%", "-22%", "-26%", "-30%", "-34%", "-38%", "-42%", "-46%", "-50%"],
+          "DEF Reduction": ["-14%", "-18%", "-22%", "-26%", "-30%", "-34%", "-38%", "-42%", "-46%", "-50%"],
+          "Success Chance": ["27%", "31%", "35%", "39%", "43%", "47%", "51%", "55%", "59%", "63%"],
           Target: "Screen Wide"
         },
         reqs: [{ id: "demon_bane", lv: 3 }],
@@ -751,7 +779,8 @@ const CLASSES = {
         sp_cost: [23, 26, 29, 32, 35, 38, 41, 44, 47, 50],
         cast: [0.5],
         stats: {
-          "VitDEF Bonus": ["+5%", "+10%", "+15%", "+20%", "+25%", "+30%", "+35%", "+40%", "+45%", "+50%"],
+          "DEF Increase": ["+5%", "+10%", "+15%", "+20%", "+25%", "+30%", "+35%", "+40%", "+45%", "+50%"],
+          "SP Cost": [23, 26, 29, 32, 35, 38, 41, 44, 47, 50],
           Duration: ["30s", "60s", "90s", "120s", "150s", "180s", "210s", "240s", "270s", "300s"]
         },
         reqs: [{ id: "divine_protection", lv: 3 }],
@@ -765,7 +794,8 @@ const CLASSES = {
         sp_cost: [28, 32, 36, 40, 44, 48, 52, 56, 60, 64],
         cast: [0],
         stats: {
-          "Stats Bonus": ["+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10"],
+          "Stat Increase": ["+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10"],
+          "SP Cost": [28, 32, 36, 40, 44, 48, 52, 56, 60, 64],
           Duration: ["60s", "80s", "100s", "120s", "140s", "160s", "180s", "200s", "220s", "240s"]
         },
         reqs: [{ id: "divine_protection", lv: 5 }],
@@ -896,10 +926,10 @@ const CLASSES = {
         name: "Discount",
         maxLv: 10,
         type: ["passive"],
-        desc: "Reduces NPC purchase prices.",
+        desc: "Enables character to purchase items from NPC shops at lower prices. Pirate Skeleton Card allows usage of Level 5 Discount.",
         sp_cost: 0,
         cast: 0,
-        stats: { "Buy Discount": ["9%", "11%", "13%", "15%", "17%", "19%", "21%", "23%", "24%", "24%"] },
+        stats: { "Discount %": ["7%", "9%", "11%", "13%", "15%", "17%", "19%", "21%", "23%", "24%"] },
         reqs: [{ id: "enlarge_weight", lv: 3 }],
       },
       {
@@ -918,10 +948,10 @@ const CLASSES = {
         name: "Pushcart",
         maxLv: 10,
         type: ["passive"],
-        desc: "Attaches a cart for extra item storage weight.",
+        desc: "Attaches a cart for extra item storage weight. Increases movement speed while using a cart.",
         sp_cost: 0,
         cast: 0,
-        stats: { "Move Penalty": ["-50%", "-45%", "-40%", "-35%", "-30%", "-25%", "-20%", "-15%", "-10%", "None"] },
+        stats: { "Movement Speed": ["55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"] },
         reqs: [{ id: "enlarge_weight", lv: 5 }],
       },
       {
@@ -976,12 +1006,14 @@ const CLASSES = {
         name: "Double Attack",
         maxLv: 10,
         type: ["passive"],
-        desc: "Passively grants a chance to deal two hits with a dagger.",
+        desc: "Passively grants a chance to deal two hits with a dagger. Increases hit rate and katar off-hand damage.",
         sp_cost: 0,
         cast: 0,
         stats: {
-          Chance: ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%"],
-          Weapon: "Dagger"
+          "Chance": ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%"],
+          "Hit Bonus": ["+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9", "+10"],
+          "Katar Off-Hand Damage": ["3%", "5%", "7%", "9%", "11%", "13%", "15%", "17%", "19%", "21%"],
+          Weapon: "Dagger / Katar (Assassin)"
         },
         reqs: [],
       },
@@ -1001,12 +1033,12 @@ const CLASSES = {
         name: "Steal",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Attempts to steal an item from a target enemy.",
+        desc: "Attempts to 'steal' an item from the targeted monster. Boss-protocol monsters cannot be stolen from.",
         sp_cost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
         cast: [0],
         stats: {
-          Success: ["DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked", "DEX-linked"],
-          SP: "10"
+          "Success Chance": ["10%", "16%", "22%", "28%", "34%", "40%", "46%", "52%", "58%", "64%"],
+          "SP Cost": "10"
         },
         reqs: [],
       },
@@ -1019,8 +1051,9 @@ const CLASSES = {
         sp_cost: [12, 12, 12, 12, 12, 12, 12, 12, 12, 12],
         cast: [0],
         stats: {
-          ATK: ["115%", "130%", "145%", "160%", "175%", "190%", "205%", "220%", "235%", "250%"],
-          Poison: ["14%", "18%", "22%", "26%", "30%", "34%", "38%", "42%", "46%", "50%"]
+          "ATK Bonus": ["+15", "+30", "+45", "+60", "+75", "+90", "+105", "+120", "+135", "+150"],
+          "Poison Chance": ["14%", "18%", "22%", "26%", "30%", "34%", "38%", "42%", "46%", "50%"],
+          "SP Cost": "12"
         },
         reqs: [],
       },
@@ -1032,7 +1065,7 @@ const CLASSES = {
         desc: "[Quest Skill] Throws sand to damage an enemy and potentially Blind them.",
         sp_cost: [9],
         cast: [0],
-        stats: { ATK: "130%", Blind: "15%", Element: "Earth", "Obtainment": "Free (Quest)" },
+        stats: { ATK: "125%", Blind: "15%", Element: "Earth", "Obtainment": "Free (Quest)" },
         jobLvReq: 25,
         reqs: [],
       },
@@ -1077,12 +1110,13 @@ const CLASSES = {
         name: "Hiding",
         maxLv: 10,
         type: ["active", "support"],
-        desc: "Conceals the user underground. Canceled if SP reaches 0.",
+        desc: "Hide to avoid enemies. Insect, Demon and Boss type monsters can detect hidden players.",
         sp_cost: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
         cast: [0],
         stats: {
-          Duration: ["30s", "60s", "90s", "120s", "150s", "180s", "210s", "240s", "270s", "300s"],
-          "SP Drain": ["1/s", "1/s", "1/s", "1/s", "1/s", "1/s", "1/s", "1/s", "1/s", "1/s"]
+          "Duration": ["30s", "60s", "90s", "120s", "150s", "180s", "210s", "240s", "270s", "300s"],
+          "SP Usage": ["1 / 5 sec", "1 / 6 sec", "1 / 7 sec", "1 / 8 sec", "1 / 9 sec", "1 / 10 sec", "1 / 11 sec", "1 / 12 sec", "1 / 13 sec", "1 / 14 sec"],
+          "Initial Cost": "10 SP"
         },
         reqs: [{ id: "steal", lv: 5 }],
       },
