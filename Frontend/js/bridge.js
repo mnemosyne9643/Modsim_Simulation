@@ -142,10 +142,14 @@ const CharacterUI = (() => {
         applyCombatPassives: (data) => {
             const passivesData = localStorage.getItem('passiveSkills');
             const weapon = document.querySelector('#weaponSelect')?.value || 'hand';
-            
+
             // Re-initialize stat bonus tracking for this render cycle
             const statBonuses = { STR: 0, AGI: 0, VIT: 0, INT: 0, DEX: 0, LUK: 0 };
-            
+
+            // Initialize regen bonuses
+            data.HpRegenBonus = "";
+            data.SpRegenBonus = "";
+
             if (!passivesData) {
                 // Clear any existing bonus labels
                 Object.keys(statBonuses).forEach(stat => updateStatBonus(stat, 0));
@@ -154,7 +158,7 @@ const CharacterUI = (() => {
 
             try {
                 const passives = JSON.parse(passivesData);
-                
+
                 passives.forEach(sk => {
                     const level = parseInt(sk.level) || 0;
 
@@ -168,8 +172,18 @@ const CharacterUI = (() => {
                         }
                     }
                     if (sk.id === 'divine_protection') {
-                        statBonuses.VIT += level; 
+                        statBonuses.VIT += level;
                         data.Def = (parseInt(data.Def) || 0) + (level * 3);
+                    }
+
+                    // --- HP/SP RECOVERY PASSIVES ---
+                    if (sk.id === 'hp_recovery') {
+                        const bonus = (level * 5) + Math.floor((parseInt(data.MaxHp) || 0) * (level * 0.002));
+                        if (bonus > 0) data.HpRegenBonus = ` (+${bonus})`;
+                    }
+                    if (sk.id === 'sp_recovery') {
+                        const bonus = (level * 3) + Math.floor((parseInt(data.MaxSp) || 0) * (level * 0.002));
+                        if (bonus > 0) data.SpRegenBonus = ` (+${bonus})`;
                     }
 
                     // --- ATK PASSIVES (MASTERIES) ---
